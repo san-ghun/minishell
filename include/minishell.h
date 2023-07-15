@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:03:22 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:36:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@
 # include <curses.h>
 # include <term.h>
 
-// # include "libft.h"
-// # include "ft_printf.h"
+# include "libft.h"
+# include "ft_printf.h"
 
 // Limit Loop: use addition to while condition
 # define MAX_ITER	5000
