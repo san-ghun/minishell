@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/02 15:52:26 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:33:33 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+int	ft_isdigit(int c)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
-	}
+	return (c >= '0' && c <= '9');
 }
+/*
+#include <stdio.h>
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int ac, char **av)
 {
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
+	printf("ft: %d\n", ft_isdigit(av[1][0]));
 	return (0);
-}
+}*/

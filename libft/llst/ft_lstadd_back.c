@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/13 13:50:46 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:47:39 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	int	i;
+	t_list	*last;
 
-	i = 0;
-	while (envp[i])
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
+		*lst = new;
+		return ;
 	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	last = ft_lstlast(*lst);
+	last->next = new;
 }

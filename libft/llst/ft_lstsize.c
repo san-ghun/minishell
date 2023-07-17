@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/13 13:41:01 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:47:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+int	ft_lstsize(t_list *lst)
 {
-	int	i;
+	int		size;
+	t_list	*tmp;
 
-	i = 0;
-	while (envp[i])
+	if (!lst)
+		return (0);
+	size = 1;
+	tmp = lst;
+	while (tmp->next != NULL)
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
+		tmp = tmp->next;
+		size++;
 	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	return (size);
 }

@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/13 13:19:47 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:46:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+t_list	*ft_lstnew(void *content)
 {
-	int	i;
+	t_list	*new;
 
-	i = 0;
-	while (envp[i])
-	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
-	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = 0;
+	return (new);
 }

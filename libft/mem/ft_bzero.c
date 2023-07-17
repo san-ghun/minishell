@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/05 19:24:14 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:43:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+void	ft_bzero(void *s, size_t n)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
-	}
+	ft_memset(s, 0, n);
 }
-
-int	main(int argc, char *argv[], char *envp[])
+/*
+#include <stdio.h>
+int	main(void)
 {
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
+	char buffer[100] = "Hello, Greetings! Testing the bzero Function";
+	printf("Display of Buffer String BEFORE bzero Function: %s\n", buffer);
+	//bzero(buffer, 100);
+	ft_bzero(buffer, 100);
+	// ft_bzero(buffer, 0);
+	printf("Display of Buffer String AFTER bzero Function: %s\n", buffer);
 	return (0);
 }
+*/

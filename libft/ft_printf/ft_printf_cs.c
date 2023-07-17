@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_printf_cs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/29 22:17:15 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/30 12:36:43 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_printf.h"
 
-static void	print_envp(char *envp[])
+int	ft_put_c(int c)
+{
+	ft_putchar_fd(c, 1);
+	return (1);
+}
+
+int	ft_put_s(char *s)
 {
 	int	i;
 
-	i = 0;
-	while (envp[i])
+	if (!s)
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
+		write(1, "(null)", 6);
+		return (6);
+	}
+	i = 0;
+	while (*s != '\0')
+	{
+		write(1, s, 1);
+		s++;
 		i++;
 	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	return (i);
 }

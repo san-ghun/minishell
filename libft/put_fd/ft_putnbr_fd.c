@@ -1,33 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/06 23:07:33 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:46:14 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+void	ft_putnbr_fd(int n, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
+	if (n == INT_MIN)
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
+		write(fd, INT_MIN_STR, 11);
+		return ;
 	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n *= -1;
+	}
+	if (n > 9)
+		ft_putnbr_fd(n / 10, fd);
+	ft_putchar_fd(n % 10 + '0', fd);
 }
-
-int	main(int argc, char *argv[], char *envp[])
+/*
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+int	main(int ac, char **av)
 {
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
+	int	n;
+
+	n = 123456799;
+	ft_putnbr_fd(n, 1);
 	return (0);
 }
+*/

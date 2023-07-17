@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/05 13:47:47 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/29 22:40:50 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	print_envp(char *envp[])
+char	*ft_strdup(const char *s1)
 {
-	int	i;
+	int		i;
+	int		len;
+	char	*dst;
 
 	i = 0;
-	while (envp[i])
+	len = ft_strlen(s1);
+	dst = (char *)malloc(sizeof(char) * len + 1);
+	if (dst == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
+		dst[i] = s1[i];
 		i++;
 	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	dst[i] = '\0';
+	return (dst);
 }

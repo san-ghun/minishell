@@ -1,33 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_printf_p.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:39 by sanghupa         ###   ########.fr       */
+/*   Created: 2022/12/29 22:17:41 by sanghupa          #+#    #+#             */
+/*   Updated: 2022/12/30 14:51:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_printf.h"
 
-static void	print_envp(char *envp[])
+static int	ft_get_uhexlen(unsigned long long nbr)
 {
 	int	i;
 
-	i = 0;
-	while (envp[i])
+	i = 1;
+	while (nbr >= 16)
 	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
+		nbr /= 16;
 		i++;
 	}
+	return (i);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int	ft_put_p(unsigned long long p)
 {
-	(void)argc;
-	(void)argv;
-	print_envp(envp);
-	return (0);
+	int		len;
+	char	*base;
+
+	len = 0;
+	base = "0123456789abcdef";
+	if (p > 15)
+	{
+		ft_put_p(p / 16);
+		ft_put_p(p % 16);
+	}
+	else
+		write(1, &base[p], 1);
+	len += ft_get_uhexlen(p);
+	return (len);
 }
