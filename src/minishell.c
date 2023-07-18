@@ -75,7 +75,7 @@ void	executecmd(char *tokens[])
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_printf("변경사항1");
+		ft_printf("변경사항2");
 		perror("Error");
 		ft_putstr_fd("Failed to fork\n", 2);
 		exit(EXIT_FAILURE);
