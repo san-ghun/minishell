@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 14:37:27 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:26:22 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,14 @@
 // Prevent Heap mem leak: use addition to char or array
 # define DATA_SIZE	3072
 
+// Limiter for command and tokens
+# define MAX_COMMAND_LEN 100
+# define MAX_TOKENS 10
+
 /* minishell.c */
 
 /* minishell_util.c */
+void	getcmd(char *cmd, int len);
+
 
 #endif

@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/18 14:43:30 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/18 16:16:51 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@
 
 CC			= cc
 CFLAGS		= -Wall -Werror -Wextra
+
+RL_LINK		= -lreadline
 
 RM			= rm -f
 
@@ -71,8 +73,8 @@ $(LIBFT):
 			@mv $(LIBFT_PATH) ./
 
 $(NAME):	$(OBJ_NAME) $(LIBFT)
-			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
-#			@$(CC) $(CFLAGS) -fsanitize=address -g -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
+			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+#			@$(CC) $(CFLAGS) -fsanitize=address -g -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 
 $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)

@@ -6,12 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 14:46:42 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:26:28 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
 static void	print_envp(char *envp[])
 {
 	int	i;
@@ -23,22 +24,20 @@ static void	print_envp(char *envp[])
 		i++;
 	}
 }
+*/
 
 int	isexit(char *cmd)
 {
 	return (ft_strncmp(cmd, "exit", 4) == 0);
 }
 
-#define MAX_COMMAND_LEN 100
-#define MAX_TOKENS 10
-
 // TODO: readcmd()
 // - implement fgets()
 // - implement strcspn()
+// - implement case when `\` appears in cmd 
 int	readcmd(char *cmd)
 {
-	ft_printf("> ");
-	fgets(cmd, MAX_COMMAND_LEN, stdin);
+	getcmd(cmd, MAX_COMMAND_LEN);
 
 	// Remove the newline character from the end
 	cmd[strcspn(cmd, "\n")] = '\0';
@@ -98,7 +97,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	print_envp(envp);
+	(void)envp;
+	// print_envp(envp);
 	while (1)
 	{
 		// Step 1: Accept user input
