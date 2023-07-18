@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/15 21:41:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:33:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	executecmd(char *tokens[])
 	pid = fork();
 	if (pid < 0)
 	{
+		ft_printf("변경사항1");
 		perror("Error");
 		ft_putstr_fd("Failed to fork\n", 2);
 		exit(EXIT_FAILURE);
