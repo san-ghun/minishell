@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 16:26:22 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/18 21:48:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,15 @@
 /* minishell_util.c */
 void	getcmd(char *cmd, int len);
 
+
+/**
+ * @name ft_strtok
+ * @note These functions have been 'briefly' tested.
+ * The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
+ * connectivity and can be used together.
+ */
+char	*ft_strpbrk(const char *str, const char *delim);
+size_t	ft_strspn(const char *str, const char *delim);
+char	*ft_strtok(char *str, const char *delim);
 
 #endif
