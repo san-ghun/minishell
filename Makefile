@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/15 15:39:04 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/18 14:43:30 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,8 +81,7 @@ $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 # Test Code 
 
 TEST 		=	test.c
-TMP 		=	$(SRC_DIR)/$(NAME).c \
-				$(SRC_DIR)/$(NAME)_util.c \
+TMP 		=	$(shell find ./src -iname "*.c")
 
 test: $(LIBFT)
 			$(CC) $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
