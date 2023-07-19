@@ -6,22 +6,21 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/19 15:53:32 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 23:23:21 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/include/libft.h"
-//#include "libft.h"
+// #include "../libft/include/libft.h"
+#include "minishell.h"
 
 /**
- * @note These functions have been 'briefly' tested.
+ * @note These functions have been tested.
  * The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
  * connectivity and can be used together.
  */
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
-
 
 /**
  * @brief Calculates the length of the initial segment of a string that consists
@@ -34,7 +33,7 @@ char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim)
 {
 	size_t	initial_length;
-	int 	found_match;
+	int		found_match;
 	size_t	i;
 	size_t	j;
 
@@ -45,11 +44,13 @@ size_t	ft_strspn(const char *str, const char *delim)
 		found_match = 0;
 		j = -1;
 		while (++j < ft_strlen(delim))
+		{
 			if (delim[j] == str[i])
 			{
 				found_match = 1;
 				break ;
 			}
+		}
 		if (!found_match)
 			break ;
 		else
@@ -80,7 +81,7 @@ size_t	ft_strspn(const char *str, const char *delim)
  */
 char	*ft_strpbrk(const char *str, const char *delim)
 {
-	const char *a;
+	const char	*a;
 
 	while (*str != '\0')
 	{
@@ -121,9 +122,9 @@ void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
 // - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {
-	static char *start_ptr;
-	static char *tok_ptr;
-	char *next_delim;
+	static char	*start_ptr;
+	static char	*tok_ptr;
+	char		*next_delim;
 
 	set_token_ptr(str, &start_ptr, &tok_ptr);
 	if (start_ptr == NULL || *start_ptr == '\0')
@@ -141,16 +142,36 @@ char	*ft_strtok(char *str, const char *delim)
 	return (start_ptr);
 }
 
-//int main(void)
-//{
-//	//test : ft_strtok
-//	char s[] = "This is the way.";
-//	char d[] = " ";
-//
-//	char *portion1 = ft_strtok(s, d);
-//	printf("%s\n", portion1);
-//	char *portion2 = ft_strtok(NULL, d);
-//	printf("%s\n", portion2);
-//
-//	return (0);
-//}
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	//test : ft_strtok
+// 	char s1[] = "This !is !the !way.";
+// 	char d[] = "!";
+
+// 	char *portion1 = ft_strtok(s1, d);
+// 	printf("ft_strtok\n");
+// 	printf("%s\n", portion1);
+// 	portion1 = ft_strtok(NULL, d);
+// 	printf("%s\n", portion1);
+// 	portion1 = ft_strtok(NULL, d);
+// 	printf("%s\n", portion1);
+// 	portion1 = ft_strtok(NULL, d);
+// 	printf("%s\n", portion1);
+// 	portion1 = ft_strtok(NULL, d);
+// 	printf("%s\n", portion1);
+
+// 	char s2[] = "This !is !the !way.";
+// 	char *portion2 = strtok(s2, d);
+// 	printf("\nstrtok\n");
+// 	printf("%s\n", portion2);
+// 	portion2 = strtok(NULL, d);
+// 	printf("%s\n", portion2);
+// 	portion2 = strtok(NULL, d);
+// 	printf("%s\n", portion2);
+// 	portion2 = strtok(NULL, d);
+// 	printf("%s\n", portion2);
+// 	portion2 = strtok(NULL, d);
+// 	printf("%s\n", portion2);
+
+// 	return (0);
+// }
