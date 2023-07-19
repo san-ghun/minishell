@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 16:26:28 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:36:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	parsecmd(char *cmd, char *tokens[])
 	char	*token;
 
 	i = 0;
-	token = strtok(cmd, " ");
+	token = ft_strtok(cmd, " ");
 	while ((token != NULL) && (i < MAX_TOKENS))
 	{
 		tokens[i++] = token;
-		token = strtok(NULL, " ");
+		token = ft_strtok(NULL, " ");
 	}
 
 	// Set the last element to NULL for execvp

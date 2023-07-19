@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/18 16:16:51 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/19 12:13:13 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,8 +73,8 @@ $(LIBFT):
 			@mv $(LIBFT_PATH) ./
 
 $(NAME):	$(OBJ_NAME) $(LIBFT)
-			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
-#			@$(CC) $(CFLAGS) -fsanitize=address -g -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+#			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+			@$(CC) $(CFLAGS) -fsanitize=address -g -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 
 $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
@@ -83,10 +83,15 @@ $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 # Test Code 
 
 TEST 		=	test.c
-TMP 		=	$(shell find ./src -iname "*.c")
+TMP 		=	$(SRC_DIR)/ft_strtok.c \
+				  $(SRC_DIR)/pipex_util.c \
+				  $(SRC_DIR)/pipex.c \
+				  $(SRC_DIR)/minishell_util.c \
+				#   $(SRC_DIR)/minishell.c \
+
 
 test: $(LIBFT)
-			$(CC) $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
+			$(CC) -g $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 
 tclean: 
 			make fclean -C $(LIBFT_DIR)
