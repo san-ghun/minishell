@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/19 15:53:32 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 22:14:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 
-
 /**
  * @brief Calculates the length of the initial segment of a string that consists
  * entirely of characters from a specified set.
@@ -34,7 +33,7 @@ char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim)
 {
 	size_t	initial_length;
-	int 	found_match;
+	int		found_match;
 	size_t	i;
 	size_t	j;
 
@@ -45,11 +44,13 @@ size_t	ft_strspn(const char *str, const char *delim)
 		found_match = 0;
 		j = -1;
 		while (++j < ft_strlen(delim))
+		{
 			if (delim[j] == str[i])
 			{
 				found_match = 1;
 				break ;
 			}
+		}
 		if (!found_match)
 			break ;
 		else
@@ -80,7 +81,7 @@ size_t	ft_strspn(const char *str, const char *delim)
  */
 char	*ft_strpbrk(const char *str, const char *delim)
 {
-	const char *a;
+	const char	*a;
 
 	while (*str != '\0')
 	{
@@ -121,9 +122,9 @@ void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
 // - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {
-	static char *start_ptr;
-	static char *tok_ptr;
-	char *next_delim;
+	static char	*start_ptr;
+	static char	*tok_ptr;
+	char		*next_delim;
 
 	set_token_ptr(str, &start_ptr, &tok_ptr);
 	if (start_ptr == NULL || *start_ptr == '\0')
