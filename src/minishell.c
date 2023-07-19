@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/19 14:36:32 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:44:01 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	isexit(char *cmd)
 }
 
 // TODO: readcmd()
-// - implement fgets()
 // - implement strcspn()
 // - implement case when `\` appears in cmd 
 int	readcmd(char *cmd)
@@ -45,8 +44,6 @@ int	readcmd(char *cmd)
 	return (ft_strlen(cmd));
 }
 
-// TODO: parsecmd()
-// - implement strtok()
 int	parsecmd(char *cmd, char *tokens[])
 {
 	int		i;
@@ -60,7 +57,6 @@ int	parsecmd(char *cmd, char *tokens[])
 		token = ft_strtok(NULL, " ");
 	}
 
-	// Set the last element to NULL for execvp
 	tokens[i] = NULL;
 	return (0);
 }

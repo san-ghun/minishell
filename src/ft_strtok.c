@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/19 15:02:16 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:53:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
  * @return A pointer to the next token found in 'str',
  * or NULL if no more tokens are found.
  */
-
+// TODO: ft_strtok()
+// - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {
 	static char *start_ptr;
