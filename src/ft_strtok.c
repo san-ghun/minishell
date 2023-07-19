@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/18 21:48:04 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/19 15:02:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char	*ft_strtok(char *str, const char *delim)
 	char *next_delim;
 
 	set_token_ptr(str, &start_ptr, &tok_ptr);
-	if (*start_ptr == '\0' || start_ptr == NULL)
+	if (start_ptr == NULL || *start_ptr == '\0')
 		return (NULL);
 	else if (delim == NULL || *delim == '\0')
 		return (start_ptr);
