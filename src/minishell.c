@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/19 23:11:47 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 20:26:04 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,10 @@ static void	print_envp(char *envp[])
 }
 */
 
-int	isexit(char *cmd)
-{
-	return (ft_strncmp(cmd, "exit", 4) == 0);
-}
-
-// TODO: readcmd()
-// - implement strcspn()
-// - implement case when `\` appears in cmd 
 int	readcmd(char *cmd)
 {
 	getcmd(cmd, MAX_COMMAND_LEN);
-
-	// Remove the newline character from the end
 	cmd[ft_strcspn(cmd, "\n")] = '\0';
-
 	return (ft_strlen(cmd));
 }
 
@@ -61,9 +50,7 @@ int	parsecmd(char *cmd, char *tokens[])
 	return (0);
 }
 
-// TODO: executecmd()
-// - implement execvp()
-void	executecmd(char *tokens[])
+void	executecmd(char *tokens[], char *envp[])
 {
 	pid_t	pid;
 
@@ -76,15 +63,13 @@ void	executecmd(char *tokens[])
 	}
 	else if (pid == 0)
 	{
-		// Child process
 		if (tokens[0] == NULL)
 			exit(EXIT_SUCCESS);
-		execvp(tokens[0], tokens);
+		ft_exec(tokens, envp);
 		perror("Error");
 		ft_putstr_fd("Failed to execute command\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	// Parent process
 	wait(NULL);
 }
 
@@ -122,7 +107,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// to handle various commands.
 		// Check the command token and execute the corresponding action or 
 		// system command using libraries or system calls.
-		executecmd(tokens);
+		executecmd(tokens, envp);
 	}
 	return (0);
 }
