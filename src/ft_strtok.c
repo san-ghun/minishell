@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/20 14:40:07 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:28:20 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	*ft_strtok(char *str, const char *delim)
 	token = str;
 	str = ft_strpbrk(token, delim);
 	if (str == NULL)
-		ft_strlcpy(olds, "", 2);
+		olds = "";
 	else
 	{
 		*str = '\0';
