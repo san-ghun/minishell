@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/19 15:44:01 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/19 23:11:47 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	readcmd(char *cmd)
 	getcmd(cmd, MAX_COMMAND_LEN);
 
 	// Remove the newline character from the end
-	cmd[strcspn(cmd, "\n")] = '\0';
+	cmd[ft_strcspn(cmd, "\n")] = '\0';
 
 	return (ft_strlen(cmd));
 }
@@ -77,6 +77,8 @@ void	executecmd(char *tokens[])
 	else if (pid == 0)
 	{
 		// Child process
+		if (tokens[0] == NULL)
+			exit(EXIT_SUCCESS);
 		execvp(tokens[0], tokens);
 		perror("Error");
 		ft_putstr_fd("Failed to execute command\n", 2);
