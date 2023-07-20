@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/19 23:23:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:40:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,11 @@ char	*ft_strpbrk(const char *str, const char *delim)
 		a = delim;
 		while (*a != '\0')
 		{
-			if (*a++ == *str)
+			if (*str == *a)
 				return ((char *)str);
-			++str;
+			a++;
 		}
+		++str;
 	}
 	return (NULL);
 }
@@ -122,24 +123,27 @@ void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
 // - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {
-	static char	*start_ptr;
-	static char	*tok_ptr;
-	char		*next_delim;
+	static char	*olds;
+	char		*token;
 
-	set_token_ptr(str, &start_ptr, &tok_ptr);
-	if (start_ptr == NULL || *start_ptr == '\0')
-		return (NULL);
-	else if (delim == NULL || *delim == '\0')
-		return (start_ptr);
-	next_delim = ft_strpbrk(start_ptr, delim);
-	if (next_delim != NULL)
+	if (str == NULL)
+		str = olds;
+	str += ft_strspn(str, delim);
+	if (*str == '\0')
 	{
-		*next_delim = '\0';
-		tok_ptr = next_delim + 1;
+		olds = str;
+		return (NULL);
 	}
+	token = str;
+	str = ft_strpbrk(token, delim);
+	if (str == NULL)
+		ft_strlcpy(olds, "", 2);
 	else
-		tok_ptr = NULL;
-	return (start_ptr);
+	{
+		*str = '\0';
+		olds = str + 1;
+	}
+	return (token);
 }
 
 // int	main(int argc, char *argv[], char *envp[])
