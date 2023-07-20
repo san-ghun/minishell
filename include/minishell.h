@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/19 22:52:24 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 21:52:17 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@
 
 /* minishell_util.c */
 void	getcmd(char *cmd, int len);
-
+int		isexit(char *cmd);
 
 /**
  * @name ft_strtok
