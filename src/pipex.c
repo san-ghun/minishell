@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:35:32 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 14:40:02 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:12:24 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	child_process(char *argv, char *envp[])
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		ft_exec(argv, envp);
+		ft_exec(&argv, envp);
 	}
 	else
 		waiting_child(fd, pid);

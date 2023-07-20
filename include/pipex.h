@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:34:19 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/18 14:41:19 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:07:29 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	heredoc(char *limiter, int argc);
 /* pipex_util.c */
 char	*find_path(char *cmd, char *envp[]);
 void	ft_error(void);
-void	ft_exec(char *arg, char *envp[]);
+void	ft_exec(char *arg[], char *envp[]);
 void	instruction(void);
 int		get_line(char *line[]);
 
