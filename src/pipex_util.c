@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:35:50 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/20 20:26:26 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/21 12:13:31 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,13 @@ void	ft_error(void)
 /// @param envp pointer to the environment variables
 void	ft_exec(char *arg[], char *envp[])
 {
-	int		i;
 	char	**cmd;
 	char	*path;
 
-	i = 0;
 	cmd = arg;
 	path = find_path(cmd[0], envp);
 	if (path == NULL)
-	{
-		while (cmd[i] != NULL)
-			free(cmd[i++]);
-		free(cmd);
 		ft_error();
-	}
 	if (execve(path, cmd, envp) == -1)
 		ft_error();
 }
