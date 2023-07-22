@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/22 10:24:46 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/22 10:53:34 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,9 +65,9 @@ re_bonus: fclean bonus
 
 dev: $(LIBFT)
 # 			For 42
-#			$(CC) -fsanitize=address -g -o $(NAME:.c=.out) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+#			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 # 			For MacOS
-			$(CC) -fsanitize=address -g -o $(NAME:.c=.out) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
+			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
 
 
 # Sub Command
