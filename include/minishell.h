@@ -90,7 +90,7 @@ char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 
-/* ft_strcspn.c.c */
+/* ft_strcspn.c */
 size_t	ft_strcspn(const char *str, const char *delim);
 
 /* ft_strncpy.c */
