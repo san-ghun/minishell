@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/22 14:00:55 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/22 14:34:45 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	sighandler(int signal)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
 
 int	readcmd(char *cmd)
 {

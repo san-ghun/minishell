@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/22 14:04:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/22 14:36:13 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,11 @@
 // Prevent Heap mem leak: use addition to char or array
 # define DATA_SIZE	3072
 
-/**
- * @def Limiter for command and tokens
- * @note MAX_COMMAND_LEN
- * if running the following command in the terminal:
- *	$ getconf ARG_MAX
- * result is 2097152 (2MB).
- */
+
+//Limiter for command and tokens
+//MAX_COMMAND_LEN if running the following command in the terminal:
+//$ getconf ARG_MAX
+//result is 2097152 (2MB).
 # define MAX_COMMAND_LEN 100 //2097152
 # define MAX_TOKENS 10
 
@@ -86,19 +84,18 @@
 void	getcmd(char *cmd, int len);
 int		isexit(char *cmd);
 
-/**
- * @note These functions have been 'briefly' tested.
- * The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
- * connectivity and can be used together.
- */
+
+//These functions have been 'briefly' tested.
+//The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
+//connectivity and can be used together.
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 
-/* ft_strcspn.c */
+//ft_strcspn.c
 size_t	ft_strcspn(const char *str, const char *delim);
 
-/* ft_strncpy */
+//ft_strncpy.c
 char *ft_strncpy(char *dest, const char *src, size_t size);
 
 #endif
