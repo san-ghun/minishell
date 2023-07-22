@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/19 22:53:09 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/20 20:15:22 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,9 @@ re: fclean all
 
 re_bonus: fclean bonus
 
+dev: $(LIBFT)
+			$(CC) -fsanitize=address -g -o $(NAME:.c=.out) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+
 # Sub Command
 
 %.o: %.c
@@ -78,7 +81,6 @@ $(NAME):	$(OBJ_NAME) $(LIBFT)
 
 $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
-
 
 # Test Code 
 
