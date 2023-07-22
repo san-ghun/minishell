@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/20 20:26:04 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/22 10:25:53 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ static void	print_envp(char *envp[])
 	}
 }
 */
+
+static void	sighandler(int signal)
+{
+	(void)signal;
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
 
 int	readcmd(char *cmd)
 {
@@ -78,12 +87,13 @@ int	main(int argc, char *argv[], char *envp[])
 	char	cmd[MAX_COMMAND_LEN];
 	char	*tokens[MAX_TOKENS];
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
+	if (argc > 1 && argv)
+		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
 	// print_envp(envp);
 	while (1)
 	{
+		signal(SIGINT, sighandler);
+		signal(SIGQUIT, SIG_IGN);
 		// Step 1: Accept user input
 		// Create an infinite loop that continuously prompts the user for input.
 		readcmd(cmd);
