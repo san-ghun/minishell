@@ -85,17 +85,15 @@ void	getcmd(char *cmd, int len);
 int		isexit(char *cmd);
 
 
-//These functions have been 'briefly' tested.
-//The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
-//connectivity and can be used together.
+/* ft_strtok.c */
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 
-//ft_strcspn.c
+/* ft_strcspn.c.c */
 size_t	ft_strcspn(const char *str, const char *delim);
 
-//ft_strncpy.c
+/* ft_strncpy.c */
 char *ft_strncpy(char *dest, const char *src, size_t size);
 
 #endif
