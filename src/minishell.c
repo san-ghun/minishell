@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/22 10:25:53 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/22 14:34:45 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,30 @@ static void	sighandler(int signal)
 
 int	readcmd(char *cmd)
 {
-	getcmd(cmd, MAX_COMMAND_LEN);
-	cmd[ft_strcspn(cmd, "\n")] = '\0';
-	return (ft_strlen(cmd));
+	char	temp_cmd[MAX_COMMAND_LEN];
+	int		total_len;
+	int		len;
+
+	total_len = 0;
+	while (1)
+	{
+		getcmd(temp_cmd, MAX_COMMAND_LEN);
+		len = (int)ft_strcspn(temp_cmd, "\n");
+		if (len > 0 && temp_cmd[len - 1] == '\\')
+		{
+			temp_cmd[len - 1] = ' ';
+			ft_strncpy(cmd + total_len, temp_cmd, len);
+			total_len += len;
+		}
+		else
+		{
+			ft_strncpy(cmd + total_len, temp_cmd, len + 1);
+			total_len += len + 1;
+			break;
+		}
+	}
+	cmd[total_len - 1] = '\0';
+	return (total_len - 1);
 }
 
 int	parsecmd(char *cmd, char *tokens[])

@@ -6,11 +6,10 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/19 23:23:28 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/22 13:46:33 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../libft/include/libft.h"
 #include "minishell.h"
 
 /**
