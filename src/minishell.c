@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/22 14:34:45 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/23 13:33:38 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,14 @@ int	readcmd(char *cmd)
 		len = (int)ft_strcspn(temp_cmd, "\n");
 		if (len > 0 && temp_cmd[len - 1] == '\\')
 		{
-			temp_cmd[len - 1] = ' ';
-			ft_strncpy(cmd + total_len, temp_cmd, len);
-			total_len += len;
+			ft_strncpy(cmd + total_len, temp_cmd, len - 1);
+			total_len += len - 1;
 		}
 		else
 		{
 			ft_strncpy(cmd + total_len, temp_cmd, len + 1);
 			total_len += len + 1;
-			break;
+			break ;
 		}
 	}
 	cmd[total_len - 1] = '\0';
