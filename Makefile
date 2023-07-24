@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/24 22:42:02 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/07/24 22:46:21 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,8 @@ $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 
 TEST 		=	test.c
 TMP 		=	$(SRC_DIR)/util/ft_strtok.c \
+				  $(SRC_DIR)/util/ft_strpbrk.c \
+				  $(SRC_DIR)/util/ft_strspn.c \
 				  $(SRC_DIR)/util/ft_strcspn.c \
 				  $(SRC_DIR)/pipex_util.c \
 				  $(SRC_DIR)/pipex.c \
