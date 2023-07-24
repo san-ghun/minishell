@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 13:32:42 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/22 14:08:12 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/24 13:00:31 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // extension function for mini shell project
-char *ft_strncpy(char *dest, const char *src, size_t size);
+char	*ft_strncpy(char *dest, const char *src, size_t size);
 
-char *ft_strncpy(char *dest, const char *src, size_t size)
+char	*ft_strncpy(char *dest, const char *src, size_t size)
 {
 	unsigned int	i;
 
