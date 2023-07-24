@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 13:20:55 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:42:53 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@
 // tcsetattr tcgetattr
 # include <termios.h>
 
+// macro
+# include "macro.h"
+
 // tgetent tgetflag tgetnum tgetstr tgoto tputs
 # include <curses.h>
 # include <term.h>
@@ -94,5 +97,20 @@ size_t	ft_strcspn(const char *str, const char *delim);
 
 /* ft_strncpy.c */
 char	*ft_strncpy(char *dest, const char *src, size_t size);
+
+/* struct */
+typedef struct    s_node
+{
+	void			*content;
+	struct s_node	*prev;
+	struct s_node	*next;
+}                t_node;
+
+typedef struct    s_deque
+{
+	struct s_node	*begin;
+	struct s_node	*end;
+	int				size;
+}                t_deque;
 
 #endif
