@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 17:42:53 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/24 22:10:18 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,30 +87,27 @@
 void	getcmd(char *cmd, size_t len);
 int		isexit(char *cmd);
 
-/* ft_strtok.c */
+/* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
-
-/* ft_strcspn.c */
 size_t	ft_strcspn(const char *str, const char *delim);
-
-/* ft_strncpy.c */
 char	*ft_strncpy(char *dest, const char *src, size_t size);
+void	*ft_memalloc(size_t size);
 
 /* struct */
-typedef struct    s_node
+typedef struct s_node
 {
 	void			*content;
 	struct s_node	*prev;
 	struct s_node	*next;
-}                t_node;
+}					t_node;
 
-typedef struct    s_deque
+typedef struct s_deque
 {
 	struct s_node	*begin;
 	struct s_node	*end;
 	int				size;
-}                t_deque;
+}					t_deque;
 
 #endif
