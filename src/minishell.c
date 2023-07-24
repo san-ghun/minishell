@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/23 13:33:38 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/24 13:29:29 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,29 @@ static void	sighandler(int signal)
 
 int	readcmd(char *cmd)
 {
-	char	temp_cmd[MAX_COMMAND_LEN];
-	int		total_len;
 	int		len;
+	int		total_len;
+	char	temp_cmd[MAX_COMMAND_LEN];
 
 	total_len = 0;
+	ft_strlcpy(cmd, "", 2);
+	if (*cmd != '\0')
+		exit(EXIT_FAILURE);
+	total_len = ft_strlen(cmd);
 	while (1)
 	{
-		getcmd(temp_cmd, MAX_COMMAND_LEN);
+		getcmd(temp_cmd, 0);
 		len = (int)ft_strcspn(temp_cmd, "\n");
-		if (len > 0 && temp_cmd[len - 1] == '\\')
+		if (len == 0 || temp_cmd[len - 1] != '\\')
 		{
-			ft_strncpy(cmd + total_len, temp_cmd, len - 1);
-			total_len += len - 1;
-		}
-		else
-		{
-			ft_strncpy(cmd + total_len, temp_cmd, len + 1);
-			total_len += len + 1;
+			ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len + 1);
 			break ;
 		}
+		ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len);
 	}
-	cmd[total_len - 1] = '\0';
-	return (total_len - 1);
+	total_len = ft_strlen(cmd);
+	cmd[total_len] = '\0';
+	return (total_len);
 }
 
 int	parsecmd(char *cmd, char *tokens[])
@@ -74,7 +74,6 @@ int	parsecmd(char *cmd, char *tokens[])
 		tokens[i++] = token;
 		token = ft_strtok(NULL, " ");
 	}
-
 	tokens[i] = NULL;
 	return (0);
 }
