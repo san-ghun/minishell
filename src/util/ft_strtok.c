@@ -6,108 +6,25 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/20 17:28:20 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/24 22:08:09 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../libft/include/libft.h"
 #include "minishell.h"
 
-/**
- * @note These functions have been tested.
- * The three functions below, "ft_strpbrk, ft_strspn, and ft_strtok" have
- * connectivity and can be used together.
- */
-char	*ft_strpbrk(const char *str, const char *delim);
-size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 
-/**
- * @brief Calculates the length of the initial segment of a string that consists
- * entirely of characters from a specified set.
- * @param str  The string to be examined.
- * @param delim The set of characters to be used as delimiters.
- * @return The length of the initial segment of 'str'
- * that matches any character in 'delim'.
- */
-size_t	ft_strspn(const char *str, const char *delim)
-{
-	size_t	initial_length;
-	int		found_match;
-	size_t	i;
-	size_t	j;
-
-	initial_length = 0;
-	i = -1;
-	while (++i < ft_strlen(str))
-	{
-		found_match = 0;
-		j = -1;
-		while (++j < ft_strlen(delim))
-		{
-			if (delim[j] == str[i])
-			{
-				found_match = 1;
-				break ;
-			}
-		}
-		if (!found_match)
-			break ;
-		else
-			initial_length++;
-	}
-	return (initial_length);
-}
-//#include <stdio.h>
-//int main(void)
-//{
-//	//test : ft_strspn
-//	char string[] = "here is test functions";
-//	char digit[] = " ";
-//
-//	size_t length = ft_strspn(string, digit);
-//	printf("%zu\n", length);
-//	length = strspn(string, digit);
-//	printf("%zu\n", length);
-//}
-
-/**
- * @brief Searches a string for any character from a specified set.
- * And returns a pointer to the first occurrence of the character.
- * @param str The string to be searched.
- * @param delim The set of characters to search for.
- * @return A pointer to the first occurrence of any character from
- * 'delim' in 'str', or NULL if no match is found.
- */
-char	*ft_strpbrk(const char *str, const char *delim)
-{
-	const char	*a;
-
-	while (*str != '\0')
-	{
-		a = delim;
-		while (*a != '\0')
-		{
-			if (*str == *a)
-				return ((char *)str);
-			a++;
-		}
-		++str;
-	}
-	return (NULL);
-}
-
 // This function Depends on ft_strtok.
-void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
-{
-	if (str != NULL)
-	{
-		*start_ptr = str;
-		*tok_ptr = str;
-	}
-	else
-		*start_ptr = *tok_ptr;
-}
+// static void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
+// {
+// 	if (str != NULL)
+// 	{
+// 		*start_ptr = str;
+// 		*tok_ptr = str;
+// 	}
+// 	else
+// 		*start_ptr = *tok_ptr;
+// }
 
 /**
  * @brief Breaks a string into a sequence of tokens.
