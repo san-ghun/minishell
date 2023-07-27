@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 22:10:18 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:21:05 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,26 @@ size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
 
-/* struct */
-typedef struct s_node
+// struct sent & deque
+/// @param cmd Save the cmd, its arguments, and enough to run at once,
+/// truncated by a semicolon.
+/// @param prefix indicator for prefix type such as, 'redirect' 'pipe' ...
+/// @param suffix indicator for suffix type such as, 'redirect' 'pipe' ...
+/// @param prev pointer to previous node.
+/// @param next pointer to next node.
+typedef struct s_sent
 {
-	void			*content;
-	struct s_node	*prev;
-	struct s_node	*next;
-}					t_node;
+	char				*cmd;
+	int					prefix;
+	int					suffix;
+	struct s_sent		*prev;
+	struct s_sent		*next;
+}				t_sent;
 
 typedef struct s_deque
 {
-	struct s_node	*begin;
-	struct s_node	*end;
+	struct s_sent	*begin;
+	struct s_sent	*end;
 	int				size;
 }					t_deque;
 
