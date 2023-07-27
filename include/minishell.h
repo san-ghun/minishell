@@ -87,17 +87,13 @@
 void	getcmd(char *cmd, size_t len);
 int		isexit(char *cmd);
 
-/* ft_strtok.c */
+/* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
-
-/* ft_strcspn.c */
 size_t	ft_strcspn(const char *str, const char *delim);
-
-/* ft_strncpy.c */
 char	*ft_strncpy(char *dest, const char *src, size_t size);
-
+void	*ft_memalloc(size_t size);
 
 // struct sent & deque
 /// @param cmd Save the cmd, its arguments, and enough to run at once,
@@ -115,11 +111,11 @@ typedef struct s_sent
 	struct s_sent		*next;
 }				t_sent;
 
-typedef struct    s_deque
+typedef struct s_deque
 {
 	struct s_sent	*begin;
 	struct s_sent	*end;
 	int				size;
-}                t_deque;
+}					t_deque;
 
 #endif
