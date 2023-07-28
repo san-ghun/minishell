@@ -6,14 +6,20 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:48 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:48:29 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:04:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	sent_del(t_sent *sent);
 void	sent_delone(t_sent *sent[], t_sent *target);
 void	sent_delall(t_sent *sent[]);
+
+void	sent_del(t_sent *sent)
+{
+	free(sent);
+}
 
 void	sent_delone(t_sent *sent[], t_sent *target)
 {
@@ -22,7 +28,8 @@ void	sent_delone(t_sent *sent[], t_sent *target)
 	if ((target->prev == NULL) && (target->next == NULL))
 	{
 		*sent = NULL;
-		return (free(target));
+		sent_del(target);
+		return ;
 	}
 	else if (target->next == NULL)
 		target->prev->next = NULL;
@@ -36,7 +43,7 @@ void	sent_delone(t_sent *sent[], t_sent *target)
 		target->prev->next = target->next;
 		target->next->prev = target->prev;
 	}
-	free(target);
+	sent_del(target);
 	return ;
 }
 

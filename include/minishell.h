@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:56:07 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:14:00 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
 
-// struct sent & deque
+
+// struct t_sent
 /// @param cmd Save the cmd, its arguments, and enough to run at once,
 /// truncated by a semicolon.
 /// @param prefix indicator for prefix type such as, 'redirect' 'pipe' ...
@@ -124,6 +125,7 @@ t_sent	*sent_getlast(t_sent *sent);
 void	sent_update(t_sent *sent[], char *old, char *new);
 
 /* src/t_sent/sent_delete.c */
+void	sent_del(t_sent *sent);
 void	sent_delone(t_sent *sent[], t_sent *target);
 void	sent_delall(t_sent *sent[]);
 
