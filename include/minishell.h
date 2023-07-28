@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:33:18 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:37:51 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ void	deque_push_back(t_deque *deque, t_sent *new);
 t_sent	*deque_at(t_deque *deque, int index);
 
 /* src/deque/deque_update.c */
-void	sent_update(t_sent *sent[], char *old, char *new);
 void	deque_update(t_deque *deque, t_sent *old, t_sent *new);
 
 /* src/deque/deque_delete.c */

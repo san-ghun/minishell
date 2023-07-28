@@ -6,24 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 20:12:41 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:37:50 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sent_update(t_sent *sent[], char *old, char *new);
 void	deque_update(t_deque *deque, t_sent *old, t_sent *new);
-
-void	sent_update(t_sent *sent[], char *old, char *new)
-{
-	t_sent	*tmp;
-
-	tmp = sent_getone(sent, old);
-	if (!tmp)
-		return ;
-	tmp->cmd = new;
-}
 
 void	deque_update(t_deque *deque, t_sent *old, t_sent *new)
 {

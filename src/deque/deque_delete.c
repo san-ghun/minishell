@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:28:23 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:38:41 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	deque_del(t_deque *deque)
 t_sent	*deque_pop_front(t_deque *deque)
 {
 	t_sent	*target;
-	t_sent	*new_front;
 
 	if (!deque_size(deque))
 		return (NULL);
@@ -43,7 +42,6 @@ t_sent	*deque_pop_front(t_deque *deque)
 t_sent	*deque_pop_back(t_deque *deque)
 {
 	t_sent	*target;
-	t_sent	*new_front;
 
 	if (!deque_size(deque))
 		return (NULL);
