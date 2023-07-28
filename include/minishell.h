@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/27 16:21:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/28 16:56:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,26 @@ typedef struct s_sent
 	struct s_sent		*prev;
 	struct s_sent		*next;
 }				t_sent;
+
+/* src/t_sent/sent_create.c */
+t_sent	*sent_new(char *cmd, int prefix, int suffix);
+void	sent_addfront(t_sent *sent[], t_sent *new);
+void	sent_addback(t_sent *sent[], t_sent *new);
+
+/* src/t_sent/sent_read.c */
+t_sent	*sent_getone(t_sent *sent[], char *cmd);
+t_sent	*sent_getlast(t_sent *sent);
+
+/* src/t_sent/sent_update.c */
+void	sent_update(t_sent *sent[], char *old, char *new);
+
+/* src/t_sent/sent_delete.c */
+void	sent_delone(t_sent *sent[], t_sent *target);
+void	sent_delall(t_sent *sent[]);
+
+/* src/t_sent/sent_util.c */
+size_t	sent_len(t_sent *sent[]);
+void	sent_print(t_sent *sent[]);
 
 typedef struct s_deque
 {
