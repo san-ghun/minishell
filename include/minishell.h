@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 20:14:00 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:33:18 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,36 @@ void	sent_delall(t_sent *sent[]);
 size_t	sent_len(t_sent *sent[]);
 void	sent_print(t_sent *sent[]);
 
+
+// struct t_deque
 typedef struct s_deque
 {
 	struct s_sent	*begin;
 	struct s_sent	*end;
 	int				size;
 }					t_deque;
+
+/* src/deque/deque_create.c */
+t_deque	*deque_init(void);
+void	deque_push_front(t_deque *deque, t_sent *new);
+void	deque_push_back(t_deque *deque, t_sent *new);
+
+/* src/deque/deque_read.c */
+t_sent	*deque_at(t_deque *deque, int index);
+
+/* src/deque/deque_update.c */
+void	sent_update(t_sent *sent[], char *old, char *new);
+void	deque_update(t_deque *deque, t_sent *old, t_sent *new);
+
+/* src/deque/deque_delete.c */
+void	deque_del(t_deque *deque);
+t_sent	*deque_pop_front(t_deque *deque);
+t_sent	*deque_pop_back(t_deque *deque);
+
+/* src/deque/deque_util.c */
+size_t	deque_size(t_deque *deque);
+int		deque_isempty(t_deque *deque);
+t_sent	*deque_front(t_deque *deque);
+t_sent	*deque_back(t_deque *deque);
 
 #endif
