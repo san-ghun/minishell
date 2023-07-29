@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 16:21:57 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 14:26:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/29 14:13:18 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	getcmd(char *cmd, size_t len)
 	if (len > MAX_COMMAND_LEN)
 		ft_putstr_fd("warn: command exceed MAX_COMMAND_LEN\n", 2);
 	ft_strlcpy(cmd, command, len + 1);
+	if (ft_strncmp(command, "", 1))
+		add_history(command);
 	free(command);
 }
 
