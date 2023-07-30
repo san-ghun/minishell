@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/27 16:21:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/28 21:37:51 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
 
-// struct sent & deque
+
+// struct t_sent
 /// @param cmd Save the cmd, its arguments, and enough to run at once,
 /// truncated by a semicolon.
 /// @param prefix indicator for prefix type such as, 'redirect' 'pipe' ...
@@ -111,11 +112,56 @@ typedef struct s_sent
 	struct s_sent		*next;
 }				t_sent;
 
+/* src/t_sent/sent_create.c */
+t_sent	*sent_new(char *cmd, int prefix, int suffix);
+void	sent_addfront(t_sent *sent[], t_sent *new);
+void	sent_addback(t_sent *sent[], t_sent *new);
+
+/* src/t_sent/sent_read.c */
+t_sent	*sent_getone(t_sent *sent[], char *cmd);
+t_sent	*sent_getlast(t_sent *sent);
+
+/* src/t_sent/sent_update.c */
+void	sent_update(t_sent *sent[], char *old, char *new);
+
+/* src/t_sent/sent_delete.c */
+void	sent_del(t_sent *sent);
+void	sent_delone(t_sent *sent[], t_sent *target);
+void	sent_delall(t_sent *sent[]);
+
+/* src/t_sent/sent_util.c */
+size_t	sent_len(t_sent *sent[]);
+void	sent_print(t_sent *sent[]);
+
+
+// struct t_deque
 typedef struct s_deque
 {
 	struct s_sent	*begin;
 	struct s_sent	*end;
 	int				size;
 }					t_deque;
+
+/* src/deque/deque_create.c */
+t_deque	*deque_init(void);
+void	deque_push_front(t_deque *deque, t_sent *new);
+void	deque_push_back(t_deque *deque, t_sent *new);
+
+/* src/deque/deque_read.c */
+t_sent	*deque_at(t_deque *deque, int index);
+
+/* src/deque/deque_update.c */
+void	deque_update(t_deque *deque, t_sent *old, t_sent *new);
+
+/* src/deque/deque_delete.c */
+void	deque_del(t_deque *deque);
+t_sent	*deque_pop_front(t_deque *deque);
+t_sent	*deque_pop_back(t_deque *deque);
+
+/* src/deque/deque_util.c */
+size_t	deque_size(t_deque *deque);
+int		deque_isempty(t_deque *deque);
+t_sent	*deque_front(t_deque *deque);
+t_sent	*deque_back(t_deque *deque);
 
 #endif
