@@ -136,5 +136,5 @@ int	main(int ac, char **av)
 
 	readcmd_test(cmd);
 	parse_cmd_to_list(cmd, &lst);
-	print_all(&lst);
+	print_all_test(&lst);
 }
