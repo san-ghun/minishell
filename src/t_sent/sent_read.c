@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:36 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:41:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/30 12:08:09 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_sent	*sent_getone(t_sent *sent[], char *cmd);
 t_sent	*sent_getlast(t_sent *sent);
+t_sent	*sent_getfront(t_sent *sent);
 
 t_sent	*sent_getone(t_sent *sent[], char *cmd)
 {
@@ -39,5 +40,14 @@ t_sent	*sent_getlast(t_sent *sent)
 		return (NULL);
 	while (sent->next != NULL)
 		sent = sent->next;
+	return (sent);
+}
+
+t_sent	*sent_getfront(t_sent *sent)
+{
+	if (!sent)
+		return (NULL);
+	while (sent->prev != NULL)
+		sent = sent->prev;
 	return (sent);
 }

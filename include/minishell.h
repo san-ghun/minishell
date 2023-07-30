@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:37:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:49:13 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@
 void	getcmd(char *cmd, size_t len);
 int		isexit(char *cmd);
 
+/* parse_cmd_to_list */
+t_deque	*parse_cmd_to_list(char *cmd, t_deque *lst);
+
+
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
 size_t	ft_strspn(const char *str, const char *delim);
@@ -94,11 +98,12 @@ char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
-
+char	*ft_strcdup(const char *src, char c);
 
 // struct t_sent
 /// @param cmd Save the cmd, its arguments, and enough to run at once,
 /// truncated by a semicolon.
+/// @param tok Store the tokenised result by checking the prefix and suffix.
 /// @param prefix indicator for prefix type such as, 'redirect' 'pipe' ...
 /// @param suffix indicator for suffix type such as, 'redirect' 'pipe' ...
 /// @param prev pointer to previous node.
@@ -106,6 +111,7 @@ void	*ft_memalloc(size_t size);
 typedef struct s_sent
 {
 	char				*cmd;
+	char 				**tok;
 	int					prefix;
 	int					suffix;
 	struct s_sent		*prev;
@@ -120,6 +126,8 @@ void	sent_addback(t_sent *sent[], t_sent *new);
 /* src/t_sent/sent_read.c */
 t_sent	*sent_getone(t_sent *sent[], char *cmd);
 t_sent	*sent_getlast(t_sent *sent);
+t_sent	*sent_getfront(t_sent *sent);
+
 
 /* src/t_sent/sent_update.c */
 void	sent_update(t_sent *sent[], char *old, char *new);

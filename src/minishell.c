@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 13:29:29 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:59:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static void	sighandler(int signal)
 	rl_redisplay();
 }
 
-int	readcmd(char *cmd)
+size_t	readcmd(char *cmd)
 {
-	int		len;
-	int		total_len;
+	size_t	len;
+	size_t	total_len;
 	char	temp_cmd[MAX_COMMAND_LEN];
 
 	total_len = 0;
@@ -49,7 +49,7 @@ int	readcmd(char *cmd)
 	while (1)
 	{
 		getcmd(temp_cmd, 0);
-		len = (int)ft_strcspn(temp_cmd, "\n");
+		len = ft_strcspn(temp_cmd, "\n");
 		if (len == 0 || temp_cmd[len - 1] != '\\')
 		{
 			ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len + 1);
@@ -62,7 +62,7 @@ int	readcmd(char *cmd)
 	return (total_len);
 }
 
-int	parsecmd(char *cmd, char *tokens[])
+int	parsecmd_save(char *cmd, char *tokens[])
 {
 	int		i;
 	char	*token;
@@ -76,6 +76,12 @@ int	parsecmd(char *cmd, char *tokens[])
 	}
 	tokens[i] = NULL;
 	return (0);
+}
+
+int parsecmd(char *cmd, t_deque *lst)
+{
+	parse_cmd_to_list(cmd, lst);
+	// parse start
 }
 
 void	executecmd(char *tokens[], char *envp[])
@@ -105,6 +111,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	cmd[MAX_COMMAND_LEN];
 	char	*tokens[MAX_TOKENS];
+	t_deque	lst;
 
 	if (argc > 1 && argv)
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
@@ -129,9 +136,16 @@ int	main(int argc, char *argv[], char *envp[])
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		parsecmd(cmd, tokens);
+		parsecmd(cmd, &lst);
 
-		// Step 4: Execute the command
+		// Step 4
+		// Tokenise the node's command and convert it to char **.
+		// and go to Step 5. After running the function in Step 5,
+		// return to Step 4 (till the node end).
+		// Convert, execute, and tokenise the next node's command again.
+		// tokenise();
+
+		// Step 5: Execute the command
 		// Implement a function or a series of conditional statements 
 		// to handle various commands.
 		// Check the command token and execute the corresponding action or 
