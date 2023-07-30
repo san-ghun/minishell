@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/30 14:38:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:41:15 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int parsecmd(char *cmd, t_deque *lst)
 {
 	parse_cmd_to_list(cmd, lst);
 	// parse start
+	return (0);
 }
 
 void	executecmd(char *tokens[], char *envp[])
@@ -113,6 +114,8 @@ int	main(int argc, char *argv[], char *envp[])
 	char	*tokens[MAX_TOKENS];
 	t_deque	lst;
 
+	(void)envp;
+	(void)tokens;
 	if (argc > 1 && argv)
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
 	// print_envp(envp);
