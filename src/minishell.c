@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/30 13:59:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:38:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// to handle various commands.
 		// Check the command token and execute the corresponding action or 
 		// system command using libraries or system calls.
-		executecmd(tokens, envp);
+		// executecmd(tokens, envp);
 	}
 	return (0);
 }
