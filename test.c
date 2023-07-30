@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/30 14:28:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:49:48 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_deque	*parse_cmd_to_list(char *cmd, t_deque *lst)
 	return (lst);
 }
 
-t_deque *print_all(t_deque *lst)
+t_deque *print_all_test(t_deque *lst)
 {
 	t_sent *node;
 
