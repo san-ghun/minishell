@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:19:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/30 13:53:39 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:26:14 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*ft_strcdup(const char *src, char c)
 {
 	int	len;
 	char	*new;
+	int i;
+
 
 	len = 0;
 	while (src[len] != c && src[len])
@@ -32,10 +34,11 @@ char	*ft_strcdup(const char *src, char c)
 	new = (char *) ft_memalloc(len + 1);
 	if (!new)
 		return (NULL);
-	while (len > 0)
+	i = 0;
+	while (i < len)
 	{
-		new[len] = src[len];
-		len--;
+		new[i] = src[i];
+		i++;
 	}
 	return (new);
 }

@@ -89,14 +89,21 @@ $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 # Test Code 
 
 TEST 		=	test.c
-TMP 		=	$(SRC_DIR)/util/ft_strtok.c \
-				  $(SRC_DIR)/util/ft_strpbrk.c \
-				  $(SRC_DIR)/util/ft_strspn.c \
-				  $(SRC_DIR)/util/ft_strcspn.c \
-				  $(SRC_DIR)/pipex_util.c \
-				  $(SRC_DIR)/pipex.c \
-				  $(SRC_DIR)/minishell_util.c \
+
+TMP_LIB_A 	= $(shell find ./src/deque -iname "*.c")
+TMP_LIB_B	= $(shell find ./src/t_sent -iname "*.c")
+TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
+
+TMP 		= $(SRC_DIR)/pipex_util.c \
+				$(SRC_DIR)/pipex.c \
+				$(SRC_DIR)/minishell_util.c \
+				$(TMP_LIB_C) \
+				$(TMP_LIB_A) $(TMP_LIB_B)
 				#   $(SRC_DIR)/minishell.c \
+				$(SRC_DIR)/util/ft_strtok.c \
+                				  $(SRC_DIR)/util/ft_strpbrk.c \
+                				  $(SRC_DIR)/util/ft_strspn.c \
+                				  $(SRC_DIR)/util/ft_strcspn.c \
 
 
 test: $(LIBFT)
