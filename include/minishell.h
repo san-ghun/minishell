@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/30 13:49:13 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:02:53 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,6 @@
 /* minishell_util.c */
 void	getcmd(char *cmd, size_t len);
 int		isexit(char *cmd);
-
-/* parse_cmd_to_list */
-t_deque	*parse_cmd_to_list(char *cmd, t_deque *lst);
-
 
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
@@ -171,5 +167,10 @@ size_t	deque_size(t_deque *deque);
 int		deque_isempty(t_deque *deque);
 t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
+
+
+/* src parse_cmd_to_list */
+t_deque	*parse_cmd_to_list(char *cmd, t_deque *lst);
+
 
 #endif
