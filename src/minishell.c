@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/30 14:48:30 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/31 17:37:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,27 @@ size_t	readcmd(char *cmd)
 	return (total_len);
 }
 
-int	parsecmd_save(char *cmd, char *tokens[])
-{
-	int		i;
-	char	*token;
-
-	i = 0;
-	token = ft_strtok(cmd, " ");
-	while ((token != NULL) && (i < MAX_TOKENS))
-	{
-		tokens[i++] = token;
-		token = ft_strtok(NULL, " ");
-	}
-	tokens[i] = NULL;
-	return (0);
-}
+//int	parsecmd_save(char *cmd, char *tokens[])
+//{
+//	int		i;
+//	char	*token;
+//
+//	i = 0;
+//	token = ft_strtok(cmd, " ");
+//	while ((token != NULL) && (i < MAX_TOKENS))
+//	{
+//		tokens[i++] = token;
+//		token = ft_strtok(NULL, " ");
+//	}
+//	tokens[i] = NULL;
+//	return (0);
+//}
 
 int parsecmd(char *cmd, t_deque *lst)
 {
 	parse_cmd_to_list(cmd, lst);
 	// parse start
+	// tokenise ();
 	return (0);
 }
 
@@ -141,14 +142,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// and subsequent tokens are arguments.
 		parsecmd(cmd, &lst);
 
-		// Step 4
-		// Tokenise the node's command and convert it to char **.
-		// and go to Step 5. After running the function in Step 5,
-		// return to Step 4 (till the node end).
-		// Convert, execute, and tokenise the next node's command again.
-		// tokenise();
-
-		// Step 5: Execute the command
+		// Step 4: Execute the command
 		// Implement a function or a series of conditional statements 
 		// to handle various commands.
 		// Check the command token and execute the corresponding action or 
