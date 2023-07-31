@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/31 17:37:26 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:57:36 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,6 @@ size_t	readcmd(char *cmd)
 //	return (0);
 //}
 
-int parsecmd(char *cmd, t_deque *lst)
-{
-	parse_cmd_to_list(cmd, lst);
-	// parse start
-	// tokenise ();
-	return (0);
-}
-
 void	executecmd(char *tokens[], char *envp[])
 {
 	pid_t	pid;
@@ -113,7 +105,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	cmd[MAX_COMMAND_LEN];
 	char	*tokens[MAX_TOKENS];
-	t_deque	lst;
+	t_deque	*lst;
 
 	(void)envp;
 	(void)tokens;
@@ -134,7 +126,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// Break the loop and exit the shell when the exit condition is met.
 		if (isexit(cmd))
 			break ;
-
+		lst = ft_memalloc(sizeof(t_deque));
 		// Step 3: Parse the command
 		// Split the user input into individual tokens (commands and arguments) 
 		// using whitespace as a delimiter.

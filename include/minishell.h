@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/30 14:02:53 by minakim          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:53:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ char	*ft_strcdup(const char *src, char c);
 /// @param next pointer to next node.
 typedef struct s_sent
 {
-	char				*cmd;
-	char 				**tok;
-	int					prefix;
-	int					suffix;
-	struct s_sent		*prev;
-	struct s_sent		*next;
+	char		**token;  // Save the cmd, its arguments, and enough to run at once, truncated by a semicolon.
+	int			is_redir;  // indicator for 'redirect'
+	int			is_pipe;  // indicator for 'pipe' and `;` and `\n`
+	int			is_quote;  // indicator for the quote is open or closed
+	struct s_sent		*prev;  // pointer to previous node
+	struct s_sent		*next;  // pointer to next node
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
@@ -170,7 +170,6 @@ t_sent	*deque_back(t_deque *deque);
 
 
 /* src parse_cmd_to_list */
-t_deque	*parse_cmd_to_list(char *cmd, t_deque *lst);
 
 
 #endif
