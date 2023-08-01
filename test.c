@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 17:43:47 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:44:46 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,8 @@ int parsecmd(char *cmd, t_deque **lst)
 	return (0);
 }
 
+/// 현재는 test에서만 가능하다!
+/// 라이브러리(sent, deque) 업데이트 이후에 minihell main 사용 가능.
 int	main(int ac, char **av)
 {
 	t_deque *lst;
@@ -320,6 +322,5 @@ int	main(int ac, char **av)
 	lst = ft_memalloc(sizeof(t_deque));
 
 	parsecmd(cmd, &lst);
-
 	print_all_test(lst);
 }
