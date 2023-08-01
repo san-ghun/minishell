@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 14:07:44 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 17:05:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:31:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,6 @@ static int get_lst_size(const char *cmd)
 	}
 	return (count);
 }
-
-
-//int is_closed(const char *cmd)
-//{
-//	int i;
-//	uint8_t	quotes;
-//	uint8_t	dquotes;
-//
-//	quotes = 0;
-//	dquotes = 0;
-//	i = -1;
-//	while (cmd[++i])
-//	{
-//		if (cmd[i] == '"' && quotes == 0)
-//			dquotes ^= 1;
-//		else if (cmd[i] == '\'' && dquotes == 0 && cmd[i + 2] == '\'')
-//			i += 2;
-//		else if (cmd[i] == '\'')
-//			quotes ^= 1;
-//	}
-//	if (quotes != 0 || dquotes != 0)
-//		return (0);
-//	return (1);
-//}
 
 int	ft_isspace(char c)
 {
@@ -127,6 +103,32 @@ char	*ft_strndup(const char *src, size_t len)
 	return (ft_strncpy(str, src, len));
 }
 
+int is_closed(const char *cmd)
+{
+	int i;
+	uint8_t	quotes;
+	uint8_t	dquotes;
+
+	quotes = 0;
+	dquotes = 0;
+	i = -1;
+	while (cmd[++i])
+	{
+		if (cmd[i] == '"' && quotes == 0)
+			dquotes ^= 1;
+		else if (cmd[i] == '\'' && dquotes == 0 && cmd[i + 2] == '\'')
+			i += 2;
+		else if (cmd[i] == '\'')
+			quotes ^= 1;
+	}
+	if (quotes != 0 || dquotes != 0)
+		return (0);
+	return (1);
+}
+
+
+/// echo "     " -> ["         "] v1
+/// echo "     " -> [           ] v2  << 어떤게 더 편할까?
 char		**tokenise(char *cmd, int size)
 {
 	int		i;
@@ -148,6 +150,10 @@ char		**tokenise(char *cmd, int size)
 		/// 큰 따옴표로 닫혀 있다면 큰 따옴표가 있는 범위 만큼(다음 공백문자에서 멈추므로 정확히는 큰따옴표 다음 공백 문자까지)
 		///	아니라면 이어지는 문자열 만큼의 범위를 리턴합니다.
 		len = to_next(&cmd[j]);
+
+		/// 먼저 쌍따옴표/따옴표 갯수 (짝수인지) 확인하기
+		/// is_close();
+
 		if (cmd[j] == '"' && cmd[j + len - 1] == '"')
 			token[i] = ft_strndup(&cmd[j + 1], len - 2);
 		else
@@ -162,9 +168,10 @@ char		**tokenise(char *cmd, int size)
 	}
 	return (token);
 }
-/// 아래와 같은 경우 가정하
+/// 아래와 같은 경우 가정할 때는 아직 안됨.
 /// $ echo ""here" "is"   "oh""
 /// $ here is   oh
+
 
 void	init_lst(char **cmds, t_deque **lst)
 {
@@ -174,11 +181,13 @@ void	init_lst(char **cmds, t_deque **lst)
 	if (cmds == NULL)
 		return ;
 	i = -1;
+
 	/// 이후 수정 필수. 현재는 테스트 형식.
 	node = ft_memalloc(sizeof (t_sent));
 	node->prev = NULL;
 	while (++i < (*lst)->size && node != NULL)
 	{
+		/// 세미콜론으로 잘린 char **cmds가 하나씩 토큰화 됩니다.
 		node->token = tokenise(cmds[i], (*lst)->size);
 		node = node->prev;
 	}
@@ -189,7 +198,7 @@ int parsecmd(char *cmd, t_deque **lst)
 	int size;
 	char **cmds;
 
-	size = get_lst_size(cmd);
+	size = get_lst_size(cmd); // 세미콜론을 기준으로 나눠서 총 리스트의 사이즈를 결정 (1부터 시작)
 	cmds = truncate_cmd(cmd, &size);
 	(*lst)->size = size;
 	init_lst(cmds, lst);
