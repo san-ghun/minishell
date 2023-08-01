@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 14:21:41 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:43:47 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,6 @@ int parsecmd(char *cmd, t_deque **lst)
 	init_lst(cmds, lst);
 	return (0);
 }
-
 
 int	main(int ac, char **av)
 {

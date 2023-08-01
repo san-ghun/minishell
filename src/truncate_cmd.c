@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 14:07:44 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 17:37:24 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:43:59 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ char		**tokenise(char *cmd, int size)
 		/// 이동한 수만큼 리턴합니다.
 		j += skip_spaces(&cmd[j]);
 		/// len 토큰화 할 범위.
-		/// 큰 따옴표로 닫혀 있다면 큰 따옴표가 있는 범위 만큼(다음 공백문자에서 멈추므로 정확히는 큰따옴표 다음 공백 문자까지)
+		/// 큰 따옴표로 닫혀 있다면 큰 따옴표가 있는 범위 만큼 (다음 공백문자에서 멈추므로 정확히는 큰따옴표 다음 공백 문자까지)
 		///	아니라면 이어지는 문자열 만큼의 범위를 리턴합니다.
 		len = to_next(&cmd[j]);
 
@@ -161,7 +161,7 @@ char		**tokenise(char *cmd, int size)
 		ft_printf("token [%s]\n", token[i]);
 		j += len;
 		/// 토큰화 된 결과가 ["             here    ] 처럼 큰 따옴표로 시작된다면
-		/// 다음 parse 과정에서 유효하지 않게 해야합니다.
+		/// 다음 parse 과정에서 유효하지 않게 해야 합니다.
 		/// 테스팅이 필요한 부분, "1234""4567" , "1234'1'5678"
 		/// [1234""4567] [1234'1'5678] 처럼 토큰화 된다면 다음 pe기rse 과정에서
 		/// 알맞은 형태로 한번 더 parse 합니다.
@@ -172,7 +172,6 @@ char		**tokenise(char *cmd, int size)
 /// $ echo ""here" "is"   "oh""
 /// $ here is   oh
 
-
 void	init_lst(char **cmds, t_deque **lst)
 {
 	int i;
@@ -182,9 +181,13 @@ void	init_lst(char **cmds, t_deque **lst)
 		return ;
 	i = -1;
 
-	/// 이후 수정 필수. 현재는 테스트 형식.
+	/// 이후 수정 필수. 현재는 테스트 형식. deque 완성 후 변경.
+	/// (*lst)->begin; begin이 하나씩 (아래로) 밀려나는 방식
+	/// (*lst)->end; 에서 뽑아서 쓴다
 	node = ft_memalloc(sizeof (t_sent));
 	node->prev = NULL;
+
+	/// node = (*lst)->end; 로 시작해야 함.
 	while (++i < (*lst)->size && node != NULL)
 	{
 		/// 세미콜론으로 잘린 char **cmds가 하나씩 토큰화 됩니다.
