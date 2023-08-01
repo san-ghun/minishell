@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 17:44:46 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:47:09 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,80 +94,6 @@ static int	skip_spaces(char *str)
 			break ;
 	return (i);
 }
-
-
-/// 큰따옴표(")가 있는 str(문자열)를 파라미터(이 함수로 넘어오기전 확인해야 함)를 인수로
-/// 받아 "를 trim한 뒤 유효한 문자열 만큼 malloc하고 복사하여 return 합니다.
-/// 1. while 루프를 이용해 문자열의 (큰따옴표 의)앞, 뒤 공백을 제거하거나 큰따옴표를 제거하는 과정에서,
-/// 문자열의 모든 문자가 제거되어 '실질적인' 길이(end)가 0이 될 때
-/// 2. trim_quote 함수에서 문자열의 첫 번째 문자 이후에 공백이나 큰따옴표가 없을 때,
-/// 즉 문자열의 길이(len)와 현재 처리하려는 위치(start)가 같거나 start가 더 클 때
-/// null 문자(\0)만 저장된 문자열이 반환됩니다!
-/// 문자열 처리 함수들이 제대로 동작하고, 문자열이 아무 문자도 포함하지 않는다는 것을 명확하게 하기 위해서 입니다.
-/// 닫히지 않은 큰따옴표는 그대로 복사됩니다.
-static char *trim_util(char *str, size_t start, size_t end)
-{
-	if (end - start >= 0)
-	{
-		str = (char*)ft_memalloc(end - start + 1);
-		if (!str)
-			return (NULL);
-		return (str);
-	}
-	else
-	{
-		str = (char*)ft_memalloc(1);
-		if (!str)
-			return (NULL);
-		str[0] = '\0';
-		return (str);
-	}
-}
-
-size_t skip_whitespace_and_quote_from_start(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '"')
-		i++;
-	return (i);
-}
-
-size_t skip_whitespace_and_quote_from_end(char *str, size_t len)
-{
-	while (len > 0 && ft_isspace(str[len]))
-		len--;
-	if (len > 0 && str[len] == '"')
-		len--;
-	return (len);
-}
-
-
-static char	*trim_quote(char *str)
-{
-	char	*new;
-	size_t	start;
-	size_t	i;
-	size_t	end;
-
-	if (!str)
-		return (NULL);
-	end = ft_strlen(str);
-	start = skip_whitespace_and_quote_from_start(str);
-	end = skip_whitespace_and_quote_from_end(str, end);
-	new = trim_util(str, start, end);
-	if (!new)
-		return (NULL);
-	i = -1;
-	while (++i < end - start)
-		new[i] = str[start + i];
-	new[i] = '\0';
-	return (new);
-}
-
 
 /// 주어진 문자열 str에서 다음 토큰이 시작하는 인덱스를 반환합니다.
 /// 함수는 str의 첫 인덱스(혹은 포인터 시작 위치)부터 시작하여 공백 문자가 아닌 문자를 찾습니다.
@@ -324,3 +250,80 @@ int	main(int ac, char **av)
 	parsecmd(cmd, &lst);
 	print_all_test(lst);
 }
+
+
+////////////////////////// 지금 사용하지 않는 함수 ////////////////////////////////////////////////
+
+
+/// 큰따옴표(")가 있는 str(문자열)를 파라미터(이 함수로 넘어오기전 확인해야 함)를 인수로
+/// 받아 "를 trim한 뒤 유효한 문자열 만큼 malloc하고 복사하여 return 합니다.
+/// 1. while 루프를 이용해 문자열의 (큰따옴표 의)앞, 뒤 공백을 제거하거나 큰따옴표를 제거하는 과정에서,
+/// 문자열의 모든 문자가 제거되어 '실질적인' 길이(end)가 0이 될 때
+/// 2. trim_quote 함수에서 문자열의 첫 번째 문자 이후에 공백이나 큰따옴표가 없을 때,
+/// 즉 문자열의 길이(len)와 현재 처리하려는 위치(start)가 같거나 start가 더 클 때
+/// null 문자(\0)만 저장된 문자열이 반환됩니다!
+/// 문자열 처리 함수들이 제대로 동작하고, 문자열이 아무 문자도 포함하지 않는다는 것을 명확하게 하기 위해서 입니다.
+/// 닫히지 않은 큰따옴표는 그대로 복사됩니다.
+static char *trim_util(char *str, size_t start, size_t end)
+{
+	if (end - start >= 0)
+	{
+		str = (char*)ft_memalloc(end - start + 1);
+		if (!str)
+			return (NULL);
+		return (str);
+	}
+	else
+	{
+		str = (char*)ft_memalloc(1);
+		if (!str)
+			return (NULL);
+		str[0] = '\0';
+		return (str);
+	}
+}
+
+size_t skip_whitespace_and_quote_from_start(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '"')
+		i++;
+	return (i);
+}
+
+size_t skip_whitespace_and_quote_from_end(char *str, size_t len)
+{
+	while (len > 0 && ft_isspace(str[len]))
+		len--;
+	if (len > 0 && str[len] == '"')
+		len--;
+	return (len);
+}
+
+
+static char	*trim_quote(char *str)
+{
+	char	*new;
+	size_t	start;
+	size_t	i;
+	size_t	end;
+
+	if (!str)
+		return (NULL);
+	end = ft_strlen(str);
+	start = skip_whitespace_and_quote_from_start(str);
+	end = skip_whitespace_and_quote_from_end(str, end);
+	new = trim_util(str, start, end);
+	if (!new)
+		return (NULL);
+	i = -1;
+	while (++i < end - start)
+		new[i] = str[start + i];
+	new[i] = '\0';
+	return (new);
+}
+///////////////////////////////////////////////////////////////////////////////////////
