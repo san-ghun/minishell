@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/31 22:57:36 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 16:16:36 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// system command using libraries or system calls.
 		// executecmd(tokens, envp);
 
-		sent_delall(&lst.begin);
+		sent_delall(&lst->begin);
 	}
 	return (0);
 }
