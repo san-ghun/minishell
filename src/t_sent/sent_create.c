@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:42:39 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/01 13:27:29 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ t_sent	*sent_new(char *cmd, int prefix, int suffix)
 	this = (t_sent *)malloc(sizeof(t_sent));
 	if (!this)
 		return (NULL);
-	this->cmd = cmd;
-	this->prefix = prefix;
-	this->suffix = suffix;
+//	this->cmd = cmd;
+//	this->prefix = prefix;
+//	this->suffix = suffix;
 	this->prev = NULL;
 	this->next = NULL;
 	return (this);

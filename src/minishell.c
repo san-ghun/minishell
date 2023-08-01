@@ -132,7 +132,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		parsecmd(cmd, &lst);
+		/// parsecmd(cmd, &lst);
 
 		// Step 4: Execute the command
 		// Implement a function or a series of conditional statements 

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:55 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:55:54 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/01 13:28:38 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	sent_print(t_sent *sent[])
 		ft_printf("sentence is empty\n");
 	while ((i++ <= MAX_ITER) && (tmp != NULL))
 	{
-		ft_printf("-%d:%s:%d- ", tmp->prefix, tmp->cmd, tmp->next);
+//		ft_printf("-%d:%s:%d- ", tmp->prefix, tmp->cmd, tmp->next);
 		tmp = tmp->next;
 	}
 	ft_printf("\n");
