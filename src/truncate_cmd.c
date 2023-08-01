@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:59:33 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 13:06:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 13:18:09 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ char		**tokenise(char *cmd, int size)
 	return (token);
 }
 
-int init_lst(char **cmds, t_deque **lst)
+void	init_lst(char **cmds, t_deque **lst)
 {
 	int i;
 	t_sent *node;
@@ -221,7 +221,6 @@ int init_lst(char **cmds, t_deque **lst)
 	}
 }
 
-
 int parsecmd(char *cmd, t_deque **lst)
 {
 	int size;
@@ -230,7 +229,6 @@ int parsecmd(char *cmd, t_deque **lst)
 	size = get_lst_size(cmd);
 	cmds = truncate_cmd(cmd, &size);
 	(*lst)->size = size;
-	if (!init_lst(cmds, lst))
-		return (-1 /* and free cmds */);
+	init_lst(cmds, lst);
 	return (0);
 }
