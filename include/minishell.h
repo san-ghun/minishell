@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/31 22:53:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 00:25:06 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ typedef struct s_sent
 	char		**token;  // Save the cmd, its arguments, and enough to run at once, truncated by a semicolon.
 	int			is_redir;  // indicator for 'redirect'
 	int			is_pipe;  // indicator for 'pipe' and `;` and `\n`
-	int			is_quote;  // indicator for the quote is open or closed
+//	int			is_quote;  // indicator for the quote is open or closed
 	struct s_sent		*prev;  // pointer to previous node
 	struct s_sent		*next;  // pointer to next node
 }				t_sent;

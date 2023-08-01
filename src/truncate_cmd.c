@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:59:33 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 00:23:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 13:01:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,24 +112,6 @@ static int	to_next(char *s)
 	return (i);
 }
 
-static int	get_next(char *cmd)
-{
-	int		count;
-	uint8_t	quotes;
-
-	quotes = 0;
-	count = 0;
-	while (cmd[count])
-	{
-		if (cmd[count] == '"')
-			quotes ^= 1;
-		if (cmd[count] == ';' && !quotes)
-			break ;
-		count++;
-	}
-	return (count);
-}
-
 /// 큰따옴표(")가 있는 str(문자열)를 파라미터(이 함수로 넘어오기전 확인해야 함)를 인수로
 /// 받아 "를 trim하여 malloc의 크기를 바꾼 뒤 return 합니다.
 /// 1. trim_quote while 루프를 이용해 문자열의 (큰따옴표 의)앞, 뒤 공백을 제거하거나 큰따옴표를 제거하는 과정에서,
@@ -137,7 +119,7 @@ static int	get_next(char *cmd)
 /// 2. trim_quote 함수에서 문자열의 첫 번째 문자 이후에 공백이나 큰따옴표가 없을 때,
 /// 즉 문자열의 길이(len)와 현재 처리하려는 위치(i)가 같거나 i가 더 클 때
 /// null 문자(\0)만 저장된 문자열이 반환됩니다!
-/// 닫히지 않은 큰따옴표는 이 과정에서 다시 한번 확인합니다.
+/// 닫히지 않은 큰따옴표는 이 과정에서 다시 한번 확인니다.
 static char *trim_util(char *str, size_t len, size_t i)
 {
 	if (len - i >= 0)
