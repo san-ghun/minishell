@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 14:07:44 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/01 17:31:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:37:24 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int is_closed(const char *cmd)
 
 
 /// echo "     " -> ["         "] v1
-/// echo "     " -> [           ] v2  << 어떤게 더 편할까?
+/// echo "     " -> [           ] v2  << 어떤게 더 편할까? [결정]
 char		**tokenise(char *cmd, int size)
 {
 	int		i;
