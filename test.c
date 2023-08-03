@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/03 12:14:25 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 15:58:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,20 +139,38 @@ int	parsecmd(char *cmd, t_deque *deque)
 	return (0);
 }
 
+// int	main(int argc, char *argv[])
+// {
+// 	char	cmd[MAX_COMMAND_LEN];
+// 	t_deque	*deque;
+
+// 	deque = deque_init();
+// 	readcmd(cmd);
+// 	parsecmd(cmd, deque);
+
+// 	ft_printf("\n");
+// 	sent_print(&deque->end);
+// 	ft_printf("\n");
+// 	deque_print_all(deque);
+
+// 	sent_delall(&deque->end);
+// 	deque_del(deque);
+// }
+
 int	main(int argc, char *argv[])
 {
-	char	cmd[MAX_COMMAND_LEN];
-	t_deque	*deque;
-
-	deque = deque_init();
-	readcmd(cmd);
-	parsecmd(cmd, deque);
-
-	ft_printf("\n");
-	sent_print(&deque->end);
-	ft_printf("\n");
-	deque_print_all(deque);
-
-	sent_delall(&deque->end);
-	deque_del(deque);
+	int i = 0;
+	char *a = argv[1];
+	char p[2] = "";
+	char *t;
+	p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
+	t = ft_strtok(a, p);
+	while (t != NULL)
+	{
+		ft_printf("[%s]\n", t);
+		a += ft_strspn(a, "\'\" ");
+		p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
+		t = ft_strtok(NULL, p);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 11:50:15 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:43:22 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe)
 	this->tokens = tokens;
 	this->is_redir = is_redir;
 	this->is_pipe = is_pipe;
-	this->is_quote = 0;
 	this->prev = NULL;
 	this->next = NULL;
 	return (this);

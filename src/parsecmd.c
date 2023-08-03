@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 13:15:52 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 15:29:33 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,72 @@ void	tokenize_cmdtoprocess(char *cmd, char *tokens[])
 	return ;
 }
 
-t_sent	*p_to_sent(char *p_unit)
+int	get_n_token(char *p_unit)
 {
 	int		i;
-	char	tmp[MAX_TOKENS];
 	char	*token;
-	char	*tokens[MAX_TOKENS];
 
 	i = 0;
-	ft_strlcpy(tmp, "", 2);
-	ft_strlcpy(tmp, p_unit, ft_strlen(p_unit) + 1);
+	token = ft_strtok(p_unit, "\'\" ");
+	while ((token != NULL) && (i < MAX_TOKENS))
+	{
+		token = ft_strtok(NULL, " ");
+		i++;
+	}
+	return (i);
+}
 
-	// TODO:
-	// tokenize process unit into pieces and 
-	// store tokens in t_sent
-	token = ft_strtok(p_unit, " ");
+void	tokenize_processtochunk(char *cmd, char *tokens[])
+{
+	int		i;
+	char	p[2];
+	char	*token;
+
+	i = 0;
+	// ft_strlcpy(p, "", 2);
+	// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
+	ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
+	token = ft_strtok(cmd, p);
 	while ((token != NULL) && (i < MAX_TOKENS))
 	{
 		token = ft_strtrim(token, " ");
 		tokens[i++] = token;
-		token = ft_strtok(NULL, " ");
+		cmd += ft_strspn(cmd, "\'\" ");
+		// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
+		ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
+		token = ft_strtok(NULL, p);
 	}
 	tokens[i] = NULL;
-	return (sent_new(tmp, tokens, 0, 0));
+	return ;
+}
+
+t_sent	*p_to_sent(char *p_unit)
+{
+	int		n_token;
+	char	cmd[MAX_COMMAND_LEN];
+	char	tmp[MAX_COMMAND_LEN];
+	char	*token;
+	char	*tokens[MAX_TOKENS];
+
+	// get process_unit to paste in t_sent
+	ft_strlcpy(cmd, "", 2);
+	ft_strlcpy(cmd, p_unit, ft_strlen(p_unit) + 1);
+	ft_strlcpy(tmp, "", 2);
+	ft_strlcpy(tmp, p_unit, ft_strlen(p_unit) + 1);
+
+	// TODO: tokenize process unit into pieces and store tokens in t_sent
+	// n_token = get_n_token(p_unit);
+	// tokens = malloc(sizeof(char *) * n_token);
+	// tokens = (char **)ft_memalloc(sizeof(char *) * n_token);
+	tokenize_processtochunk(tmp, tokens);
+	
+	int i = 0;
+	while (tokens[i] != NULL)
+	{
+		ft_printf("%s\n", tokens[i++]);
+	}
+
+	return (sent_new(cmd, tokens, 0, 0));
 }
 
 int	parsecmd(char *cmd, t_deque *deque)

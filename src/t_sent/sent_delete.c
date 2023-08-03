@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:48 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 11:59:08 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 15:28:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void	sent_del(t_sent *sent)
 {
 	sent->prev = NULL;
 	sent->next = NULL;
-	// free(sent->tokens);
+	while (*sent->tokens)
+		free((*sent->tokens)++);
+	free(sent->tokens);
 	free(sent->p_unit);
 	free(sent);
 }

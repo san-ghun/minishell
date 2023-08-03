@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 13:49:45 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:46:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@
 /// @note $ getconf ARG_MAX  // result is 2097152 (2MB).
 # define MAX_COMMAND_LEN    2097152
 
-// Limit number of tokens: ...
-# define MAX_TOKENS         10
+// Limit number of tokens: 
+/// @note reference from our good friend push_swap
+# define MAX_TOKENS         512
 
 /* minishell.c */
 
@@ -106,11 +107,10 @@ char	*ft_strcdup(const char *src, char c);
 /// @param next pointer to next node.
 typedef struct s_sent
 {
-	char			*p_unit;
-	char			**tokens;
+	char			*p_unit; // "echo "123"" 
+	char			**tokens; // tokens[0] "echo", tokens[1] "123"
 	int				is_redir;
 	int				is_pipe;
-	int				is_quote;
 	struct s_sent	*prev;
 	struct s_sent	*next;
 }				t_sent;
