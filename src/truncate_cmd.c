@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 14:07:44 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/03 12:46:03 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:57:34 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	init_lst(char **cmds, t_deque **lst)
 	while (++i < (*lst)->size && node != NULL)
 	{
 		/// 세미콜론으로 잘린 char **cmds가 하나씩 토큰화 됩니다.
-		node->token = tokenise(cmds[i], (*lst)->size);
+		node->tokens = tokenise(cmds[i], (*lst)->size);
 		node = node->prev;
 	}
 }
