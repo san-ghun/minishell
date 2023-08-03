@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 12:42:16 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:49:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ t_sent	*sent_getone(t_sent *sent[], char *cmd);
 t_sent	*sent_getlast(t_sent *sent);
 t_sent	*sent_getfront(t_sent *sent);
 
-
 /* src/t_sent/sent_update.c */
 void	sent_update(t_sent *sent[], char *old, char *new);
 
@@ -137,7 +136,6 @@ void	sent_delall(t_sent *sent[]);
 /* src/t_sent/sent_util.c */
 size_t	sent_len(t_sent *sent[]);
 void	sent_print(t_sent *sent[]);
-
 
 // struct t_deque
 typedef struct s_deque
@@ -170,9 +168,7 @@ t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
-
 /* src parse_cmd_to_list */
-
 
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);

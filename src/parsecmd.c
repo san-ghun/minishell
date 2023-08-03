@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 13:00:04 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:15:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_sent	*p_to_sent(char *p_unit)
 
 int	parsecmd(char *cmd, t_deque *deque)
 {
+	int		i;
 	char	*p_units[MAX_TOKENS];
 
 	// check single quote and double quote 
@@ -103,7 +104,6 @@ int	parsecmd(char *cmd, t_deque *deque)
 
 	// store process units in t_sent
 	// push t_sent into t_deque
-	int i;
 	i = 0;
 	while (p_units[i] != NULL)
 		deque_push_front(deque, p_to_sent(p_units[i++]));
