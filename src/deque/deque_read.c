@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 19:40:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/02 11:49:20 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ t_sent	*deque_at(t_deque *deque, int index)
 	i = 0;
 	sent = deque->begin;
 	while (i++ < index)
-		sent = sent->next;
+		sent = sent->prev;
 	return (sent);
 }
