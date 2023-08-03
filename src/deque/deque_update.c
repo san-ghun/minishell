@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:37:50 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/02 11:57:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	deque_update(t_deque *deque, t_sent *old, t_sent *new)
 	}
 	else if (deque->begin == old)
 	{
-		old->next->prev = new;
+		old->prev->next = new;
 		deque->begin = new;
 	}
 	else if (deque->end == old)
 	{
-		old->prev->next = new;
+		old->next->prev = new;
 		deque->end = new;
 	}
 	else

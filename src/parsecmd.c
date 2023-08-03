@@ -1,43 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   parsecmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/03 15:58:07 by sanghupa         ###   ########.fr       */
+/*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
+/*   Updated: 2023/08/03 15:29:33 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	readcmd(char *cmd)
-{
-	size_t	len;
-	size_t	total_len;
-	char	temp_cmd[MAX_COMMAND_LEN];
-
-	total_len = 0;
-	ft_strlcpy(cmd, "", 2);
-	if (*cmd != '\0')
-		exit(EXIT_FAILURE);
-	total_len = ft_strlen(cmd);
-	while (1)
-	{
-		getcmd(temp_cmd, 0);
-		len = ft_strcspn(temp_cmd, "\n");
-		if (len == 0 || temp_cmd[len - 1] != '\\')
-		{
-			ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len + 1);
-			break ;
-		}
-		ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len);
-	}
-	total_len = ft_strlen(cmd);
-	cmd[total_len] = '\0';
-	return (total_len);
-}
 
 int	check_quotes(char *cmd, int index, int status)
 {
@@ -85,32 +59,77 @@ void	tokenize_cmdtoprocess(char *cmd, char *tokens[])
 	return ;
 }
 
-t_sent	*p_to_sent(char *p_unit)
+int	get_n_token(char *p_unit)
 {
 	int		i;
-	char	tmp[MAX_TOKENS];
 	char	*token;
-	char	*tokens[MAX_TOKENS];
 
 	i = 0;
-	ft_strlcpy(tmp, "", 2);
-	ft_strlcpy(tmp, p_unit, ft_strlen(p_unit) + 1);
+	token = ft_strtok(p_unit, "\'\" ");
+	while ((token != NULL) && (i < MAX_TOKENS))
+	{
+		token = ft_strtok(NULL, " ");
+		i++;
+	}
+	return (i);
+}
 
-	// tokenize process unit into pieces and 
-	// store tokens in t_sent
-	token = ft_strtok(p_unit, " ");
+void	tokenize_processtochunk(char *cmd, char *tokens[])
+{
+	int		i;
+	char	p[2];
+	char	*token;
+
+	i = 0;
+	// ft_strlcpy(p, "", 2);
+	// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
+	ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
+	token = ft_strtok(cmd, p);
 	while ((token != NULL) && (i < MAX_TOKENS))
 	{
 		token = ft_strtrim(token, " ");
 		tokens[i++] = token;
-		token = ft_strtok(NULL, " ");
+		cmd += ft_strspn(cmd, "\'\" ");
+		// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
+		ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
+		token = ft_strtok(NULL, p);
 	}
 	tokens[i] = NULL;
-	return (sent_new(tmp, tokens, 0, 0));
+	return ;
+}
+
+t_sent	*p_to_sent(char *p_unit)
+{
+	int		n_token;
+	char	cmd[MAX_COMMAND_LEN];
+	char	tmp[MAX_COMMAND_LEN];
+	char	*token;
+	char	*tokens[MAX_TOKENS];
+
+	// get process_unit to paste in t_sent
+	ft_strlcpy(cmd, "", 2);
+	ft_strlcpy(cmd, p_unit, ft_strlen(p_unit) + 1);
+	ft_strlcpy(tmp, "", 2);
+	ft_strlcpy(tmp, p_unit, ft_strlen(p_unit) + 1);
+
+	// TODO: tokenize process unit into pieces and store tokens in t_sent
+	// n_token = get_n_token(p_unit);
+	// tokens = malloc(sizeof(char *) * n_token);
+	// tokens = (char **)ft_memalloc(sizeof(char *) * n_token);
+	tokenize_processtochunk(tmp, tokens);
+	
+	int i = 0;
+	while (tokens[i] != NULL)
+	{
+		ft_printf("%s\n", tokens[i++]);
+	}
+
+	return (sent_new(cmd, tokens, 0, 0));
 }
 
 int	parsecmd(char *cmd, t_deque *deque)
 {
+	int		i;
 	char	*p_units[MAX_TOKENS];
 
 	// check single quote and double quote 
@@ -126,51 +145,13 @@ int	parsecmd(char *cmd, t_deque *deque)
 	// tokenize cmd and properly handle quotes
 	tokenize_cmdtoprocess(cmd, p_units);
 
-	// TODO: 
 	// store process units in t_sent
 	// push t_sent into t_deque
-	int i;
 	i = 0;
 	while (p_units[i] != NULL)
 		deque_push_front(deque, p_to_sent(p_units[i++]));
 	i = 0;
 	while (p_units[i] != NULL)
 		free(p_units[i++]);
-	return (0);
-}
-
-// int	main(int argc, char *argv[])
-// {
-// 	char	cmd[MAX_COMMAND_LEN];
-// 	t_deque	*deque;
-
-// 	deque = deque_init();
-// 	readcmd(cmd);
-// 	parsecmd(cmd, deque);
-
-// 	ft_printf("\n");
-// 	sent_print(&deque->end);
-// 	ft_printf("\n");
-// 	deque_print_all(deque);
-
-// 	sent_delall(&deque->end);
-// 	deque_del(deque);
-// }
-
-int	main(int argc, char *argv[])
-{
-	int i = 0;
-	char *a = argv[1];
-	char p[2] = "";
-	char *t;
-	p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
-	t = ft_strtok(a, p);
-	while (t != NULL)
-	{
-		ft_printf("[%s]\n", t);
-		a += ft_strspn(a, "\'\" ");
-		p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
-		t = ft_strtok(NULL, p);
-	}
 	return (0);
 }
