@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/07/24 22:46:21 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/08/03 01:00:35 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,17 +97,14 @@ TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
 TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(SRC_DIR)/pipex.c \
 				$(SRC_DIR)/minishell_util.c \
+				$(TMP_LIB_A) \
+				$(TMP_LIB_B) \
 				$(TMP_LIB_C) \
-				$(TMP_LIB_A) $(TMP_LIB_B)
-				#   $(SRC_DIR)/minishell.c \
-				$(SRC_DIR)/util/ft_strtok.c \
-                				  $(SRC_DIR)/util/ft_strpbrk.c \
-                				  $(SRC_DIR)/util/ft_strspn.c \
-                				  $(SRC_DIR)/util/ft_strcspn.c \
-
+#				$(SRC_DIR)/minishell.c \
+				$(SRC_DIR)/truncate_cmd.c \
 
 test: $(LIBFT)
-			$(CC) -g $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+			$(CC) -fsanitize=address -g $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 
 tclean: 
 			make fclean -C $(LIBFT_DIR)
