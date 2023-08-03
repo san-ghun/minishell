@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/01 16:16:36 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/03 12:45:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,18 +104,16 @@ void	executecmd(char *tokens[], char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	cmd[MAX_COMMAND_LEN];
-	char	*tokens[MAX_TOKENS];
-	t_deque	*lst;
+	// char	*tokens[MAX_TOKENS];
+	t_deque	*deque;
 
 	(void)envp;
-	(void)tokens;
 	if (argc > 1 && argv)
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
-	// print_envp(envp);
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		signal(SIGINT, sighandler);
-		signal(SIGQUIT, SIG_IGN);
 		// Step 1: Accept user input
 		// Create an infinite loop that continuously prompts the user for input.
 		readcmd(cmd);
@@ -126,13 +124,19 @@ int	main(int argc, char *argv[], char *envp[])
 		// Break the loop and exit the shell when the exit condition is met.
 		if (isexit(cmd))
 			break ;
-		lst = ft_memalloc(sizeof(t_deque));
+
+		deque = deque_init();
 		// Step 3: Parse the command
 		// Split the user input into individual tokens (commands and arguments) 
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		/// parsecmd(cmd, &lst);
+		parsecmd(cmd, deque);
+
+		ft_printf("\n");
+		sent_print(&deque->end);
+		ft_printf("\n");
+		deque_print_all(deque);
 
 		// Step 4: Execute the command
 		// Implement a function or a series of conditional statements 
@@ -141,7 +145,8 @@ int	main(int argc, char *argv[], char *envp[])
 		// system command using libraries or system calls.
 		// executecmd(tokens, envp);
 
-		sent_delall(&lst->begin);
+		sent_delall(&deque->end);
+		deque_del(deque);
 	}
 	return (0);
 }
