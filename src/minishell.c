@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 12:45:52 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:20:01 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 /*
 static void	print_envp(char *envp[])
 {
@@ -61,22 +60,6 @@ size_t	readcmd(char *cmd)
 	cmd[total_len] = '\0';
 	return (total_len);
 }
-
-//int	parsecmd_save(char *cmd, char *tokens[])
-//{
-//	int		i;
-//	char	*token;
-//
-//	i = 0;
-//	token = ft_strtok(cmd, " ");
-//	while ((token != NULL) && (i < MAX_TOKENS))
-//	{
-//		tokens[i++] = token;
-//		token = ft_strtok(NULL, " ");
-//	}
-//	tokens[i] = NULL;
-//	return (0);
-//}
 
 void	executecmd(char *tokens[], char *envp[])
 {
