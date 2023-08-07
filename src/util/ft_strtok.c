@@ -36,7 +36,6 @@ char	*ft_strtok(char *str, const char *delim);
  * @return A pointer to the next token found in 'str',
  * or NULL if no more tokens are found.
  */
-// TODO: ft_strtok()
 // - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {

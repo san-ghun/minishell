@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:38:41 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/02 11:58:34 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ t_sent	*deque_pop_front(t_deque *deque)
 	if (!deque_size(deque))
 		return (NULL);
 	target = deque->begin;
-	deque->begin = target->next;
+	deque->begin = target->prev;
 	if (deque->begin == NULL)
 		deque->end = NULL;
 	else
-		deque->begin->prev = NULL;
+		deque->begin->next = NULL;
 	target->prev = NULL;
 	target->next = NULL;
 	deque->size--;
@@ -46,11 +46,11 @@ t_sent	*deque_pop_back(t_deque *deque)
 	if (!deque_size(deque))
 		return (NULL);
 	target = deque->end;
-	deque->end = target->prev;
+	deque->end = target->next;
 	if (deque->end == NULL)
 		deque->begin = NULL;
 	else
-		deque->end->next = NULL;
+		deque->end->prev = NULL;
 	target->prev = NULL;
 	target->next = NULL;
 	deque->size--;

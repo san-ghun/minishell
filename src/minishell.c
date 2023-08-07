@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/24 13:29:29 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:45:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static void	sighandler(int signal)
 	rl_redisplay();
 }
 
-int	readcmd(char *cmd)
+size_t	readcmd(char *cmd)
 {
-	int		len;
-	int		total_len;
+	size_t	len;
+	size_t	total_len;
 	char	temp_cmd[MAX_COMMAND_LEN];
 
 	total_len = 0;
@@ -49,7 +49,7 @@ int	readcmd(char *cmd)
 	while (1)
 	{
 		getcmd(temp_cmd, 0);
-		len = (int)ft_strcspn(temp_cmd, "\n");
+		len = ft_strcspn(temp_cmd, "\n");
 		if (len == 0 || temp_cmd[len - 1] != '\\')
 		{
 			ft_strlcat(cmd, temp_cmd, ft_strlen(cmd) + len + 1);
@@ -62,21 +62,21 @@ int	readcmd(char *cmd)
 	return (total_len);
 }
 
-int	parsecmd(char *cmd, char *tokens[])
-{
-	int		i;
-	char	*token;
-
-	i = 0;
-	token = ft_strtok(cmd, " ");
-	while ((token != NULL) && (i < MAX_TOKENS))
-	{
-		tokens[i++] = token;
-		token = ft_strtok(NULL, " ");
-	}
-	tokens[i] = NULL;
-	return (0);
-}
+//int	parsecmd_save(char *cmd, char *tokens[])
+//{
+//	int		i;
+//	char	*token;
+//
+//	i = 0;
+//	token = ft_strtok(cmd, " ");
+//	while ((token != NULL) && (i < MAX_TOKENS))
+//	{
+//		tokens[i++] = token;
+//		token = ft_strtok(NULL, " ");
+//	}
+//	tokens[i] = NULL;
+//	return (0);
+//}
 
 void	executecmd(char *tokens[], char *envp[])
 {
@@ -104,15 +104,16 @@ void	executecmd(char *tokens[], char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	cmd[MAX_COMMAND_LEN];
-	char	*tokens[MAX_TOKENS];
+	// char	*tokens[MAX_TOKENS];
+	t_deque	*deque;
 
+	(void)envp;
 	if (argc > 1 && argv)
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
-	// print_envp(envp);
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		signal(SIGINT, sighandler);
-		signal(SIGQUIT, SIG_IGN);
 		// Step 1: Accept user input
 		// Create an infinite loop that continuously prompts the user for input.
 		readcmd(cmd);
@@ -124,19 +125,28 @@ int	main(int argc, char *argv[], char *envp[])
 		if (isexit(cmd))
 			break ;
 
+		deque = deque_init();
 		// Step 3: Parse the command
 		// Split the user input into individual tokens (commands and arguments) 
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		parsecmd(cmd, tokens);
+		parsecmd(cmd, deque);
+
+		ft_printf("\n");
+		sent_print(&deque->end);
+		ft_printf("\n");
+		deque_print_all(deque);
 
 		// Step 4: Execute the command
 		// Implement a function or a series of conditional statements 
 		// to handle various commands.
 		// Check the command token and execute the corresponding action or 
 		// system command using libraries or system calls.
-		executecmd(tokens, envp);
+		// executecmd(tokens, envp);
+
+		sent_delall(&deque->end);
+		deque_del(deque);
 	}
 	return (0);
 }

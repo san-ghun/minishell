@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 21:37:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:46:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@
 /// @note $ getconf ARG_MAX  // result is 2097152 (2MB).
 # define MAX_COMMAND_LEN    2097152
 
-// Limit number of tokens: ...
-# define MAX_TOKENS         10
+// Limit number of tokens: 
+/// @note reference from our good friend push_swap
+# define MAX_TOKENS         512
 
 /* minishell.c */
 
@@ -94,32 +95,35 @@ char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
-
+char	*ft_strcdup(const char *src, char c);
 
 // struct t_sent
-/// @param cmd Save the cmd, its arguments, and enough to run at once,
-/// truncated by a semicolon.
-/// @param prefix indicator for prefix type such as, 'redirect' 'pipe' ...
-/// @param suffix indicator for suffix type such as, 'redirect' 'pipe' ...
+/// @param token Save the cmd, its arguments, and enough to run at once, 
+/// truncated by a semicolon, a pipe or a null terminated string.
+/// @param is_redir indicator for 'redirect'
+/// @param is_pipe indicator for 'pipe' and `;` and `\n`
+/// @param is_quote indicator for the quote is open or closed
 /// @param prev pointer to previous node.
 /// @param next pointer to next node.
 typedef struct s_sent
 {
-	char				*cmd;
-	int					prefix;
-	int					suffix;
-	struct s_sent		*prev;
-	struct s_sent		*next;
+	char			*p_unit; // "echo "123"" 
+	char			**tokens; // tokens[0] "echo", tokens[1] "123"
+	int				is_redir;
+	int				is_pipe;
+	struct s_sent	*prev;
+	struct s_sent	*next;
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
-t_sent	*sent_new(char *cmd, int prefix, int suffix);
+t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe);
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 
 /* src/t_sent/sent_read.c */
 t_sent	*sent_getone(t_sent *sent[], char *cmd);
 t_sent	*sent_getlast(t_sent *sent);
+t_sent	*sent_getfront(t_sent *sent);
 
 /* src/t_sent/sent_update.c */
 void	sent_update(t_sent *sent[], char *old, char *new);
@@ -132,7 +136,6 @@ void	sent_delall(t_sent *sent[]);
 /* src/t_sent/sent_util.c */
 size_t	sent_len(t_sent *sent[]);
 void	sent_print(t_sent *sent[]);
-
 
 // struct t_deque
 typedef struct s_deque
@@ -163,5 +166,11 @@ size_t	deque_size(t_deque *deque);
 int		deque_isempty(t_deque *deque);
 t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
+void	deque_print_all(t_deque *deque);
+
+/* src parse_cmd_to_list */
+
+/* src parsecmd.c */
+int		parsecmd(char *cmd, t_deque *deque);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:55 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:55:54 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:10:50 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,23 @@ size_t	sent_len(t_sent *sent[])
 void	sent_print(t_sent *sent[])
 {
 	int		i;
-	t_sent	*tmp;
+	t_sent	*node;
+	char	*tmp;
 
 	i = 0;
-	tmp = *sent;
-	if (!tmp)
+	node = *sent;
+	ft_printf("call sent_print(): printing sentence(s), head to tail.\n");
+	if (!node)
 		ft_printf("sentence is empty\n");
-	while ((i++ <= MAX_ITER) && (tmp != NULL))
+	while ((i++ <= MAX_ITER) && (node != NULL))
 	{
-		ft_printf("-%d:%s:%d- ", tmp->prefix, tmp->cmd, tmp->next);
-		tmp = tmp->next;
+		// tmp = *node->tokens;
+		// ft_printf("%d: ", i);
+		// while (tmp != NULL)
+		// 	ft_printf("[%s] ", tmp++);
+		// ft_printf("\n");
+		ft_printf("[%s] ", node->p_unit);
+		node = node->next;
 	}
 	ft_printf("\n");
 	return ;

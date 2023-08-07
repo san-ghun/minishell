@@ -6,37 +6,27 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/28 16:42:39 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:43:22 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sent	*sent_new(char *cmd, int prefix, int suffix);
+t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe);
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 
-/*
-typedef struct s_sent
-{
-	char				*cmd;
-	int					prefix;
-	int					suffix;
-	struct s_sent		*prev;
-	struct s_sent		*next;
-}				t_sent;
-*/
-
-t_sent	*sent_new(char *cmd, int prefix, int suffix)
+t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe)
 {
 	t_sent	*this;
 
 	this = (t_sent *)malloc(sizeof(t_sent));
 	if (!this)
 		return (NULL);
-	this->cmd = cmd;
-	this->prefix = prefix;
-	this->suffix = suffix;
+	this->p_unit = ft_strdup(p_unit);
+	this->tokens = tokens;
+	this->is_redir = is_redir;
+	this->is_pipe = is_pipe;
 	this->prev = NULL;
 	this->next = NULL;
 	return (this);
