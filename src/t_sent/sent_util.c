@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:55 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/04 13:50:34 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/07 10:27:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	sent_print(t_sent *sent[])
 	int		i;
 	int		j;
 	t_sent	*node;
-	char	*tmp;
 
 	i = 0;
 	node = *sent;

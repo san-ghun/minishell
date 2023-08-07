@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/04 23:39:36 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/07 10:27:25 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static char	**tokenize_process(char *p_unit, int tokens_len)
 {
 	// char	tmp[MAX_COMMAND_LEN / 100];
 	char	*tmp;
-	char	*tmp_tkns[MAX_TOKENS];
 	char	**tokens;
 
 	// ft_strlcpy(tmp, "", 2);
