@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 16:46:56 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/04 16:12:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@
 /// @note reference from our good friend push_swap
 # define MAX_TOKENS         512
 
+/// Brief true/false notation
+#define TRUE 1
+#define FALSE 0
+
+
 /* minishell.c */
 
 /* minishell_util.c */
@@ -96,6 +101,8 @@ size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 void	*ft_memalloc(size_t size);
 char	*ft_strcdup(const char *src, char c);
+int		ft_strequ(char const *s1, char const *s2);
+int		ft_strcmp(char const *s1, char const *s2);
 
 // struct t_sent
 /// @param token Save the cmd, its arguments, and enough to run at once, 
@@ -168,9 +175,8 @@ t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
-/* src parse_cmd_to_list */
-
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
+
 
 #endif
