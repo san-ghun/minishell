@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/08/05 23:24:47 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/08/07 10:21:45 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,11 +66,10 @@ re_bonus: fclean bonus
 dev: $(LIBFT)
 # 			For 42
 #			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
-#			For dorker exe
-			gcc -g -o $(NAME) $(SRC_NAME) $^ -Llibft -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -lft
 # 			For MacOS
-#			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
-#			$(CC) -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
+			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
+#			For dorker exe
+#			gcc -g -o $(NAME) $(SRC_NAME) $^ -Llibft -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -lft
 
 
 # Sub Command
