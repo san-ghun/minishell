@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/08 13:30:56 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/08 15:08:36 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@
 // tcsetattr tcgetattr
 # include <termios.h>
 
-// macro
-# include "macro.h"
-
 // tgetent tgetflag tgetnum tgetstr tgoto tputs
 # include <curses.h>
 # include <term.h>
@@ -83,9 +80,8 @@
 # define MAX_TOKENS         512
 
 /// Brief true/false notation
-#define TRUE 1
-#define FALSE 0
-
+# define TRUE 1
+# define FALSE 0
 
 /* minishell.c */
 
@@ -114,8 +110,8 @@ int		ft_strcmp(char const *s1, char const *s2);
 /// @param next pointer to next node.
 typedef struct s_sent
 {
-	char			*p_unit; // "echo "123"" 
-	char			**tokens; // tokens[0] "echo", tokens[1] "123"
+	char			*p_unit;
+	char			**tokens;
 	int				is_redir;
 	int				is_pipe;
 	struct s_sent	*prev;
@@ -178,7 +174,12 @@ void	deque_print_all(t_deque *deque);
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
 
-
+// struct dlst
+/// @brief This struct was created with a doubly linked list but can work like a deque.
+/// there is a difference which is that it can be inserted and deleted
+/// even if it is on an intermediate node.
+/// @note Designed for env, but can be used anywhere else you need to insert or delete.
+/// @param cnt Holds a single line of string.
 typedef struct s_dlst
 {
 	char			*cnt;
@@ -186,6 +187,9 @@ typedef struct s_dlst
 	struct s_dlst	*next;
 }			t_dlst;
 
+/// @note For convenience, unify the internal parameter names as other.
+/// @param begin front node
+/// @param end rear node
 typedef struct s_dlst_data
 {
 	t_dlst	*begin;
@@ -199,7 +203,8 @@ int		dlst_addfront(t_dlst_data **lst, t_dlst **new_node);
 int		dlst_addrear(t_dlst_data **lst, t_dlst **new_node);
 int		dlst_addnext(t_dlst_data **lst, t_dlst **current, t_dlst **new_node);
 
-int		dlst_del(t_dlst_data *list, t_dlst *node_to_delete);
+int		dlst_del(t_dlst *node_to_delete);
+int		dlst_delone(t_dlst_data *list, t_dlst *node_to_delete);
 void	dlst_dellst(t_dlst_data *lst);
 
 t_dlst	*dlst_newnode(char *str);
