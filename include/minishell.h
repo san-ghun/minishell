@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/04 16:12:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:30:56 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,31 @@ void	deque_print_all(t_deque *deque);
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
 
+
+typedef struct s_dlst
+{
+	char			*cnt;
+	struct s_dlst	*prev;
+	struct s_dlst	*next;
+}			t_dlst;
+
+typedef struct s_dlst_data
+{
+	t_dlst	*begin;
+	t_dlst	*end;
+	int		size;
+}			t_dlst_data;
+
+
+/* src/t_dlst/dlst_add.c */
+int		dlst_addfront(t_dlst_data **lst, t_dlst **new_node);
+int		dlst_addrear(t_dlst_data **lst, t_dlst **new_node);
+int		dlst_addnext(t_dlst_data **lst, t_dlst **current, t_dlst **new_node);
+
+int		dlst_del(t_dlst_data *list, t_dlst *node_to_delete);
+void	dlst_dellst(t_dlst_data *lst);
+
+t_dlst	*dlst_newnode(char *str);
+void	dlst_updatesize(t_dlst_data *lst, int add);
 
 #endif
