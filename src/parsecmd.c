@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 15:29:33 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:57:42 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	check_quotes(char *cmd, int index, int status)
 {
@@ -42,114 +41,73 @@ int	check_quotes(char *cmd, int index, int status)
 	return (0);
 }
 
-void	tokenize_cmdtoprocess(char *cmd, char *tokens[])
+void	tokenize_cmdtoprocess(char *cmd, char *tokens[], char *charset)
 {
 	int		i;
 	char	*token;
 
 	i = 0;
-	token = ft_strtok(cmd, ";|");
+	token = ft_strtok(cmd, charset);
 	while ((token != NULL) && (i < MAX_TOKENS))
 	{
 		token = ft_strtrim(token, " ");
 		tokens[i++] = token;
-		token = ft_strtok(NULL, ";|");
+		token = ft_strtok(NULL, charset);
 	}
 	tokens[i] = NULL;
 	return ;
 }
 
-int	get_n_token(char *p_unit)
+t_sent	*p_to_sent(char *p_unit, int is_redir, int is_pipe)
 {
-	int		i;
-	char	*token;
-
-	i = 0;
-	token = ft_strtok(p_unit, "\'\" ");
-	while ((token != NULL) && (i < MAX_TOKENS))
-	{
-		token = ft_strtok(NULL, " ");
-		i++;
-	}
-	return (i);
-}
-
-void	tokenize_processtochunk(char *cmd, char *tokens[])
-{
-	int		i;
-	char	p[2];
-	char	*token;
-
-	i = 0;
-	// ft_strlcpy(p, "", 2);
-	// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
-	ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
-	token = ft_strtok(cmd, p);
-	while ((token != NULL) && (i < MAX_TOKENS))
-	{
-		token = ft_strtrim(token, " ");
-		tokens[i++] = token;
-		cmd += ft_strspn(cmd, "\'\" ");
-		// p[0] = *(cmd + ft_strspn(cmd, "\'\" ") - 1);
-		ft_strlcpy(p, (cmd + ft_strspn(cmd, "\'\" ") - 1), 2);
-		token = ft_strtok(NULL, p);
-	}
-	tokens[i] = NULL;
-	return ;
-}
-
-t_sent	*p_to_sent(char *p_unit)
-{
-	int		n_token;
 	char	cmd[MAX_COMMAND_LEN];
-	char	tmp[MAX_COMMAND_LEN];
-	char	*token;
-	char	*tokens[MAX_TOKENS];
 
-	// get process_unit to paste in t_sent
 	ft_strlcpy(cmd, "", 2);
 	ft_strlcpy(cmd, p_unit, ft_strlen(p_unit) + 1);
-	ft_strlcpy(tmp, "", 2);
-	ft_strlcpy(tmp, p_unit, ft_strlen(p_unit) + 1);
-
-	// TODO: tokenize process unit into pieces and store tokens in t_sent
-	// n_token = get_n_token(p_unit);
-	// tokens = malloc(sizeof(char *) * n_token);
-	// tokens = (char **)ft_memalloc(sizeof(char *) * n_token);
-	tokenize_processtochunk(tmp, tokens);
-	
-	int i = 0;
-	while (tokens[i] != NULL)
-	{
-		ft_printf("%s\n", tokens[i++]);
-	}
-
-	return (sent_new(cmd, tokens, 0, 0));
+	return (sent_new(cmd, is_redir, is_pipe));
 }
 
 int	parsecmd(char *cmd, t_deque *deque)
 {
 	int		i;
+	int		j;
 	char	*p_units[MAX_TOKENS];
+	char	*p_units_tmp[MAX_TOKENS];
+	t_sent	*node;
 
-	// check single quote and double quote 
-	// whether they are properly closed
 	if (check_quotes(cmd, -1, 0))
 	{
-		// quote_error();
 		ft_putstr_fd("error: Invalid quotation\n", 2);
-		exit(EXIT_SUCCESS);
+		return (-1);
 	}
 
-	// tokenize into process unit, based on `;`, `|`, and `\0`
+	// tokenize into process unit, based on `;` and `\0`
 	// tokenize cmd and properly handle quotes
-	tokenize_cmdtoprocess(cmd, p_units);
+	tokenize_cmdtoprocess(cmd, p_units, ";");
 
 	// store process units in t_sent
 	// push t_sent into t_deque
 	i = 0;
 	while (p_units[i] != NULL)
-		deque_push_front(deque, p_to_sent(p_units[i++]));
+	{
+		if (ft_strchr(p_units[i], '|'))
+		{
+			j = 0;
+			tokenize_cmdtoprocess(p_units[i], p_units_tmp, "|");
+			while (p_units_tmp[j] != NULL)
+			{
+				node = sent_new(p_units_tmp[j++], 0, 1);
+				deque_push_front(deque, node);
+			}
+			j = 0;
+			while (p_units_tmp[j] != NULL)
+				free(p_units_tmp[j++]);
+			i++;
+			continue ;
+		}
+		node = sent_new(p_units[i++], 0, 0);
+		deque_push_front(deque, node);
+	}
 	i = 0;
 	while (p_units[i] != NULL)
 		free(p_units[i++]);

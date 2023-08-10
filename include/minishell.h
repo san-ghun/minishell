@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/04 16:12:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/07 10:17:12 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@
 # include <curses.h>
 # include <term.h>
 
-# include "libft.h"
-# include "ft_printf.h"
+# include "../libft/include/libft.h"
+# include "../libft/include/ft_printf.h"
 # include "pipex.h"
 
 // Limit Loop: use addition to while condition
@@ -114,8 +114,9 @@ int		ft_strcmp(char const *s1, char const *s2);
 /// @param next pointer to next node.
 typedef struct s_sent
 {
-	char			*p_unit; // "echo "123"" 
-	char			**tokens; // tokens[0] "echo", tokens[1] "123"
+	char			*p_unit;
+	int				tokens_len;
+	char			**tokens;
 	int				is_redir;
 	int				is_pipe;
 	struct s_sent	*prev;
@@ -123,7 +124,7 @@ typedef struct s_sent
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
-t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe);
+t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 

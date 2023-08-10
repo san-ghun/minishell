@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:55 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 12:10:50 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/07 10:27:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ size_t	sent_len(t_sent *sent[])
 void	sent_print(t_sent *sent[])
 {
 	int		i;
+	int		j;
 	t_sent	*node;
-	char	*tmp;
 
 	i = 0;
 	node = *sent;
@@ -45,14 +45,12 @@ void	sent_print(t_sent *sent[])
 		ft_printf("sentence is empty\n");
 	while ((i++ <= MAX_ITER) && (node != NULL))
 	{
-		// tmp = *node->tokens;
-		// ft_printf("%d: ", i);
-		// while (tmp != NULL)
-		// 	ft_printf("[%s] ", tmp++);
-		// ft_printf("\n");
-		ft_printf("[%s] ", node->p_unit);
+		j = -1;
+		ft_printf("p_unit: [%s]\n", node->p_unit);
+		while (++j < node->tokens_len)
+			ft_printf("[%d: %s] ", j, node->tokens[j]);
+		ft_printf("\n");
 		node = node->next;
 	}
-	ft_printf("\n");
 	return ;
 }

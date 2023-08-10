@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 19:54:19 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/07 10:26:59 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	deque_print_all(t_deque *deque)
 {
 	int		i;
 	t_sent	*node;
-	char	*tmp;
 
 	node = deque->begin;
 	ft_printf("call deque_print_all(): printing deque, begin to end.\n");
+	if (!node)
+		ft_printf("deque is empty\n");
 	while (node != NULL)
 	{
-		i = 0;
-		// tmp = *node->tokens;
-		// while (tmp[i] != NULL)
-		// 	ft_printf("[%s] ", tmp[i++]);
-		ft_printf("[%s]", node->p_unit);
+		i = -1;
+		ft_printf("p_unit: [%s]\n", node->p_unit);
+		while (++i < node->tokens_len)
+			ft_printf("%d:[%s] ", i, node->tokens[i]);
 		ft_printf("\n");
 		node = node->prev;
 	}

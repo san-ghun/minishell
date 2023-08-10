@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/08/03 01:00:35 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/08/07 10:21:45 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,8 @@ dev: $(LIBFT)
 #			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
 # 			For MacOS
 			$(CC) -fsanitize=address -g -o $(NAME) $(SRC_NAME) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include
+#			For dorker exe
+#			gcc -g -o $(NAME) $(SRC_NAME) $^ -Llibft -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK) -lft
 
 
 # Sub Command
@@ -97,11 +99,10 @@ TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
 TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(SRC_DIR)/pipex.c \
 				$(SRC_DIR)/minishell_util.c \
+				$(SRC_DIR)/parsecmd.c \
 				$(TMP_LIB_A) \
 				$(TMP_LIB_B) \
 				$(TMP_LIB_C) \
-#				$(SRC_DIR)/minishell.c \
-				$(SRC_DIR)/truncate_cmd.c \
 
 test: $(LIBFT)
 			$(CC) -fsanitize=address -g $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
