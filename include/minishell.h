@@ -60,8 +60,8 @@
 # include <curses.h>
 # include <term.h>
 
-# include "libft.h"
-# include "ft_printf.h"
+# include "../libft/include/libft.h"
+# include "../libft/include/ft_printf.h"
 # include "pipex.h"
 
 // Limit Loop: use addition to while condition
@@ -113,6 +113,7 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len);
 typedef struct s_sent
 {
 	char			*p_unit;
+	int				tokens_len;
 	char			**tokens;
 	int				is_redir;
 	int				is_pipe;
@@ -121,7 +122,7 @@ typedef struct s_sent
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
-t_sent	*sent_new(char *p_unit, char **tokens, int is_redir, int is_pipe);
+t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 
