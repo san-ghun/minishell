@@ -6,15 +6,85 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/14 16:34:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 23:34:08 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
+#include <assert.h>
 
-void	ft_env(t_sent *lst, char **envp)
+
+/**
+ * Temporary message for commits.
+ *
+ * @brief This function converts the envp array to a Doubly Linked List (DLL).
+ * The DLL uses t_env as its node, where the head of envp (i.e., before '=')
+ * is stored as 'key' and the value (i.e., after '=') is stored as 'value'.
+ * Both 'key' and 'value' are dynamically allocated!
+ * @return If successfully converted, it returns the lst. Otherwise, it triggers
+ * an assert message (temporary). Note that error handling isn't fully
+ * implemented, so an update is required after the "else" clause.
+ * @note The node initialization is verbose for the sake of fewer lines.
+ * Further explanations will be provided in meetings.
+ */
+t_elst	*env_to_dll(char **envp)
 {
+	int		i;
+	char	*separator;
+	t_elst	*lst;
+	t_env	*node;
 
+	lst = env_initdll();
+	i = -1;
+	while (envp[++i])
+	{
+		separator = ft_strpbrk(envp[i], "="); // separator point '=' in envp[i]
+		if (separator)
+		{
+			node = env_newnode(ft_substr(envp[i], 0, separator - envp[i]), \
+			ft_strdup(separator + 1));
+			env_addrear(&lst, &node);
+		}
+		else
+		{
+			assert("error handling need here");
+			env_dellst(lst);
+		}
+	}
+	return (lst);
 }
+
+char	**dll_to_envp(t_elst *lst)
+{
+	t_env	*node;
+	char	**envp;
+	int		i;
+	size_t	key_len;
+	size_t	value_len;
+
+	envp = ft_memalloc(sizeof(char *) * lst->size + 1);
+	if (!envp)
+		return (NULL);
+	node = lst->begin;
+	i = 0;
+	while (node != NULL)
+	{
+		key_len = ft_strlen(node->key);
+		value_len = ft_strlen(node->value);
+		envp[i] = ft_memalloc( key_len + 1 + value_len + 1); // Allocate memory for "KEY=VALUE\0"
+		ft_strlcpy(envp[i], node->key, key_len);
+		envp[i][key_len] = '=';
+		ft_strlcpy(envp[i] + 1 + key_len, node->value, value_len);
+		node = node->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+//void	ft_env(t_sent *lst, char **envp)
+//{
+//
+//}

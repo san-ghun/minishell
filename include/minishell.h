@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/14 19:49:01 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 23:08:59 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@
 # define TRUE 1
 # define FALSE 0
 
+#define STATUS_NOT_FOUND 1
+#define STATUS_FOUND 0
 /* minishell.c */
 
 /* minishell_util.c */
@@ -99,7 +101,7 @@ void	*ft_memalloc(size_t size);
 char	*ft_strcdup(const char *src, char c);
 int		ft_strequ(char const *s1, char const *s2);
 int		ft_strcmp(char const *s1, char const *s2);
-
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
 // struct t_sent
 /// @param token Save the cmd, its arguments, and enough to run at once, 
 /// truncated by a semicolon, a pipe or a null terminated string.
@@ -204,7 +206,7 @@ typedef struct s_elst
 int		env_addfront(t_elst **lst, t_env **new_node);
 int		env_addrear(t_elst **lst, t_env **new_node);
 int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
-
+void	env_add_or_update(t_elst *data, char *key, char *value);
 /* src/t_env/env_init */
 void	env_updatesize(t_elst *lst, int add);
 t_env	*env_newnode(char *key, char *value);
@@ -214,4 +216,9 @@ t_elst	*env_initdll(void);
 int		env_reset_node(t_env *node_to_delete);
 int		env_delone(t_elst *list, t_env *node_to_delete);
 void	env_dellst(t_elst *lst);
+
+/*src/built-in*/
+void	ft_echo(t_sent *node);
+t_elst	*env_to_dll(char **envp);
+
 #endif

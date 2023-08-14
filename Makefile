@@ -93,7 +93,7 @@ TEST 		=	test.c
 TMP_LIB_A 	= $(shell find ./src/deque -iname "*.c")
 TMP_LIB_B	= $(shell find ./src/t_sent -iname "*.c")
 TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
-TMP_LIB_D	= $(shell find ./src/t_dlst -iname "*.c")
+TMP_LIB_D	= $(shell find ./src/t_env -iname "*.c")
 TMP_LIB_E	= $(shell find ./src/built-in -iname "*.c")
 
 TMP 		= $(SRC_DIR)/pipex_util.c \

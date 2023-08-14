@@ -6,26 +6,30 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/08 15:21:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 23:09:11 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
+#include <assert.h>
 
-
-
-void tmp_print_all(t_dlst_data *lst)
+void ft_print_env(t_env *node)
 {
-	t_dlst *node;
+	printf("%s=%s\n", node->key, node->value);
+}
+
+void tmp_print_all(t_elst *lst)
+{
+	t_env *node;
 	int i = -1;
 
 	node = lst->begin;
 	printf("------- start --------\n");
 	while (node != NULL)
 	{
-		printf("%s\n", node->cnt);
+		ft_print_env(node);
 		node = node->next;
 	}
 	printf("------- done --------\n");
@@ -34,15 +38,10 @@ void tmp_print_all(t_dlst_data *lst)
 int	main(int ac, char **av, char **envp)
 {
 	int i = -1;
-	t_dlst_data *lst;
-	t_dlst *node;
+	t_elst *lst;
+	t_env *node;
 
-	lst = ft_memalloc(sizeof (t_dlst_data));
-	while (envp[++i])
-	{
-		node = dlst_newnode(envp[i]);
-		dlst_addrear(&lst, &node);
-	}
+	lst = env_to_dll(envp);
 	tmp_print_all(lst);
-	dlst_dellst(lst);
+	env_dellst(lst);
 }
