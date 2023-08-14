@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:59 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/08 15:22:59 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 17:15:20 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
 
-int	dlst_del(t_dlst *node_to_delete)
+int	env_reset_node(t_env *node_to_delete)
 {
-	free(node_to_delete->cnt);
+	free(node_to_delete->key);
+	free(node_to_delete->value);
 	node_to_delete->prev = NULL;
 	node_to_delete->next = NULL;
+	return (1);
 }
 
-int	dlst_delone(t_dlst_data *list, t_dlst *node_to_delete)
+int	env_delone(t_elst *list, t_env *node_to_delete)
 {
 	if (list == NULL || node_to_delete == NULL)
 		return (0);
 	if (list->begin == node_to_delete)
 	{
-		list->begin = node_to_delete->prev;
+		list->begin = node_to_delete->next;
 		if (list->begin != NULL)
 			list->begin->prev = NULL;
 	}
@@ -41,15 +43,15 @@ int	dlst_delone(t_dlst_data *list, t_dlst *node_to_delete)
 		node_to_delete->next->prev = node_to_delete->prev;
 	if (node_to_delete->prev != NULL)
 		node_to_delete->prev->next = node_to_delete->next;
-	dlst_del(node_to_delete);
+	env_reset_node(node_to_delete);
 	free(node_to_delete);
-	dlst_updatesize(list, -1);
+	env_updatesize(list, -1);
 	return (1);
 }
 
-void	dlst_dellst(t_dlst_data *lst)
+void	env_dellst(t_elst *lst)
 {
 	while (lst->end != NULL)
-		dlst_delone(lst, lst->end);
+		env_delone(lst, lst->end);
 	free(lst);
 }

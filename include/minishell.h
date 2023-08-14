@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/08 15:08:36 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 19:49:01 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,40 +174,44 @@ void	deque_print_all(t_deque *deque);
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
 
-// struct dlst
-/// @brief This struct was created with a doubly linked list but can work like a deque.
+// struct t_env
+/// @brief This struct was created with a doubly linked list
+/// but can work like a deque.
 /// there is a difference which is that it can be inserted and deleted
 /// even if it is on an intermediate node.
-/// @note Designed for env, but can be used anywhere else you need to insert or delete.
+/// @note Designed for env, but can be used anywhere else you need
+/// to insert or delete.
 /// @param cnt Holds a single line of string.
-typedef struct s_dlst
+typedef struct s_env
 {
-	char			*cnt;
-	struct s_dlst	*prev;
-	struct s_dlst	*next;
-}			t_dlst;
+	char			*key;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}			t_env;
 
 /// @note For convenience, unify the internal parameter names as other.
 /// @param begin front node
 /// @param end rear node
-typedef struct s_dlst_data
+typedef struct s_elst
 {
-	t_dlst	*begin;
-	t_dlst	*end;
+	t_env	*begin;
+	t_env	*end;
 	int		size;
-}			t_dlst_data;
+}			t_elst;
 
+/* src/t_env/env_add */
+int		env_addfront(t_elst **lst, t_env **new_node);
+int		env_addrear(t_elst **lst, t_env **new_node);
+int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
 
-/* src/t_dlst/dlst_add.c */
-int		dlst_addfront(t_dlst_data **lst, t_dlst **new_node);
-int		dlst_addrear(t_dlst_data **lst, t_dlst **new_node);
-int		dlst_addnext(t_dlst_data **lst, t_dlst **current, t_dlst **new_node);
+/* src/t_env/env_init */
+void	env_updatesize(t_elst *lst, int add);
+t_env	*env_newnode(char *key, char *value);
+t_elst	*env_initdll(void);
 
-int		dlst_del(t_dlst *node_to_delete);
-int		dlst_delone(t_dlst_data *list, t_dlst *node_to_delete);
-void	dlst_dellst(t_dlst_data *lst);
-
-t_dlst	*dlst_newnode(char *str);
-void	dlst_updatesize(t_dlst_data *lst, int add);
-
+/* src/t_env/env_del */
+int		env_reset_node(t_env *node_to_delete);
+int		env_delone(t_elst *list, t_env *node_to_delete);
+void	env_dellst(t_elst *lst);
 #endif

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:25 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/08 13:28:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/14 19:44:00 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
 
-int	dlst_addfront(t_dlst_data **lst, t_dlst **new_node)
+int	env_addfront(t_elst **lst, t_env **new_node)
 {
 	if (*lst == NULL || *new_node == NULL)
 		return (0);
@@ -32,11 +32,11 @@ int	dlst_addfront(t_dlst_data **lst, t_dlst **new_node)
 		(*new_node)->prev = NULL;
 		(*lst)->begin = *new_node;
 	}
-	dlst_updatesize(*lst, +1);
+	env_updatesize(*lst, +1);
 	return (1);
 }
 
-int	dlst_addrear(t_dlst_data **lst, t_dlst **new_node)
+int	env_addrear(t_elst **lst, t_env **new_node)
 {
 	if (*lst == NULL || *new_node == NULL)
 		return (0);
@@ -54,18 +54,18 @@ int	dlst_addrear(t_dlst_data **lst, t_dlst **new_node)
 		(*new_node)->next = NULL;
 		(*lst)->end = *new_node;
 	}
-	dlst_updatesize(*lst, +1);
+	env_updatesize(*lst, +1);
 	return (1);
 }
 
-int	dlst_addnext(t_dlst_data **lst, t_dlst **current, t_dlst **new_node)
+int	env_addnext(t_elst **lst, t_env **current, t_env **new_node)
 {
-	t_dlst	*next;
+	t_env	*next;
 
 	if (!*current || !*new_node)
 		return (-1);
 	if ((*lst)->end == (*current))
-		return (dlst_addrear(lst, new_node));
+		return (env_addrear(lst, new_node));
 	else
 	{
 		next = (*current)->next;
@@ -73,7 +73,27 @@ int	dlst_addnext(t_dlst_data **lst, t_dlst **current, t_dlst **new_node)
 		(*new_node)->prev = *current;
 		(*new_node)->next = next;
 		next->prev = (*new_node);
-		dlst_updatesize(*lst, +1);
+		env_updatesize(*lst, +1);
 		return (1);
 	}
+}
+
+void	env_add_or_update(t_elst *data, char *key, char *value)
+{
+	t_env	*current;
+	t_env	*new_node;
+
+	current = data->begin;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(value);
+			return ;
+		}
+		current = current->next;
+	}
+	new_node = env_newnode(key, value);
+	env_addrear(&data, &new_node);
 }
