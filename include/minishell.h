@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/14 23:08:59 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/15 00:32:43 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	*ft_memalloc(size_t size);
 char	*ft_strcdup(const char *src, char c);
 int		ft_strequ(char const *s1, char const *s2);
 int		ft_strcmp(char const *s1, char const *s2);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
+
 // struct t_sent
 /// @param token Save the cmd, its arguments, and enough to run at once, 
 /// truncated by a semicolon, a pipe or a null terminated string.
@@ -184,7 +184,9 @@ int		parsecmd(char *cmd, t_deque *deque);
 /// even if it is on an intermediate node.
 /// @note Designed for env, but can be used anywhere else you need
 /// to insert or delete.
-/// @param cnt Holds a single line of string.
+/// @param key where the head of envp (i.e., before '=') is stored as 'key'
+/// @param value the value of envp (i.e., after '=') is stored.
+/// Both 'key' and 'value' are dynamically allocated!
 typedef struct s_env
 {
 	char			*key;
