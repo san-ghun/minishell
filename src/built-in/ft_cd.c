@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/16 00:44:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/16 18:21:40 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include "../../libft/include/libft.h"
 #include <assert.h> /// 나중에 제거하기 !
 
-static int	save_current_dir_as_oldpwd(t_elst *lst)
+static int	save_current_dir_as_key(t_elst *lst, char *key)
 {
 	char	pwd[DATA_SIZE];
 
 	getcwd(pwd, DATA_SIZE);
-	env_add_or_update(lst, "OLDPWD", pwd);
+	env_add_or_update(lst, key, pwd);
 	return (0);
 }
 
@@ -28,7 +28,7 @@ static int	save_current_dir_as_oldpwd(t_elst *lst)
 
 static int	change_dir_and_update_oldpwd(/* tokenize result */ t_elst *lst)
 {
-	save_current_dir_as_oldpwd(lst);
+	save_current_dir_as_key(lst, "OLDPWD");
 	if (chdir(token) == ERR_DIR_NOT_FOUND)
 	{
 		assert("Failed to change directory");
@@ -53,7 +53,7 @@ static int	change_dir_from_home_to_target(/* tokenize result */ t_elst *lst)
 			path = ft_strpbrk(token, "~") + 1;
 			ft_strlcpy(full_path, home_path, sizeof(full_path));
 			ft_strlcat(full_path, path, sizeof(full_path));
-			save_current_dir_as_oldpwd(lst);
+			save_current_dir_as_key(lst, "OLDPWD");
 			if (chdir(full_path) == ERR_DIR_NOT_FOUND)
 			{
 				assert("Failed to change directory");
@@ -66,6 +66,55 @@ static int	change_dir_from_home_to_target(/* tokenize result */ t_elst *lst)
 	return (0);
 }
 
+static int	change_dir_to_home(/* tokenize result */ t_elst *lst)
+{
+	char	*path;
+	char 	*home_path;
+	t_env	*node;
+
+	node = lst->begin;
+	while (node)
+	{
+		if (ft_strequ(node->key, "HOME"))
+		{
+			home_path = node->value;
+			save_current_dir_as_key(lst, "OLDPWD");
+			if (chdir(home_path) == ERR_DIR_NOT_FOUND)
+			{
+				assert("Failed to change directory");
+				return (ERR_DIR_NOT_FOUND);
+			}
+			return (0);
+		}
+		node = node->next;
+	}
+	return (0);
+}
+
+static int	change_dir_to_past_path(/* tokenize result */ t_elst *lst)
+{
+	t_env	*node;
+	char	*path;
+
+	node = lst->begin;
+	while (node)
+	{
+		if (ft_strequ(node->key, "OLDPWD"))
+		{
+			path = node->value;
+			break ;
+		}
+		node = node->next;
+	}
+	save_current_dir_as_key(lst, "OLDPWD");
+	if (chdir(path) == ERR_DIR_NOT_FOUND)
+	{
+		assert("Failed to change directory");
+		return (ERR_DIR_NOT_FOUND);
+	}
+	return (0);
+}
+
 int ft_cd(/* tokenize result */ t_elst *lst)
 {
 
@@ -74,10 +123,10 @@ int ft_cd(/* tokenize result */ t_elst *lst)
 		assert("cd: too many arguments");
 	/// cd -
 	else if ()
-		return ();
+		return (change_dir_to_past_path(lst));
 	/// cd ~
 	else if ()
-		return ();
+		return (change_dir_to_home(lst));
 	/// cd ~/Desktop
 	else if ()
 		return (change_dir_from_home_to_target(lst));
