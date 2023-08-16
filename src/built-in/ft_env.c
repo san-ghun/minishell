@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/14 23:34:08 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/15 23:29:29 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,23 @@ t_elst	*env_to_dll(char **envp)
 	return (lst);
 }
 
+char	*pathjoin(t_env *node)
+{
+	char	*path;
+	size_t	key_len;
+	size_t	value_len;
+
+	key_len = ft_strlen(node->key);
+	value_len = ft_strlen(node->value);
+	path = ft_memalloc( key_len + 1 + value_len + 1); // Allocate memory for "KEY=VALUE\0"
+	if (!path)
+		return (NULL);
+	ft_strlcpy(path, node->key, key_len);
+	path[key_len] = '=';
+	ft_strlcpy(path + 1 + key_len, node->value, value_len);
+	return (path);
+}
+
 char	**dll_to_envp(t_elst *lst)
 {
 	t_env	*node;
@@ -71,12 +88,9 @@ char	**dll_to_envp(t_elst *lst)
 	i = 0;
 	while (node != NULL)
 	{
-		key_len = ft_strlen(node->key);
-		value_len = ft_strlen(node->value);
-		envp[i] = ft_memalloc( key_len + 1 + value_len + 1); // Allocate memory for "KEY=VALUE\0"
-		ft_strlcpy(envp[i], node->key, key_len);
-		envp[i][key_len] = '=';
-		ft_strlcpy(envp[i] + 1 + key_len, node->value, value_len);
+		envp[i] = pathjoin(node);
+		if (envp[i] == NULL)
+			assert("error\n");
 		node = node->next;
 		i++;
 	}

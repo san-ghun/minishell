@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:25 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/14 21:22:10 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/15 23:49:42 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	env_add_or_update(t_elst *data, char *key, char *value)
 	current = data->begin;
 	while (current)
 	{
-		if (ft_strcmp(current->key, key) == 0)
+		if (ft_strequ(current->key, key))
 		{
 			free(current->value);
 			current->value = ft_strdup(value);

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/15 00:32:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/16 00:37:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@
 # define TRUE 1
 # define FALSE 0
 
-#define STATUS_NOT_FOUND 1
-#define STATUS_FOUND 0
+#define DIR_CHANGE_SUCCESS 0
+#define ERR_DIR_NOT_FOUND -1
+#define ERR_INVALID_PATH -2
+
 /* minishell.c */
 
 /* minishell_util.c */
@@ -220,8 +222,14 @@ int		env_reset_node(t_env *node_to_delete);
 int		env_delone(t_elst *list, t_env *node_to_delete);
 void	env_dellst(t_elst *lst);
 
-/*src/built-in*/
+/* src/built-in/ft_echo */
 void	ft_echo(t_sent *node);
+
+/* src/built-in/ft_env */
 t_elst	*env_to_dll(char **envp);
+char	*pathjoin(t_env *node);
+char	**dll_to_envp(t_elst *lst);
+
+/*src/built-in/ft_cd */
 
 #endif
