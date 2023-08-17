@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:19:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/30 14:26:14 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:33:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@
  */
 char	*ft_strcdup(const char *src, char c)
 {
-	int	len;
 	char	*new;
-	int i;
-
+	int		len;
+	int		i;
 
 	len = 0;
 	while (src[len] != c && src[len])

@@ -95,6 +95,8 @@ TEST 		=	test.c
 TMP_LIB_A 	= $(shell find ./src/deque -iname "*.c")
 TMP_LIB_B	= $(shell find ./src/t_sent -iname "*.c")
 TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
+TMP_LIB_D	= $(shell find ./src/t_env -iname "*.c")
+TMP_LIB_E	= $(shell find ./src/built-in -iname "*.c")
 
 TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(SRC_DIR)/pipex.c \
@@ -103,10 +105,14 @@ TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(TMP_LIB_A) \
 				$(TMP_LIB_B) \
 				$(TMP_LIB_C) \
+				$(TMP_LIB_D) \
+				$(TMP_LIB_E)
+#				$(SRC_DIR)/minishell.c \
+
 
 test: $(LIBFT)
-			$(CC) -fsanitize=address -g $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
-
+			$(CC) $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
+			# -fsanitize=address -g
 tclean: 
 			make fclean -C $(LIBFT_DIR)
 			$(RM) $(LIBFT)

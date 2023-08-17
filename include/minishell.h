@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/07 10:17:12 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/16 00:37:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@
 // tcsetattr tcgetattr
 # include <termios.h>
 
-// macro
-# include "macro.h"
-
 // tgetent tgetflag tgetnum tgetstr tgoto tputs
 # include <curses.h>
 # include <term.h>
@@ -83,9 +80,12 @@
 # define MAX_TOKENS         512
 
 /// Brief true/false notation
-#define TRUE 1
-#define FALSE 0
+# define TRUE 1
+# define FALSE 0
 
+#define DIR_CHANGE_SUCCESS 0
+#define ERR_DIR_NOT_FOUND -1
+#define ERR_INVALID_PATH -2
 
 /* minishell.c */
 
@@ -179,5 +179,57 @@ void	deque_print_all(t_deque *deque);
 /* src parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
 
+// struct t_env
+/// @brief This struct was created with a doubly linked list
+/// but can work like a deque.
+/// there is a difference which is that it can be inserted and deleted
+/// even if it is on an intermediate node.
+/// @note Designed for env, but can be used anywhere else you need
+/// to insert or delete.
+/// @param key where the head of envp (i.e., before '=') is stored as 'key'
+/// @param value the value of envp (i.e., after '=') is stored.
+/// Both 'key' and 'value' are dynamically allocated!
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}			t_env;
+
+/// @note For convenience, unify the internal parameter names as other.
+/// @param begin front node
+/// @param end rear node
+typedef struct s_elst
+{
+	t_env	*begin;
+	t_env	*end;
+	int		size;
+}			t_elst;
+
+/* src/t_env/env_add */
+int		env_addfront(t_elst **lst, t_env **new_node);
+int		env_addrear(t_elst **lst, t_env **new_node);
+int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
+void	env_add_or_update(t_elst *data, char *key, char *value);
+/* src/t_env/env_init */
+void	env_updatesize(t_elst *lst, int add);
+t_env	*env_newnode(char *key, char *value);
+t_elst	*env_initdll(void);
+
+/* src/t_env/env_del */
+int		env_reset_node(t_env *node_to_delete);
+int		env_delone(t_elst *list, t_env *node_to_delete);
+void	env_dellst(t_elst *lst);
+
+/* src/built-in/ft_echo */
+void	ft_echo(t_sent *node);
+
+/* src/built-in/ft_env */
+t_elst	*env_to_dll(char **envp);
+char	*pathjoin(t_env *node);
+char	**dll_to_envp(t_elst *lst);
+
+/*src/built-in/ft_cd */
 
 #endif

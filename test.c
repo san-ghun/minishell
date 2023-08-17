@@ -6,53 +6,42 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/07 10:16:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/14 23:09:11 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../../include/minishell.h"
+#include "../../libft/include/libft.h"
+#include <assert.h>
 
-#define FALSE	0
-#define TRUE	1
-
-typedef void		(*t_fun)(int, char **);
-
-// int	main(int argc, char *argv[])
-// {
-// 	char	cmd[MAX_COMMAND_LEN];
-// 	t_deque	*deque;
-
-// 	deque = deque_init();
-// 	readcmd(cmd);
-// 	parsecmd(cmd, deque);
-
-// 	ft_printf("\n");
-// 	sent_print(&deque->end);
-// 	ft_printf("\n");
-// 	deque_print_all(deque);
-
-// 	sent_delall(&deque->end);
-// 	deque_del(deque);
-// }
-
-int	main(int argc, char *argv[])
+void ft_print_env(t_env *node)
 {
-	int i = 0;
-	char *a;
-	char p[2] = "";
-	char *t;
-	ft_strlcpy(a, "echo \"123\"", 11);
-	p[0] = *(a + ft_strspn(a, " ") - 1);
-	t = ft_strtok(a, p);
-	ft_printf("[%s]\n", t);
-	a += ft_strspn(a, "\'\" ");
-	p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
-	while (t != NULL)
+	printf("%s=%s\n", node->key, node->value);
+}
+
+void tmp_print_all(t_elst *lst)
+{
+	t_env *node;
+	int i = -1;
+
+	node = lst->begin;
+	printf("------- start --------\n");
+	while (node != NULL)
 	{
-		ft_printf("[%s]\n", t);
-		a += ft_strspn(a, "\'\" ");
-		p[0] = *(a + ft_strspn(a, "\'\" ") - 1);
-		t = ft_strtok(NULL, p);
+		ft_print_env(node);
+		node = node->next;
 	}
-	return (0);
+	printf("------- done --------\n");
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	int i = -1;
+	t_elst *lst;
+	t_env *node;
+
+	lst = env_to_dll(envp);
+	tmp_print_all(lst);
+	env_dellst(lst);
 }
