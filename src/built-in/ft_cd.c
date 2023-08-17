@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/17 20:59:24 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/17 21:38:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,14 @@ static int	change_dir_to_past_path(t_elst *lst)
 
 int ft_cd(char **token, int size/* tokenize result */, t_elst *lst)
 {
-
 	/// cd
 	if (size == 1 && ft_strequ(token[0], "cd"))
 		return (change_dir_to_home(lst));
 	/// cd 123 123 \0
-	if (size != 2)
+	if (size == 3)
+		ft_printf("cd: string not in pwd: %s\n", token[1]);
+	/// cd 123 123 123 \0
+	else if (size > 3)
 		ft_printf("cd: too many arguments\n");
 	/// cd -
 	else if (ft_strequ(token[1], "-"))
