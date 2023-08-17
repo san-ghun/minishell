@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/16 00:37:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/17 20:37:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,5 +231,11 @@ char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
+static int	save_current_dir_as_key(t_elst *lst, char *key);
+static int	change_dir_and_update_oldpwd(char *token /* tokenize result */, t_elst *lst);
+static int	change_dir_from_home_to_target(char *token /* tokenize result */, t_elst *lst);
+static int	change_dir_to_home(t_elst *lst);
+static int	change_dir_to_past_path(t_elst *lst);
+int			ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
 
 #endif

@@ -6,14 +6,13 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/16 18:21:40 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/17 20:59:24 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
-#include <assert.h> /// 나중에 제거하기 !
 
 static int	save_current_dir_as_key(t_elst *lst, char *key)
 {
@@ -24,20 +23,18 @@ static int	save_current_dir_as_key(t_elst *lst, char *key)
 	return (0);
 }
 
-/// tokenize가 어떤 형태로 들어올지 몰라서, 일단은 deque가 파라미터라는 가정으로 함수를 만들었습니다!
-
-static int	change_dir_and_update_oldpwd(/* tokenize result */ t_elst *lst)
+static int	change_dir_and_update_oldpwd(char *token /* tokenize result */, t_elst *lst)
 {
 	save_current_dir_as_key(lst, "OLDPWD");
 	if (chdir(token) == ERR_DIR_NOT_FOUND)
 	{
-		assert("Failed to change directory");
+		perror("cd");
 		return (ERR_DIR_NOT_FOUND); // return이 꼭 필요할지는 모르겠음.
 	}
 	return (0);
 }
 
-static int	change_dir_from_home_to_target(/* tokenize result */ t_elst *lst)
+static int	change_dir_from_home_to_target(char *token /* tokenize result */, t_elst *lst)
 {
 	char	*path;
 	char 	*home_path;
@@ -56,7 +53,7 @@ static int	change_dir_from_home_to_target(/* tokenize result */ t_elst *lst)
 			save_current_dir_as_key(lst, "OLDPWD");
 			if (chdir(full_path) == ERR_DIR_NOT_FOUND)
 			{
-				assert("Failed to change directory");
+				perror("cd");
 				return (ERR_DIR_NOT_FOUND);
 			}
 			return (0);
@@ -66,7 +63,7 @@ static int	change_dir_from_home_to_target(/* tokenize result */ t_elst *lst)
 	return (0);
 }
 
-static int	change_dir_to_home(/* tokenize result */ t_elst *lst)
+static int	change_dir_to_home(t_elst *lst)
 {
 	char	*path;
 	char 	*home_path;
@@ -81,7 +78,7 @@ static int	change_dir_to_home(/* tokenize result */ t_elst *lst)
 			save_current_dir_as_key(lst, "OLDPWD");
 			if (chdir(home_path) == ERR_DIR_NOT_FOUND)
 			{
-				assert("Failed to change directory");
+				perror("cd");
 				return (ERR_DIR_NOT_FOUND);
 			}
 			return (0);
@@ -91,11 +88,12 @@ static int	change_dir_to_home(/* tokenize result */ t_elst *lst)
 	return (0);
 }
 
-static int	change_dir_to_past_path(/* tokenize result */ t_elst *lst)
+static int	change_dir_to_past_path(t_elst *lst)
 {
 	t_env	*node;
 	char	*path;
 
+	path = NULL;
 	node = lst->begin;
 	while (node)
 	{
@@ -106,31 +104,39 @@ static int	change_dir_to_past_path(/* tokenize result */ t_elst *lst)
 		}
 		node = node->next;
 	}
-	save_current_dir_as_key(lst, "OLDPWD");
+	if (path == NULL)
+	{
+		fprintf(stderr, "cd: OLDPWD not set\n");
+		return (1);
+	}
 	if (chdir(path) == ERR_DIR_NOT_FOUND)
 	{
-		assert("Failed to change directory");
+		perror("cd");
 		return (ERR_DIR_NOT_FOUND);
 	}
+	save_current_dir_as_key(lst, "OLDPWD");
 	return (0);
 }
 
-int ft_cd(/* tokenize result */ t_elst *lst)
+int ft_cd(char **token, int size/* tokenize result */, t_elst *lst)
 {
 
+	/// cd
+	if (size == 1 && ft_strequ(token[0], "cd"))
+		return (change_dir_to_home(lst));
 	/// cd 123 123 \0
-	if ()
-		assert("cd: too many arguments");
+	if (size != 2)
+		ft_printf("cd: too many arguments\n");
 	/// cd -
-	else if ()
+	else if (ft_strequ(token[1], "-"))
 		return (change_dir_to_past_path(lst));
 	/// cd ~
-	else if ()
+	else if (ft_strequ(token[1], "~"))
 		return (change_dir_to_home(lst));
 	/// cd ~/Desktop
-	else if ()
-		return (change_dir_from_home_to_target(lst));
+	else if (ft_strequ(token[1], "~/"))
+		return (change_dir_from_home_to_target(token[1], lst));
 	else
-		change_dir_and_update_oldpwd(lst);
+		change_dir_and_update_oldpwd(token[1], lst);
 	return (0);
 }

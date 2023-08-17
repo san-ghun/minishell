@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/15 23:29:29 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/17 20:22:28 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ char	**dll_to_envp(t_elst *lst)
 	t_env	*node;
 	char	**envp;
 	int		i;
-	size_t	key_len;
-	size_t	value_len;
 
 	envp = ft_memalloc(sizeof(char *) * lst->size + 1);
 	if (!envp)
