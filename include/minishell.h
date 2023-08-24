@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/16 00:37:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/24 11:56:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ typedef struct s_sent
 
 /* src/t_sent/sent_create.c */
 t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
+
+/* src/t_sent/sent_add.c */
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 
