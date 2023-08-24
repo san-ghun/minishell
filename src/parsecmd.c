@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/04 14:57:42 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:10:19 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_quotes(char *cmd, int index, int status)
 		{
 			if (cmd[i] == '\'')
 				i = check_quotes(cmd, i, '\'');
-			if (cmd[i] == '\"')
+			else if (cmd[i] == '\"')
 				i = check_quotes(cmd, i, '\"');
 			if (i == -1)
 				return (1);
