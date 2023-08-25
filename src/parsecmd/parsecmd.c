@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/24 17:10:19 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/25 23:44:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,39 +41,11 @@ int	check_quotes(char *cmd, int index, int status)
 	return (0);
 }
 
-void	tokenize_cmdtoprocess(char *cmd, char *tokens[], char *charset)
-{
-	int		i;
-	char	*token;
-
-	i = 0;
-	token = ft_strtok(cmd, charset);
-	while ((token != NULL) && (i < MAX_TOKENS))
-	{
-		token = ft_strtrim(token, " ");
-		tokens[i++] = token;
-		token = ft_strtok(NULL, charset);
-	}
-	tokens[i] = NULL;
-	return ;
-}
-
-t_sent	*p_to_sent(char *p_unit, int is_redir, int is_pipe)
-{
-	char	cmd[MAX_COMMAND_LEN];
-
-	ft_strlcpy(cmd, "", 2);
-	ft_strlcpy(cmd, p_unit, ft_strlen(p_unit) + 1);
-	return (sent_new(cmd, is_redir, is_pipe));
-}
-
 int	parsecmd(char *cmd, t_deque *deque)
 {
 	int		i;
-	int		j;
-	char	*p_units[MAX_TOKENS];
-	char	*p_units_tmp[MAX_TOKENS];
-	t_sent	*node;
+	int		margc;
+	char	**margv;
 
 	if (check_quotes(cmd, -1, 0))
 	{
@@ -81,35 +53,24 @@ int	parsecmd(char *cmd, t_deque *deque)
 		return (-1);
 	}
 
-	// tokenize into process unit, based on `;` and `\0`
-	// tokenize cmd and properly handle quotes
-	tokenize_cmdtoprocess(cmd, p_units, ";");
+	// Expand $dollar
 
-	// store process units in t_sent
-	// push t_sent into t_deque
+	// Expand ~tilde
+
+	margc = get_margc(cmd);
+	margv = get_margv(cmd, margc);
+
+	// Create a new sent
+	// Add the new sent to the deque
+
+	ft_printf("margc: %d\n", margc);
 	i = 0;
-	while (p_units[i] != NULL)
+	while (margv[i] != NULL)
 	{
-		if (ft_strchr(p_units[i], '|'))
-		{
-			j = 0;
-			tokenize_cmdtoprocess(p_units[i], p_units_tmp, "|");
-			while (p_units_tmp[j] != NULL)
-			{
-				node = sent_new(p_units_tmp[j++], 0, 1);
-				deque_push_front(deque, node);
-			}
-			j = 0;
-			while (p_units_tmp[j] != NULL)
-				free(p_units_tmp[j++]);
-			i++;
-			continue ;
-		}
-		node = sent_new(p_units[i++], 0, 0);
-		deque_push_front(deque, node);
+		ft_printf("[%s] ", margv[i]);
+		free(margv[i++]);
 	}
-	i = 0;
-	while (p_units[i] != NULL)
-		free(p_units[i++]);
+	free(margv);
+	ft_printf("\n");
 	return (0);
 }
