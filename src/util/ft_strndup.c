@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:13:26 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/25 23:23:14 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/08/25 23:27:53 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ char	*ft_strndup(const char *src, size_t len)
 	new = (char *)ft_memalloc(len + 1);
 	if (!new)
 		return (NULL);
-	return (ft_strlcpy(new, src, len));
+	return (ft_strncpy(new, src, len));
 }
