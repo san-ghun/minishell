@@ -231,11 +231,6 @@ char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
-static int	save_current_dir_as_key(t_elst *lst, char *key);
-static int	change_dir_and_update_oldpwd(char *token /* tokenize result */, t_elst *lst);
-static int	change_dir_from_home_to_target(char *token /* tokenize result */, t_elst *lst);
-static int	change_dir_to_home(t_elst *lst);
-static int	change_dir_to_past_path(t_elst *lst);
 int			ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
 
 #endif
