@@ -65,7 +65,6 @@ static int	change_dir_from_home_to_target(char *token /* tokenize result */, t_e
 
 static int	change_dir_to_home(t_elst *lst)
 {
-	char	*path;
 	char 	*home_path;
 	t_env	*node;
 
