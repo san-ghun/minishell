@@ -239,5 +239,6 @@ char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
+int			ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
 
 #endif
