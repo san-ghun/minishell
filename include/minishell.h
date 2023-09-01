@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/17 20:37:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/08/25 23:56:18 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ size_t	ft_strspn(const char *str, const char *delim);
 char	*ft_strtok(char *str, const char *delim);
 size_t	ft_strcspn(const char *str, const char *delim);
 char	*ft_strncpy(char *dest, const char *src, size_t size);
+char	*ft_strndup(const char *src, size_t len);
 void	*ft_memalloc(size_t size);
 char	*ft_strcdup(const char *src, char c);
 int		ft_strequ(char const *s1, char const *s2);
 int		ft_strcmp(char const *s1, char const *s2);
+int		ft_isspace(char c);
 
 // struct t_sent
 /// @param token Save the cmd, its arguments, and enough to run at once, 
@@ -125,6 +127,8 @@ typedef struct s_sent
 
 /* src/t_sent/sent_create.c */
 t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
+
+/* src/t_sent/sent_add.c */
 void	sent_addfront(t_sent *sent[], t_sent *new);
 void	sent_addback(t_sent *sent[], t_sent *new);
 
@@ -176,8 +180,12 @@ t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
-/* src parsecmd.c */
+/* src/parsecmd/parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque);
+
+/* src/parsecmd/parsecmd_tokenize.c */
+int		get_margc(char *cmd);
+char	**get_margv(char *cmd, int margc);
 
 // struct t_env
 /// @brief This struct was created with a doubly linked list

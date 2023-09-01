@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sent_create.c                                      :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/30 16:47:24 by sanghupa         ###   ########.fr       */
+/*   Created: 2023/08/25 23:13:26 by sanghupa          #+#    #+#             */
+/*   Updated: 2023/08/25 23:27:53 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
-
-t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe)
+/**
+ * @brief Duplicates a substring from `src` up to `len` characters.
+ * If a pointer is passed, `src` starts from the position of the pointer.
+ * @param src The source string.
+ * @param len The length of characters to copy.
+ * @return A newly allocated substring, or NULL on allocation failure.
+ */
+char	*ft_strndup(const char *src, size_t len)
 {
-	t_sent	*this;
+	char	*new;
 
-	this = (t_sent *)malloc(sizeof(t_sent));
-	if (!this)
+	new = (char *)ft_memalloc(len + 1);
+	if (!new)
 		return (NULL);
-	this->p_unit = p_unit;
-	this->tokens_len = 0;
-	this->tokens = NULL;
-	this->is_redir = is_redir;
-	this->is_pipe = is_pipe;
-	this->prev = NULL;
-	this->next = NULL;
-	return (this);
+	return (ft_strncpy(new, src, len));
 }
