@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/25 23:56:18 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:53:01 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,11 +181,15 @@ t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
 /* src/parsecmd/parsecmd.c */
-int		parsecmd(char *cmd, t_deque *deque);
+int		parsecmd(char *cmd, t_deque *deque, char *envp[]);
 
 /* src/parsecmd/parsecmd_tokenize.c */
 int		get_margc(char *cmd);
 char	**get_margv(char *cmd, int margc);
+
+/* src/parsecmd/parsecmd_util.c */
+void	expand_dallar(char *cmd, char *envp[]);
+void	expand_tilde(char *cmd, char *envp[]);
 
 // struct t_env
 /// @brief This struct was created with a doubly linked list

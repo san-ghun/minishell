@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/30 17:02:00 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:28:46 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	cmdtosent(int margc, char *margv[], t_deque *deque)
 	return (i);
 }
 
-int	parsecmd(char *cmd, t_deque *deque)
+int	parsecmd(char *cmd, t_deque *deque, char *envp[])
 {
 	int		i;
 	int		margc;
@@ -107,9 +107,8 @@ int	parsecmd(char *cmd, t_deque *deque)
 		ft_putstr_fd("error: Invalid quotation\n", 2);
 		return (-1);
 	}
-	// Expand $dollar
-	// Expand ~tilde
-
+	expand_dallar(cmd, envp);
+	expand_tilde(cmd, envp);
 	margc = get_margc(cmd);
 	margv = get_margv(cmd, margc);
 	cmdtosent(margc, margv, deque);

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/07 10:18:44 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:29:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		parsecmd(cmd, deque);
+		parsecmd(cmd, deque, envp);
 
 		ft_printf("\n");
 		sent_print(&deque->end);
