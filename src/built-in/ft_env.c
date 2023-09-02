@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/17 20:22:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 11:00:38 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_elst	*env_to_dll(char **envp)
 	t_elst	*lst;
 	t_env	*node;
 
-	lst = env_initdll();
+	lst = env_init();
 	i = -1;
 	while (envp[++i])
 	{

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:25 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/15 23:49:42 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 11:18:55 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ int	env_addnext(t_elst **lst, t_env **current, t_env **new_node)
 	}
 }
 
-void	env_add_or_update(t_elst *data, char *key, char *value)
+void	env_add_or_update(t_elst *lst, char *key, char *value)
 {
 	t_env	*current;
 	t_env	*new_node;
 
-	current = data->begin;
+	current = lst->begin;
 	while (current)
 	{
 		if (ft_strequ(current->key, key))
@@ -95,5 +95,5 @@ void	env_add_or_update(t_elst *data, char *key, char *value)
 		current = current->next;
 	}
 	new_node = env_newnode(key, value);
-	env_addrear(&data, &new_node);
+	env_addrear(&lst, &new_node);
 }

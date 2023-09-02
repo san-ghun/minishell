@@ -37,7 +37,7 @@ t_env	*env_newnode(char *key, char *value)
 	return (new);
 }
 
-t_elst	*env_initdll(void)
+t_elst	*env_init(void)
 {
 	t_elst	*data;
 

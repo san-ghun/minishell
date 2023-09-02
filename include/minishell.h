@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/01 16:53:01 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:27:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ char	*ft_strcdup(const char *src, char c);
 int		ft_strequ(char const *s1, char const *s2);
 int		ft_strcmp(char const *s1, char const *s2);
 int		ft_isspace(char c);
+int		ft_strnequ(char const *s1, char const *s2, size_t i);
 
 // struct t_sent
 /// @param token Save the cmd, its arguments, and enough to run at once, 
@@ -223,11 +224,12 @@ typedef struct s_elst
 int		env_addfront(t_elst **lst, t_env **new_node);
 int		env_addrear(t_elst **lst, t_env **new_node);
 int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
-void	env_add_or_update(t_elst *data, char *key, char *value);
+void	env_add_or_update(t_elst *lst, char *key, char *value);
+
 /* src/t_env/env_init */
 void	env_updatesize(t_elst *lst, int add);
 t_env	*env_newnode(char *key, char *value);
-t_elst	*env_initdll(void);
+t_elst	*env_init(void);
 
 /* src/t_env/env_del */
 int		env_reset_node(t_env *node_to_delete);
