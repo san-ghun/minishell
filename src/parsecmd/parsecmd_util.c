@@ -112,7 +112,7 @@ void	expand_tilde(char *cmd, char *envp[])
 	return ;
 }
 
-void	expand_tilde_mina(char *cmd, t_elst *lst)
+void	expand_tilde_edit(char *cmd, t_elst *lst)
 {
 	char	str[MAX_COMMAND_LEN];
 	int		i;
@@ -130,7 +130,7 @@ void	expand_tilde_mina(char *cmd, t_elst *lst)
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
 		if (cmd[i] == '~' && quote_s != 1)
-			i += append_env_mina(&str[0], "~HOME", lst);
+			i += append_env_edit(&str[0], "~HOME", lst);
 		else
 			ft_strlcat(&str[0], &cmd[i], ft_strlen(str) + 2);
 		i++;
