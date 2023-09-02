@@ -111,6 +111,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 		deque = deque_init();
 		lst = env_to_dll(envp);
+		(void)lst;
 
 		// Step 3: Parse the command
 		// Split the user input into individual tokens (commands and arguments) 
