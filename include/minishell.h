@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/02 11:27:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:38:56 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,8 @@ t_env	*env_newnode(char *key, char *value);
 t_elst	*env_init(void);
 
 /* src/t_env/env_del */
-int		env_reset_node(t_env *node_to_delete);
-int		env_delone(t_elst *list, t_env *node_to_delete);
+void	env_del(t_env *target);
+void	env_delone(t_elst *lst, t_env *target);
 void	env_dellst(t_elst *lst);
 
 /* src/built-in/ft_echo */

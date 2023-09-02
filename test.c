@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 14:15:06 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 10:39:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:14:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,8 @@ size_t	readcmd(char *cmd)
 
 int main(int ac, char **av, char **envp)
 {
-	char cmd[MAX_COMMAND_LEN];
+//	char cmd[MAX_COMMAND_LEN];
 	t_elst *lst = env_to_dll(envp);
-
-	while (1)
-	{
-		printf("minishell> ");
-		readcmd(cmd);
-		printf("cmd: %s\n", cmd);
-		char **test = ft_split(cmd, ' ');
-		int size = 0;
-		while (test[size])
-			size++;
-		printf("Current directory before cd: %s\n", getcwd(NULL, 0));
-		ft_cd(test, size, lst);
-		printf("Current directory after cd: %s\n", getcwd(NULL, 0));
-	}
 	env_dellst(lst);
 	return (0);
 }
