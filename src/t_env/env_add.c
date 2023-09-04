@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:25 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 11:18:55 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 18:00:36 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ int	env_addnext(t_elst **lst, t_env **current, t_env **new_node)
 	}
 }
 
+/// @brief Adds or updates a key-value pair in the environment list.
+///
+/// This function searches the list for a given key. If the key is found, it updates
+/// the associated value. If the key is not found, it creates a new node with the
+/// given key-value pair and adds it to the end of the list.
+///
+/// @param lst The environment list to update.
+/// @param key The key to search for or add.
+/// @param value The value to set or update.
 void	env_add_or_update(t_elst *lst, char *key, char *value)
 {
 	t_env	*current;
@@ -94,6 +103,6 @@ void	env_add_or_update(t_elst *lst, char *key, char *value)
 		}
 		current = current->next;
 	}
-	new_node = env_newnode(key, value);
+	new_node = env_newnode(ft_strdup(key), ft_strdup(value));
 	env_addrear(&lst, &new_node);
 }

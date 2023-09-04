@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 11:00:38 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:51:24 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_elst	*env_to_dll(char **envp)
 	i = -1;
 	while (envp[++i])
 	{
-		separator = ft_strpbrk(envp[i], "="); // separator point '=' in envp[i]
+		separator = ft_strpbrk(envp[i], "=");
 		if (separator)
 		{
 			node = env_newnode(ft_substr(envp[i], 0, separator - envp[i]), \
@@ -49,8 +49,9 @@ t_elst	*env_to_dll(char **envp)
 		}
 		else
 		{
-			assert("error handling need here");
+			assert("error handling needed here");
 			env_dellst(lst);
+			return (NULL);
 		}
 	}
 	return (lst);

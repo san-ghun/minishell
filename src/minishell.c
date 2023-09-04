@@ -6,24 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/02 11:02:30 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 18:01:40 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-static void	print_envp(char *envp[])
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		ft_printf("envp %d = %s\n", i, envp[i]);
-		i++;
-	}
-}
-*/
 
 static void	sighandler(int signal)
 {
@@ -87,7 +74,6 @@ void	executecmd(char *tokens[], char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	cmd[MAX_COMMAND_LEN];
-	// char	*tokens[MAX_TOKENS];
 	t_deque	*deque;
 	t_elst	*lst;
 
@@ -96,6 +82,7 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
+	lst = env_to_dll(envp);
 	while (1)
 	{
 		// Step 1: Accept user input
@@ -110,7 +97,6 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 
 		deque = deque_init();
-		lst = env_to_dll(envp);
 		(void)lst;
 
 		// Step 3: Parse the command
@@ -135,5 +121,6 @@ int	main(int argc, char *argv[], char *envp[])
 		sent_delall(&deque->end);
 		deque_del(deque);
 	}
+	env_dellst(lst);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:59 by minakim           #+#    #+#             */
-/*   Updated: 2023/08/14 17:15:20 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/02 17:38:05 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,53 @@
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
 
-int	env_reset_node(t_env *node_to_delete)
+void	env_del(t_env *target)
 {
-	free(node_to_delete->key);
-	free(node_to_delete->value);
-	node_to_delete->prev = NULL;
-	node_to_delete->next = NULL;
-	return (1);
+	target->prev = NULL;
+	target->next = NULL;
+	free(target->key);
+	free(target->value);
+	free(target);
 }
 
-int	env_delone(t_elst *list, t_env *node_to_delete)
+void	env_delone(t_elst *lst, t_env *target)
 {
-	if (list == NULL || node_to_delete == NULL)
-		return (0);
-	if (list->begin == node_to_delete)
+	if (lst == NULL || target == NULL)
+		return ;
+	if (lst->begin == target)
 	{
-		list->begin = node_to_delete->next;
-		if (list->begin != NULL)
-			list->begin->prev = NULL;
+		lst->begin = target->next;
+		if (lst->begin != NULL)
+			lst->begin->prev = NULL;
 	}
-	if (list->end == node_to_delete)
+	if (lst->end == target)
 	{
-		list->end = node_to_delete->prev;
-		if (list->end != NULL)
-			list->end->next = NULL;
+		lst->end = target->prev;
+		if (lst->end != NULL)
+			lst->end->next = NULL;
 	}
-	if (node_to_delete->next != NULL)
-		node_to_delete->next->prev = node_to_delete->prev;
-	if (node_to_delete->prev != NULL)
-		node_to_delete->prev->next = node_to_delete->next;
-	env_reset_node(node_to_delete);
-	free(node_to_delete);
-	env_updatesize(list, -1);
-	return (1);
+	if (target->next != NULL)
+		target->next->prev = target->prev;
+	if (target->prev != NULL)
+		target->prev->next = target->next;
+	env_del(target);
+	env_updatesize(lst, -1);
+	return ;
 }
 
 void	env_dellst(t_elst *lst)
 {
-	while (lst->end != NULL)
-		env_delone(lst, lst->end);
+	t_env	*current;
+	t_env	*next_node;
+
+	if (!lst)
+		return ;
+	current = lst->begin;
+	while (current != NULL)
+	{
+		next_node = current->next;
+		env_delone(lst ,current);
+		current = next_node;
+	}
 	free(lst);
 }
