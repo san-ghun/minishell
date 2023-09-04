@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/02 17:38:56 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/04 12:55:36 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,16 +181,6 @@ t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
-/* src/parsecmd/parsecmd.c */
-int		parsecmd(char *cmd, t_deque *deque, char *envp[]);
-
-/* src/parsecmd/parsecmd_tokenize.c */
-int		get_margc(char *cmd);
-char	**get_margv(char *cmd, int margc);
-
-/* src/parsecmd/parsecmd_util.c */
-void	expand_dallar(char *cmd, char *envp[]);
-void	expand_tilde(char *cmd, char *envp[]);
 
 // struct t_env
 /// @brief This struct was created with a doubly linked list
@@ -246,5 +236,17 @@ char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
 int			ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
+
+
+/* src/parsecmd/parsecmd.c */
+int		check_quotes(char *cmd, int index, int status);
+int		parsecmd(char *cmd, t_deque *deque, t_elst *elst);
+
+/* src/parsecmd/parsecmd_tokenize.c */
+int		get_margc(char *cmd);
+char	**get_margv(char *cmd, int margc);
+
+/* src/parsecmd/parsecmd_util.c */
+void	expand_cmd(char *cmd, t_elst *elst);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/02 18:01:40 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/04 12:56:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t	readcmd(char *cmd)
 	char	temp_cmd[MAX_COMMAND_LEN];
 
 	total_len = 0;
-	ft_strlcpy(cmd, "", 2);
+	ft_bzero(cmd, MAX_COMMAND_LEN);
 	if (*cmd != '\0')
 		exit(EXIT_FAILURE);
 	total_len = ft_strlen(cmd);
@@ -97,14 +97,13 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 
 		deque = deque_init();
-		(void)lst;
 
 		// Step 3: Parse the command
 		// Split the user input into individual tokens (commands and arguments) 
 		// using whitespace as a delimiter.
 		// The first token represents the command, 
 		// and subsequent tokens are arguments.
-		parsecmd(cmd, deque, envp);
+		parsecmd(cmd, deque, lst);
 
 		ft_printf("\n");
 		sent_print(&deque->end);
