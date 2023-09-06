@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/05 22:36:45 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:03:10 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,23 +95,28 @@ static int change_dir_tilde(char *token, t_elst *lst)
 	return (CD_SUCCESS);
 }
 
-int ft_cd(char **token, int size, t_elst *lst)
+int ft_cd(t_sent *node, t_elst *lst)
 {
+	char	**tokens;
+	int 	size;
+
+	tokens = node->tokens;
+	size = node->tokens_len;
 	save_current_dir_as_key(lst, "OLDPWD");
-	if (size == 1 && ft_strequ(token[0], "cd"))
+	if (size == 1 && ft_strequ(tokens[0], "cd"))
 		return (change_dir_home(lst));
 	if (size > 3)
 	{
 		ft_printf("cd: too many arguments\n");
 		return (CD_FAILURE);
 	}
-	if (ft_strequ(token[1], "-"))
+	if (ft_strequ(tokens[1], "-"))
 		return (change_dir_oldpwd(lst));
-	if (token[1][0] == '~')
-		return (change_dir_tilde(token[1], lst));
-	if (chdir(token[1]) == ERR_DIR_NOT_FOUND)
+	if (tokens[1][0] == '~')
+		return (change_dir_tilde(tokens[1], lst));
+	if (chdir(tokens[1]) == ERR_DIR_NOT_FOUND)
 	{
-		ft_printf("cd: directory not found: %s\n", token[1]);
+		ft_printf("cd: directory not found: %s\n", tokens[1]);
 		return (CD_FAILURE);
 	}
 	update_pwd(lst);

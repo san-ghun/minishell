@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/05 21:12:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:03:23 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,30 @@ void ft_exec_test(t_deque *deque, t_elst *lst)
 	exit(EXIT_FAILURE);
 }
 
-// built-in functions check
+/// built-in functions check
 static int dispatchcmd(t_deque *deque, t_elst *lst)
 {
-	char	**tokens;
-	int 	tokens_len;
+	t_sent	*target;
 
-	tokens = deque->begin->tokens;
-	tokens_len = deque->begin->tokens_len;
-	if (ft_strequ(tokens[0], "cd"))
+	target = deque->begin;
+	if (ft_strequ(target->tokens[0], "cd"))
 	{
-		ft_cd(tokens, tokens_len, lst);
+		ft_cd(target, lst);
+		return (1);
+	}
+	else if (ft_strequ(target->tokens[0], "echo"))
+	{
+		ft_echo(target, lst);
+		return (1);
+	}
+	else if (ft_strequ(target->tokens[0], "pwd"))
+	{
 		printf("%s\n", env_getvalue(lst, "PWD"));
 		return (1);
 	}
-	else if (ft_strequ(tokens[0], "echo"))
+	else if (ft_strequ(target->tokens[0], "env"))
 	{
-		ft_echo(deque->begin);
+		ft_env(target, lst);
 		return (1);
 	}
 	return (0);

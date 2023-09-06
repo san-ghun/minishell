@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/05 22:42:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:35:30 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int echo_flagcheck(const char *str)
 	while (*str && ft_isspace(*str))
 		str++;
 	if (*str == '\0')
-		return (true);
-	return (false);
+		return (1);
+	return (0);
 }
 
 /// @brief Determines the termination character for the 'echo' command.
@@ -48,7 +48,7 @@ char	determine_term(const char *str, int *i)
 
 	*i = echo_flagcheck(str);
 	if (*i == 1)
-		term = '%';
+		term = '\0';
 	else
 		term = '\n';
 	return (term);
@@ -67,6 +67,14 @@ void	*echo_homepath(t_elst *lst)
 		ft_putstr_fd("~", 1);
 }
 
+int	determine_toklen(int tok_len, char term)
+{
+	if (term == '\n')
+		return (tok_len);
+	if (term == '\0')
+		return (tok_len);
+	return (0);
+}
 
 /**
  * TODO : rewrite
@@ -89,16 +97,15 @@ void	ft_echo(t_sent *node, t_elst *lst)
 
 	i = 0;
 	fd = 1;
-
 	if (node->tokens[1])
 		term = determine_term(node->tokens[1], &i);
-	while (node->tokens[++i] != NULL)
+	while (++i <node->tokens_len && node->tokens[i])
 	{
 		if (ft_strequ(node->tokens[i], "~"))
 			echo_homepath(lst);
 		else
 			ft_putstr_fd(node->tokens[i], fd);
-		if (node->tokens[i + 1] != NULL)
+		if (i + 1  < node->tokens_len && node->tokens[i + 1] != NULL)
 			ft_putchar_fd(' ', fd);
 	}
 	ft_putchar_fd(term, fd);

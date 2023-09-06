@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 16:45:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:02:44 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,13 +245,14 @@ void	env_setexit(t_elst *lst, int status);
 void	ft_echo(t_sent *node, t_elst *lst);
 
 /* src/built-in/ft_env */
+void	ft_env(t_sent *node, t_elst *lst);
 t_elst	*env_to_dll(char **envp);
 char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
 /// TODO : change param
-int		ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
+int		ft_cd(t_sent *node, t_elst *lst);
 
 /* src/parsecmd/parsecmd.c */
 int		check_quotes(char *cmd, int index, int status);

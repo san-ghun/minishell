@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 17:51:24 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/06 17:00:11 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ char	*pathjoin(t_env *node)
 
 	key_len = ft_strlen(node->key);
 	value_len = ft_strlen(node->value);
-	path = ft_memalloc( key_len + 1 + value_len + 1); // Allocate memory for "KEY=VALUE\0"
+	path = ft_memalloc( key_len + 1 + value_len + 1);
 	if (!path)
 		return (NULL);
 	ft_strlcpy(path, node->key, key_len);
-	path[key_len] = '=';
+	path[key_len + 1] = '=';
 	ft_strlcpy(path + 1 + key_len, node->value, value_len);
 	return (path);
 }
@@ -97,7 +97,25 @@ char	**dll_to_envp(t_elst *lst)
 	return (envp);
 }
 
-//void	ft_env(t_sent *lst, char **envp)
-//{
-//
-//}
+///  수정 필요함.
+void	ft_env(t_sent *node, t_elst *lst)
+{
+
+	t_env	*env;
+	char	*path;
+	int		fd;
+
+	fd = 1;
+	env = lst->begin;
+
+	if (node->tokens_len == 1)
+	{
+		while (env != NULL)
+		{
+			ft_printf("%s", env->key);
+			ft_printf("=%s\n", env->value);
+			env = env->next;
+		}
+	}
+	lst->g_exit = 0;
+}
