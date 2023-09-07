@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:55 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/07 10:27:37 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:48:42 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	sent_print(t_sent *sent[])
 	{
 		j = -1;
 		ft_printf("p_unit: [%s]\n", node->p_unit);
+		ft_printf("input: %d, %s\n", node->input_flag, node->input_argv);
+		ft_printf("output: %d, %s\n", node->output_flag, node->output_argv);
 		while (++j < node->tokens_len)
 			ft_printf("[%d: %s] ", j, node->tokens[j]);
 		ft_printf("\n");
