@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/06 17:00:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:17:40 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ char	*pathjoin(t_env *node)
 	path = ft_memalloc( key_len + 1 + value_len + 1);
 	if (!path)
 		return (NULL);
-	ft_strlcpy(path, node->key, key_len);
-	path[key_len + 1] = '=';
-	ft_strlcpy(path + 1 + key_len, node->value, value_len);
+	ft_strlcpy(path, node->key, key_len + 1);
+	path[key_len] = '=';
+	ft_strlcpy(path + key_len + 1, node->value, value_len + 1);
 	return (path);
 }
 
@@ -97,7 +97,6 @@ char	**dll_to_envp(t_elst *lst)
 	return (envp);
 }
 
-///  수정 필요함.
 void	ft_env(t_sent *node, t_elst *lst)
 {
 
@@ -112,10 +111,25 @@ void	ft_env(t_sent *node, t_elst *lst)
 	{
 		while (env != NULL)
 		{
-			ft_printf("%s", env->key);
-			ft_printf("=%s\n", env->value);
+			path = pathjoin(env);
+			ft_putstr_fd(path, fd);
+			ft_putchar_fd('\n', fd);
+			free(path);
+			path = NULL;
 			env = env->next;
 		}
+	}
+	lst->g_exit = 0;
+}
+
+void	ft_pwd(t_sent *node, t_elst *lst)
+{
+	char	*path;
+	if (node->tokens_len == 1)
+	{
+		path = env_getvalue(lst, "PWD");
+		ft_putstr_fd(path, 1);
+		ft_putchar_fd('\n', 1);
 	}
 	lst->g_exit = 0;
 }

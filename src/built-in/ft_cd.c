@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/06 16:03:10 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:21:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static int change_dir_tilde(char *token, t_elst *lst)
 	return (CD_SUCCESS);
 }
 
+/// FIXME : something now work. test with pwd cmd with linux  :D
 int ft_cd(t_sent *node, t_elst *lst)
 {
 	char	**tokens;
@@ -110,7 +111,7 @@ int ft_cd(t_sent *node, t_elst *lst)
 		ft_printf("cd: too many arguments\n");
 		return (CD_FAILURE);
 	}
-	if (ft_strequ(tokens[1], "-"))
+	if (tokens[1][0] == '-')
 		return (change_dir_oldpwd(lst));
 	if (tokens[1][0] == '~')
 		return (change_dir_tilde(tokens[1], lst));

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/06 16:03:23 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:08:23 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ static int dispatchcmd(t_deque *deque, t_elst *lst)
 		ft_env(target, lst);
 		return (1);
 	}
+	else if (ft_strequ(target->tokens[0], "env"))
+	{
+		ft_pwd(target, lst);
+		return (1);
+	}
+
 	return (0);
 }
 
@@ -166,3 +172,4 @@ int	main(int argc, char *argv[], char *envp[])
 	env_dellst(lst);
 	return (0);
 }
+

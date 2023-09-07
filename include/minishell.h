@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/06 16:02:44 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:17:14 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ void	ft_echo(t_sent *node, t_elst *lst);
 
 /* src/built-in/ft_env */
 void	ft_env(t_sent *node, t_elst *lst);
+void	ft_pwd(t_sent *node, t_elst *lst);
 t_elst	*env_to_dll(char **envp);
 char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
