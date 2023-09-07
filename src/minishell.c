@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 22:37:53 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 22:50:43 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	executecmd(char *tokens[], char *envp[])
 
 static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
 {
-	int		i;
 	t_sent	*sent;
 	t_deque	*deque;
 
@@ -89,7 +88,6 @@ static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
 		ft_printf("------ result ------\n");
 	}
 
-	i = -1;
 	while (0 < deque->size)
 		executecmd(deque_pop_back(deque)->tokens, envp);
 	sent_delall(&sent);
