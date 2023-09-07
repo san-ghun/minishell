@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 12:52:41 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:39:01 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,15 @@
 // STDOUT_FILENO == 1
 // STDERR_FILENO == 2
 # define PIPE_FLAG 3
-# define REDI_FLAG 4
-# define HDOC_FLAG 5
+# define REDI_WR_APPEND_FLAG 4
+# define REDI_WR_TRUNC_FLAG 5
+# define REDI_RD_FLAG 6
+# define HDOC_FLAG 7
 
 /* minishell.c */
 
 /* minishell_util.c */
-void	getcmd(char *cmd, size_t len);
+void	getcmd(char *cmd, size_t len, int debug_mode);
 int		isexit(char *cmd);
 
 /* src/util/ */
@@ -246,7 +248,7 @@ char	**dll_to_envp(t_elst *lst);
 int		ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
 
 /* src/parsecmd/parsecmd.c */
-int		parsecmd(char *cmd, t_deque *deque, t_elst *elst);
+int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
 
 /* src/parsecmd/parsecmd_tokenize.c */
 int		get_margc(char *cmd);

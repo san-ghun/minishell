@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 13:26:09 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:41:22 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,55 @@ static char	*get_punit(char *margv[], int select, int i)
 	return (ft_strdup(punit));
 }
 
+static void	handle_redirect(t_sent *node, char *margv[], int tmp)
+{
+	if (ft_strequ(margv[tmp], "<"))
+	{
+		node->input_flag = REDI_RD_FLAG;
+		node->input_argv = ft_strdup(margv[tmp + 1]);
+	}
+	else if (ft_strequ(margv[tmp], ">"))
+	{
+		node->output_flag = REDI_WR_TRUNC_FLAG;
+		node->output_argv = ft_strdup(margv[tmp + 1]);
+	}
+	else if (ft_strequ(margv[tmp], ">>"))
+	{
+		node->output_flag = REDI_WR_APPEND_FLAG;
+		node->output_argv = ft_strdup(margv[tmp + 1]);
+	}
+	return ;
+}
+
 static int	split_cmd(t_sent *node, char *margv[], int select, int i)
 {
 	int	tmp;
 
+	tmp = select;
+	while (tmp < i)
+	{
+		// if (ft_strequ(margv[tmp], "<"))
+		// {
+		// 	select += 2;
+		// 	node->input_flag = REDI_RD_FLAG;
+		// 	node->input_argv = ft_strdup(margv[tmp + 1]);
+		// }
+		// else if (ft_strequ(margv[tmp], ">"))
+		// {
+		// 	i -= i - tmp;
+		// 	node->output_flag = REDI_WR_TRUNC_FLAG;
+		// 	node->output_argv = ft_strdup(margv[tmp + 1]);
+		// }
+		// else if (ft_strequ(margv[tmp], ">>"))
+		// {
+		// 	i -= i - tmp;
+		// 	node->output_flag = REDI_WR_APPEND_FLAG;
+		// 	node->output_argv = ft_strdup(margv[tmp + 1]);
+		// }
+		handle_redirect(node, margv, tmp);
+		tmp++;
+	}
 	tmp = 0;
-	// check for redirection or heredoc
-	// process arg `select`
 	node->tokens_len = i - select;
 	node->tokens = (char **)ft_memalloc(sizeof(char *) * (i - select) + 1);
 	while (select < i)
@@ -71,7 +113,7 @@ static int	cmdtosent(int margc, char *margv[], t_deque *deque)
 	return (i);
 }
 
-int	parsecmd(char *cmd, t_deque *deque, t_elst *elst)
+int	parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode)
 {
 	int		i;
 	int		margc;
@@ -86,15 +128,16 @@ int	parsecmd(char *cmd, t_deque *deque, t_elst *elst)
 	margc = get_margc(cmd);
 	margv = get_margv(cmd, margc);
 	cmdtosent(margc, margv, deque);
-
-	ft_printf("margc: %d\n", margc);
+	if (debug_mode)
+	{
+		i = 0;
+		while (margv[i] != NULL)
+			ft_printf("[%s] ", margv[i++]);
+		ft_printf("\n");
+	}
 	i = 0;
 	while (margv[i] != NULL)
-	{
-		ft_printf("[%s] ", margv[i]);
 		free(margv[i++]);
-	}
 	free(margv);
-	ft_printf("\n");
 	return (0);
 }
