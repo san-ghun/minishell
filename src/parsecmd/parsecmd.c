@@ -6,42 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 12:54:57 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:26:09 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_quotes(char *cmd, int index, int status)
-{
-	int	i;
-
-	i = index;
-	while (cmd[++i] != '\0')
-	{
-		if (status == 0)
-		{
-			if (cmd[i] == '\'')
-				i = check_quotes(cmd, i, '\'');
-			else if (cmd[i] == '\"')
-				i = check_quotes(cmd, i, '\"');
-			if (i == -1)
-				return (1);
-			continue ;
-		}
-		if ((status == '\'') && (cmd[i] == '\''))
-			return (i);
-		if ((status == '\"') && (cmd[i] == '\"'))
-			return (i);
-		if (cmd[i + 1] == '\0')
-			return (-1);
-	}
-	if ((status == '\'') || (status == '\"'))
-		return (-1);
-	return (0);
-}
-
-static char	*get_punit(char *margv[], int i, int select)
+static char	*get_punit(char *margv[], int select, int i)
 {
 	char	punit[DATA_SIZE];
 
@@ -57,11 +28,13 @@ static char	*get_punit(char *margv[], int i, int select)
 	return (ft_strdup(punit));
 }
 
-static int	split_cmd(t_sent *node, char *margv[], int i, int select)
+static int	split_cmd(t_sent *node, char *margv[], int select, int i)
 {
 	int	tmp;
 
 	tmp = 0;
+	// check for redirection or heredoc
+	// process arg `select`
 	node->tokens_len = i - select;
 	node->tokens = (char **)ft_memalloc(sizeof(char *) * (i - select) + 1);
 	while (select < i)
@@ -81,15 +54,17 @@ static int	cmdtosent(int margc, char *margv[], t_deque *deque)
 	{
 		if (ft_strequ(margv[i], "|"))
 		{
-			node = sent_new(get_punit(margv, i, select), 0, 1);
-			select = split_cmd(node, margv, i, select) + 1;
+			node = sent_new(get_punit(margv, select, i), \
+							STDIN_FILENO, PIPE_FLAG);
+			select = split_cmd(node, margv, select, i) + 1;
 			deque_push_front(deque, node);
 			i++;
 		}
-		else if (margc == i + 1)
+		if (margc == i + 1)
 		{
-			node = sent_new(get_punit(margv, i + 1, select), 0, 0);
-			select = split_cmd(node, margv, i + 1, select);
+			node = sent_new(get_punit(margv, select, i + 1), \
+							STDIN_FILENO, STDOUT_FILENO);
+			select = split_cmd(node, margv, select, i + 1);
 			deque_push_front(deque, node);
 		}
 	}

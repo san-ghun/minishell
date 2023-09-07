@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 12:55:36 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:52:41 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,16 @@
 # define TRUE 1
 # define FALSE 0
 
-#define DIR_CHANGE_SUCCESS 0
-#define ERR_DIR_NOT_FOUND -1
-#define ERR_INVALID_PATH -2
+# define DIR_CHANGE_SUCCESS 0
+# define ERR_DIR_NOT_FOUND -1
+# define ERR_INVALID_PATH -2
+
+// STDIN_FILENO == 0
+// STDOUT_FILENO == 1
+// STDERR_FILENO == 2
+# define PIPE_FLAG 3
+# define REDI_FLAG 4
+# define HDOC_FLAG 5
 
 /* minishell.c */
 
@@ -120,8 +127,10 @@ typedef struct s_sent
 	char			*p_unit;
 	int				tokens_len;
 	char			**tokens;
-	int				is_redir;
-	int				is_pipe;
+	int				input_flag;
+	int				output_flag;
+	char			*input_argv;
+	char			*output_argv;
 	struct s_sent	*prev;
 	struct s_sent	*next;
 }				t_sent;
@@ -181,7 +190,6 @@ t_sent	*deque_front(t_deque *deque);
 t_sent	*deque_back(t_deque *deque);
 void	deque_print_all(t_deque *deque);
 
-
 // struct t_env
 /// @brief This struct was created with a doubly linked list
 /// but can work like a deque.
@@ -235,11 +243,9 @@ char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
-int			ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
-
+int		ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
 
 /* src/parsecmd/parsecmd.c */
-int		check_quotes(char *cmd, int index, int status);
 int		parsecmd(char *cmd, t_deque *deque, t_elst *elst);
 
 /* src/parsecmd/parsecmd_tokenize.c */
@@ -247,6 +253,7 @@ int		get_margc(char *cmd);
 char	**get_margv(char *cmd, int margc);
 
 /* src/parsecmd/parsecmd_util.c */
+int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
 
 #endif
