@@ -77,17 +77,12 @@ int	determine_toklen(int tok_len, char term)
 }
 
 /**
- * TODO : rewrite
  * @brief Executes the 'echo' command with enhanced features.
- *
  * This function processes the 'echo' command, supporting advanced features:
  * 1. Tilde expansion for the home directory (~).
  * 2. Redirection (TODO: to be implemented).
  * 3. File descriptor control (TODO: to be implemented).
  * 4. Exit code testing (TODO: to be implemented).
- *
- * @param node  A structure containing the 'echo' command and its tokens.
- * @param lst   A linked list containing environmental variables.
  */
 void	ft_echo(t_sent *node, t_elst *lst)
 {

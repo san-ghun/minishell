@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/07 23:33:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/08 17:48:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 
 /**
- * Temporary message for commits.
- *
  * @brief This function converts the envp array to a Doubly Linked List (DLL).
  * The DLL uses t_env as its node, where the head of envp (i.e., before '=')
  * is stored as 'key' and the value (i.e., after '=') is stored as 'value'.
@@ -57,7 +55,8 @@ t_elst	*env_to_dll(char **envp)
 	return (lst);
 }
 
-///@brief pathjoin with malloc
+/// @brief combines a KEY and a VALUE in the form `KEY=VALUE`.
+/// The function returns a memory-allocated result.
 char	*pathjoin(t_env *node)
 {
 	char	*path;
@@ -98,7 +97,7 @@ char	**dll_to_envp(t_elst *lst)
 	return (envp);
 }
 
-///@brief pathjoin with array
+/// @brief combines a KEY and a VALUE in the form `KEY=VALUE` to @param path
 void	pathjoin_print(char *path, t_env *node)
 {
 	size_t	key_len;
@@ -112,6 +111,11 @@ void	pathjoin_print(char *path, t_env *node)
 	ft_strlcpy(path + key_len + 1, node->value, value_len + 1);
 }
 
+
+/**
+ * @note The functions below work just fine, but they don't use the proper `fd`.
+ * 1. File descriptor control (TODO: to be implemented).
+ */
 void	ft_env(t_sent *node, t_elst *lst)
 {
 
@@ -140,8 +144,7 @@ void	ft_pwd(t_sent *node, t_elst *lst)
 	if (node->tokens_len == 1)
 	{
 		path = env_getvalue(lst, "PWD");
-		ft_putstr_fd(path, 1);
-		ft_putchar_fd('\n', 1);
+		ft_putendl_fd(path, 1);
 	}
 	lst->g_exit = 0;
 }

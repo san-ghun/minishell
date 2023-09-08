@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/08 13:54:46 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/08 17:39:16 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,14 @@
 #define CD_SUCCESS 0
 #define CD_FAILURE 1
 
-// TODO: need to check what can be error code (i.g. g_exit)
+/**
+ * @brief The functions in this file are partially complete, but
+ * 1. the error message output (TODO: to be implemented)
+ * 2. signal passing arguments (TODO: to be implemented)
+ * 3. more condition check test in ft_cd (TODO: to be implemented)
+ * 4. Exit code testing (TODO: to be implemented).
+ * are incomplete. I'll update them as I go along.
+ */
 static int	save_current_dir_as_key(t_elst *lst, char *key)
 {
 	char	pwd[DATA_SIZE];
@@ -25,36 +32,11 @@ static int	save_current_dir_as_key(t_elst *lst, char *key)
 	ft_bzero(pwd, DATA_SIZE);
 	if (!getcwd(pwd, DATA_SIZE))
 	{
-		perror("getcwd"); // TODO: add overall error check
+		perror("getcwd"); // add overall error check
 		return (CD_FAILURE);
 	}
 	getcwd(pwd, DATA_SIZE);
 	env_add_or_update(lst, key, pwd);
-	return (CD_SUCCESS);
-}
-
-static int change_dir_tilde(char *token, t_elst *lst)
-{
-	char	*home_path;
-	char	full_path[DATA_SIZE];
-
-	ft_bzero(full_path, DATA_SIZE);
-	home_path = env_getvalue(lst, "HOME");
-	save_current_dir_as_key(lst, "OLDPWD");
-	if (!home_path)
-	{
-		ft_printf("cd: HOME not set\n");
-		return (CD_FAILURE);
-	}
-	ft_strlcpy(full_path, home_path, sizeof(full_path));
-	ft_strlcat(full_path, token + 1, sizeof(full_path));
-	if (chdir(full_path) == ERR_DIR_NOT_FOUND)
-	{
-		ft_printf("cd: directory not found: %s\n", full_path);
-		return (CD_FAILURE);
-	}
-	else
-		lst->g_exit = 0;
 	return (CD_SUCCESS);
 }
 
@@ -86,6 +68,31 @@ static int	change_dir(t_elst *lst)
 	}
 	else
 		lst->g_exit = 0;
+}
+
+static int change_dir_tilde(char *token, t_elst *lst)
+{
+	char	*home_path;
+	char	full_path[DATA_SIZE];
+
+	ft_bzero(full_path, DATA_SIZE);
+	home_path = env_getvalue(lst, "HOME");
+	save_current_dir_as_key(lst, "OLDPWD");
+	if (!home_path)
+	{
+		ft_printf("cd: HOME not set\n");
+		return (CD_FAILURE);
+	}
+	ft_strlcpy(full_path, home_path, sizeof(full_path));
+	ft_strlcat(full_path, token + 1, sizeof(full_path));
+	if (chdir(full_path) == ERR_DIR_NOT_FOUND)
+	{
+		ft_printf("cd: directory not found: %s\n", full_path);
+		return (CD_FAILURE);
+	}
+	else
+		lst->g_exit = 0;
+	return (CD_SUCCESS);
 }
 
 int ft_cd(t_sent *node, t_elst *lst)
