@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:59 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 17:38:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/04 15:58:02 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void	env_dellst(t_elst *lst)
 		env_delone(lst ,current);
 		current = next_node;
 	}
+	lst->g_exit = 0;
 	free(lst);
 }

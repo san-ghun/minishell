@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 17:39:01 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:45:43 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@
 
 # define DIR_CHANGE_SUCCESS 0
 # define ERR_DIR_NOT_FOUND -1
-# define ERR_INVALID_PATH -2
 
 // STDIN_FILENO == 0
 // STDOUT_FILENO == 1
@@ -99,7 +98,7 @@
 /* minishell.c */
 
 /* minishell_util.c */
-void	getcmd(char *cmd, size_t len, int debug_mode);
+void	getcmd(char *cmd, size_t len);
 int		isexit(char *cmd);
 
 /* src/util/ */
@@ -213,11 +212,14 @@ typedef struct s_env
 /// @note For convenience, unify the internal parameter names as other.
 /// @param begin front node
 /// @param end rear node
+/// @var g_exit adding it here
+/// because the global variables have become unavailable.
 typedef struct s_elst
 {
 	t_env	*begin;
 	t_env	*end;
 	int		size;
+	int 	g_exit;
 }			t_elst;
 
 /* src/t_env/env_add */
@@ -236,8 +238,20 @@ void	env_del(t_env *target);
 void	env_delone(t_elst *lst, t_env *target);
 void	env_dellst(t_elst *lst);
 
+/* src/t_env/env_util */
+///
+/// @param lst
+/// @param key
+/// @return
+char	*env_getvalue(t_elst *lst, char *key);
+///
+/// @param lst
+/// @param key
+/// @return
+void	env_setexit(t_elst *lst, int status);
+
 /* src/built-in/ft_echo */
-void	ft_echo(t_sent *node);
+void	ft_echo(t_sent *node, t_elst *lst);
 
 /* src/built-in/ft_env */
 t_elst	*env_to_dll(char **envp);
@@ -245,7 +259,7 @@ char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
-int		ft_cd(char **token, int size/* tokenize result */, t_elst *lst);
+int		ft_cd(t_sent *node, t_elst *lst);
 
 /* src/parsecmd/parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
