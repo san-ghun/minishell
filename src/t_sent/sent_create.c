@@ -6,15 +6,15 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:12 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/30 16:47:24 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:53:44 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe);
+t_sent	*sent_new(char *p_unit, int input_flag, int output_flag);
 
-t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe)
+t_sent	*sent_new(char *p_unit, int input_flag, int output_flag)
 {
 	t_sent	*this;
 
@@ -24,8 +24,10 @@ t_sent	*sent_new(char *p_unit, int is_redir, int is_pipe)
 	this->p_unit = p_unit;
 	this->tokens_len = 0;
 	this->tokens = NULL;
-	this->is_redir = is_redir;
-	this->is_pipe = is_pipe;
+	this->input_flag = input_flag;
+	this->output_flag = output_flag;
+	this->input_argv = NULL;
+	this->output_argv = NULL;
 	this->prev = NULL;
 	this->next = NULL;
 	return (this);

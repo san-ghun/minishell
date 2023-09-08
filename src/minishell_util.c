@@ -6,17 +6,20 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 16:21:57 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/07/29 14:13:18 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:24:40 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	getcmd(char *cmd, size_t len)
+void	getcmd(char *cmd, size_t len, int debug_mode)
 {
 	char	*command;
 
-	command = readline("> ");
+	if (debug_mode)
+		command = readline("미쉘(debug)> ");
+	else
+		command = readline("미쉘> ");
 	if (!command)
 	{
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
