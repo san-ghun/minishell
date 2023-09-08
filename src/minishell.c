@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 12:56:37 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 22:50:43 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	sighandler(int signal)
 	rl_redisplay();
 }
 
-size_t	readcmd(char *cmd)
+size_t	readcmd(char *cmd, int debug_mode)
 {
 	size_t	len;
 	size_t	total_len;
@@ -34,7 +34,7 @@ size_t	readcmd(char *cmd)
 	total_len = ft_strlen(cmd);
 	while (1)
 	{
-		getcmd(temp_cmd, 0);
+		getcmd(temp_cmd, 0, debug_mode);
 		len = ft_strcspn(temp_cmd, "\n");
 		if (len == 0 || temp_cmd[len - 1] != '\\')
 		{
@@ -71,54 +71,53 @@ void	executecmd(char *tokens[], char *envp[])
 	wait(NULL);
 }
 
+static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
+{
+	t_sent	*sent;
+	t_deque	*deque;
+
+	deque = deque_init();
+	parsecmd(cmd, deque, lst, debug_mode);
+	sent = deque->end;
+
+	if (debug_mode)
+	{
+		ft_printf("\n");
+		sent_print(&sent);
+		ft_printf("\n");
+		ft_printf("------ result ------\n");
+	}
+
+	while (0 < deque->size)
+		executecmd(deque_pop_back(deque)->tokens, envp);
+	sent_delall(&sent);
+	deque_del(deque);
+	return ;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
+	int		debug_mode;
 	char	cmd[MAX_COMMAND_LEN];
-	t_deque	*deque;
 	t_elst	*lst;
 
-	(void)envp;
-	if (argc > 1 && argv)
+	debug_mode = FALSE;
+	if (ft_strequ(argv[1], "--debug") || ft_strequ(argv[1], "-d"))
+		debug_mode = TRUE;
+	else if (argc > 1 && argv)
+	{
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
+		return (0);
+	}
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
 	while (1)
 	{
-		// Step 1: Accept user input
-		// Create an infinite loop that continuously prompts the user for input.
-		readcmd(cmd);
-
-		// Step 2: Handle exit condition
-		// Define an exit condition for the shell, such as typing "exit" 
-		// or pressing a specific key combination.
-		// Break the loop and exit the shell when the exit condition is met.
+		readcmd(cmd, debug_mode);
 		if (isexit(cmd))
 			break ;
-
-		deque = deque_init();
-
-		// Step 3: Parse the command
-		// Split the user input into individual tokens (commands and arguments) 
-		// using whitespace as a delimiter.
-		// The first token represents the command, 
-		// and subsequent tokens are arguments.
-		parsecmd(cmd, deque, lst);
-
-		ft_printf("\n");
-		sent_print(&deque->end);
-		ft_printf("\n");
-		deque_print_all(deque);
-
-		// Step 4: Execute the command
-		// Implement a function or a series of conditional statements 
-		// to handle various commands.
-		// Check the command token and execute the corresponding action or 
-		// system command using libraries or system calls.
-		// executecmd(tokens, envp);
-
-		sent_delall(&deque->end);
-		deque_del(deque);
+		looper(cmd, envp, lst, debug_mode);
 	}
 	env_dellst(lst);
 	return (0);

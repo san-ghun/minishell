@@ -6,11 +6,41 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 12:56:59 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:52:21 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+int	check_quotes(char *cmd, int index, int status)
+{
+	int	i;
+
+	i = index;
+	while (cmd[++i] != '\0')
+	{
+		if (status == 0)
+		{
+			if (cmd[i] == '\'')
+				i = check_quotes(cmd, i, '\'');
+			else if (cmd[i] == '\"')
+				i = check_quotes(cmd, i, '\"');
+			if (i == -1)
+				return (1);
+			continue ;
+		}
+		if ((status == '\'') && (cmd[i] == '\''))
+			return (i);
+		if ((status == '\"') && (cmd[i] == '\"'))
+			return (i);
+		if (cmd[i + 1] == '\0')
+			return (-1);
+	}
+	if ((status == '\'') || (status == '\"'))
+		return (-1);
+	return (0);
+}
 
 static int	append_env(char *str, char *cmd, t_elst *lst)
 {
