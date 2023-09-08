@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/07 17:17:40 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/07 23:33:02 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_elst	*env_to_dll(char **envp)
 	return (lst);
 }
 
+///@brief pathjoin with malloc
 char	*pathjoin(t_env *node)
 {
 	char	*path;
@@ -97,11 +98,25 @@ char	**dll_to_envp(t_elst *lst)
 	return (envp);
 }
 
+///@brief pathjoin with array
+void	pathjoin_print(char *path, t_env *node)
+{
+	size_t	key_len;
+	size_t	value_len;
+
+	key_len = ft_strlen(node->key);
+	value_len = ft_strlen(node->value);
+
+	ft_strlcpy(path, node->key, key_len + 1);
+	path[key_len] = '=';
+	ft_strlcpy(path + key_len + 1, node->value, value_len + 1);
+}
+
 void	ft_env(t_sent *node, t_elst *lst)
 {
 
 	t_env	*env;
-	char	*path;
+	char	path[DATA_SIZE];
 	int		fd;
 
 	fd = 1;
@@ -111,11 +126,8 @@ void	ft_env(t_sent *node, t_elst *lst)
 	{
 		while (env != NULL)
 		{
-			path = pathjoin(env);
-			ft_putstr_fd(path, fd);
-			ft_putchar_fd('\n', fd);
-			free(path);
-			path = NULL;
+			pathjoin_print(path, env);
+			ft_putendl_fd(path, fd);
 			env = env->next;
 		}
 	}

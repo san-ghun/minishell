@@ -86,8 +86,8 @@ int	determine_toklen(int tok_len, char term)
  * 3. File descriptor control (TODO: to be implemented).
  * 4. Exit code testing (TODO: to be implemented).
  *
- * @param[in] node  A structure containing the 'echo' command and its tokens.
- * @param[in] lst   A linked list containing environmental variables.
+ * @param node  A structure containing the 'echo' command and its tokens.
+ * @param lst   A linked list containing environmental variables.
  */
 void	ft_echo(t_sent *node, t_elst *lst)
 {
