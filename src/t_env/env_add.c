@@ -77,32 +77,3 @@ int	env_addnext(t_elst **lst, t_env **current, t_env **new_node)
 		return (1);
 	}
 }
-
-/// @brief Adds or updates a key-value pair in the environment list.
-///
-/// This function searches the list for a given key. If the key is found, it updates
-/// the associated value. If the key is not found, it creates a new node with the
-/// given key-value pair and adds it to the end of the list.
-///
-/// @param lst The environment list to update.
-/// @param key The key to search for or add.
-/// @param value The value to set or update.
-void	env_add_or_update(t_elst *lst, char *key, char *value)
-{
-	t_env	*current;
-	t_env	*new_node;
-
-	current = lst->begin;
-	while (current)
-	{
-		if (ft_strequ(current->key, key))
-		{
-			free(current->value);
-			current->value = ft_strdup(value);
-			return ;
-		}
-		current = current->next;
-	}
-	new_node = env_newnode(ft_strdup(key), ft_strdup(value));
-	env_addrear(&lst, &new_node);
-}

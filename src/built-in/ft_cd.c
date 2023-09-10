@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/08 17:39:16 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 14:50:03 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
 
-#define CD_SUCCESS 0
-#define CD_FAILURE 1
+# define CD_SUCCESS 0
+# define CD_FAILURE 1
 
 /**
  * @brief The functions in this file are partially complete, but
@@ -25,99 +25,65 @@
  * 4. Exit code testing (TODO: to be implemented).
  * are incomplete. I'll update them as I go along.
  */
-static int	save_current_dir_as_key(t_elst *lst, char *key)
+int	ft_arrayjoin(char dest[DATA_SIZE], \
+const char src1[DATA_SIZE], const char src2[DATA_SIZE])
 {
-	char	pwd[DATA_SIZE];
+	size_t	len1;
+	size_t	len2;
 
-	ft_bzero(pwd, DATA_SIZE);
-	if (!getcwd(pwd, DATA_SIZE))
-	{
-		perror("getcwd"); // add overall error check
-		return (CD_FAILURE);
-	}
-	getcwd(pwd, DATA_SIZE);
-	env_add_or_update(lst, key, pwd);
-	return (CD_SUCCESS);
+	len1 = ft_strlen(src1);
+	len2 = ft_strlen(src2);
+	if (len1 + len2 + 1 > DATA_SIZE)
+		return (0);
+	ft_strlcpy(dest, src1, DATA_SIZE);
+	ft_strlcat(dest, src2, DATA_SIZE);
+	return (1);
 }
 
-static int	change_dir_key(t_elst *lst, char *key)
+void	ft_pathcpy(t_elst *lst, char *key, char path[], int size)
 {
-	char	*path;
+	char	*value;
 
-	path = env_getvalue(lst, key);
-	save_current_dir_as_key(lst, "OLDPWD");
-	if (!path || chdir(path) == ERR_DIR_NOT_FOUND)
-	{
-		ft_printf("cd: directory not found: %s\n", path);
-		return (CD_FAILURE);
-	}
-	else
-		lst->g_exit = 0;
+	ft_bzero(path, size);
+	value = env_getvalue(lst, key);
+	if (value == NULL)
+		return ;
+	ft_strlcpy(path, value, size);
 }
 
-static int	change_dir(t_elst *lst)
+void	cd_tilde(char full_path[DATA_SIZE], char *token, t_elst *lst)
 {
-	char	path[DATA_SIZE];
-
-	getcwd(path, DATA_SIZE);
-	save_current_dir_as_key(lst, "OLDPWD");
-	if (chdir(path) == ERR_DIR_NOT_FOUND)
-	{
-		ft_printf("cd: directory not found: %s\n", path);
-		return (CD_FAILURE);
-	}
-	else
-		lst->g_exit = 0;
-}
-
-static int change_dir_tilde(char *token, t_elst *lst)
-{
-	char	*home_path;
-	char	full_path[DATA_SIZE];
+	char	home_path[DATA_SIZE];
 
 	ft_bzero(full_path, DATA_SIZE);
-	home_path = env_getvalue(lst, "HOME");
-	save_current_dir_as_key(lst, "OLDPWD");
-	if (!home_path)
-	{
-		ft_printf("cd: HOME not set\n");
-		return (CD_FAILURE);
-	}
-	ft_strlcpy(full_path, home_path, sizeof(full_path));
-	ft_strlcat(full_path, token + 1, sizeof(full_path));
-	if (chdir(full_path) == ERR_DIR_NOT_FOUND)
-	{
-		ft_printf("cd: directory not found: %s\n", full_path);
-		return (CD_FAILURE);
-	}
-	else
-		lst->g_exit = 0;
-	return (CD_SUCCESS);
+	ft_pathcpy(lst, "HOME", home_path, DATA_SIZE);
+	ft_arrayjoin(full_path, home_path, token + 1);
 }
 
-int ft_cd(t_sent *node, t_elst *lst)
+int	ft_cd(t_sent *node, t_elst *lst)
 {
 	char	**tokens;
-	int 	size;
+	char	current_path[DATA_SIZE];
+	char	new_path[DATA_SIZE];
 
 	tokens = node->tokens;
-	size = node->tokens_len;
-	if (size == 1 && ft_strequ(tokens[0], "cd"))
-		return (change_dir_key(lst, "HOME"));
-	if (size > 3)
-	{
-		ft_printf("cd: too many arguments\n");
-		return (CD_FAILURE);
-	}
-	if (tokens[1][0] == '-')
-		return (change_dir_key(lst, "OLDPWD"));
-	if (tokens[1][0] == '~')
-		return (change_dir_tilde(tokens[1], lst));
-	if (chdir(tokens[1]) == ERR_DIR_NOT_FOUND)
-	{
-		ft_printf("cd: directory not found: %s\n", tokens[1]);
-		return (CD_FAILURE);
-	}
+	if (node->tokens_len == 1)
+		ft_pathcpy(lst, "HOME", new_path, DATA_SIZE);
+	else if (tokens[1][0] == '-')
+		ft_pathcpy(lst, "OLDPWD", new_path, DATA_SIZE);
+	else if (tokens[1][0] == '~')
+		cd_tilde(new_path, tokens[1], lst);
 	else
-		return (change_dir(lst));
+		ft_strlcpy(new_path, tokens[1], DATA_SIZE);
+	getcwd(current_path, DATA_SIZE);
+	if (chdir(new_path) == ERR_DIR_NOT_FOUND)
+	{
+		ft_printf("cd: directory not found: %s\n", new_path);
+		return (CD_FAILURE);
+	}
+	ft_setenv(lst, "OLDPWD", current_path, TRUE);
+	getcwd(current_path, DATA_SIZE);
+	ft_setenv(lst, "PWD", current_path, TRUE);
+	lst->g_exit = 0;
+	return (CD_SUCCESS);
 }
