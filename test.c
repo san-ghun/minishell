@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 15:14:12 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:45:28 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,25 @@ static int	dispatchcmd(t_sent *node, t_elst *lst)
 	return (0);
 }
 
+/// TMP FUNCTION.
+void	free_mevnp(char **menvp)
+{
+	int i;
+
+	i = -1
+	while(menvp[++i])
+		free(menvp[i]);
+	free(menvp);
+	menvp = NULL;
+}
+
+/// I've marked the parts I've edited.
 void	executecmd(t_sent *node, t_elst *lst)
 {
 	pid_t	pid;
-	char	**menvp;
+	char	**menvp; // edited
 
-	if (dispatchcmd(node, lst));
+	if (dispatchcmd(node, lst)) // edited
 		return ;
 	pid = fork();
 	if (pid < 0)
@@ -97,9 +110,9 @@ void	executecmd(t_sent *node, t_elst *lst)
 	{
 		if (node->tokens[0] == NULL)
 			exit(EXIT_SUCCESS);
-		menvp = dll_to_envp(lst);
-		ft_exec(node->tokens, menvp);
-		free(menvp);
+		menvp = dll_to_envp(lst); // edited
+		ft_exec(node->tokens, menvp); // edited
+		free_mevnp(menvp); /// edited
 		perror("Error");
 		ft_putstr_fd("Failed to execute command\n", 2);
 		exit(EXIT_FAILURE);

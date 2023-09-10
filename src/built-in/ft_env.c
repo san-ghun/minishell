@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 14:50:31 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:33:42 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ char	**dll_to_envp(t_elst *lst)
 	char	**envp;
 	int		i;
 
-	envp = ft_memalloc(sizeof(char *) * lst->size + 1);
+	envp = ft_memalloc(sizeof(char *) * (lst->size + 1));
 	if (!envp)
 		return (NULL);
 	node = lst->begin;
 	i = 0;
-	while (node != NULL)
+	while (node != NULL && i < lst->size)
 	{
 		envp[i] = pathjoin(node);
 		if (envp[i] == NULL)
