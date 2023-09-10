@@ -6,39 +6,13 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 12:53:19 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:14:12 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../include/minishell.h"
 #include "../../libft/include/libft.h"
-
-/// built-in functions check
-static int dispatchcmd(t_sent *node, t_elst *lst)
-{
-	if (ft_strequ(node->tokens[0], "cd"))
-	{
-		ft_cd(node, lst);
-		return (1);
-	}
-	else if (ft_strequ(node->tokens[0], "echo"))
-	{
-		ft_echo(node, lst);
-		return (1);
-	}
-	else if (ft_strequ(node->tokens[0], "pwd"))
-	{
-		ft_pwd(node, lst);
-		return (1);
-	}
-	else if (ft_strequ(node->tokens[0], "env"))
-	{
-		ft_env(node, lst);
-		return (1);
-	}
-	return (0);
-}
 
 static void	sighandler(int signal)
 {
@@ -74,6 +48,35 @@ size_t	readcmd(char *cmd, int debug_mode)
 	total_len = ft_strlen(cmd);
 	cmd[total_len] = '\0';
 	return (total_len);
+}
+
+/// built-in functions check
+typedef struct s_cmd
+{
+	char	*cmd_name;
+	void	(*cmd_func)(t_sent *node, t_elst *lst);
+}				t_cmd;
+
+static int	dispatchcmd(t_sent *node, t_elst *lst)
+{
+	static t_cmd	cmd_table[] = {
+			{"cd", ft_cd},
+			{"echo", ft_echo},
+			{"pwd", ft_pwd},
+			{"env", ft_env},
+			{NULL, NULL}};
+	int				i;
+
+	i = -1;
+	while (cmd_table[++i].cmd_name)
+	{
+		if (ft_strequ(node->tokens[0], cmd_table[i].cmd_name))
+		{
+			cmd_table[i].cmd_func(node, lst);
+			return (1);
+		}
+	}
+	return (0);
 }
 
 void	executecmd(t_sent *node, t_elst *lst)

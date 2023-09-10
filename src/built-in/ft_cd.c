@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 14:50:03 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:09:52 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	cd_tilde(char full_path[DATA_SIZE], char *token, t_elst *lst)
 	ft_arrayjoin(full_path, home_path, token + 1);
 }
 
-int	ft_cd(t_sent *node, t_elst *lst)
+void	ft_cd(t_sent *node, t_elst *lst)
 {
 	char	**tokens;
 	char	current_path[DATA_SIZE];
@@ -79,11 +79,10 @@ int	ft_cd(t_sent *node, t_elst *lst)
 	if (chdir(new_path) == ERR_DIR_NOT_FOUND)
 	{
 		ft_printf("cd: directory not found: %s\n", new_path);
-		return (CD_FAILURE);
+		return ;
 	}
 	ft_setenv(lst, "OLDPWD", current_path, TRUE);
 	getcwd(current_path, DATA_SIZE);
 	ft_setenv(lst, "PWD", current_path, TRUE);
 	lst->g_exit = 0;
-	return (CD_SUCCESS);
 }
