@@ -84,7 +84,7 @@ void	free_mevnp(char **menvp)
 {
 	int i;
 
-	i = -1
+	i = -1;
 	while(menvp[++i])
 		free(menvp[i]);
 	free(menvp);
