@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/12 21:53:24 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/12 22:46:15 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	readcmd(char *cmd, int debug_mode)
 	return (total_len);
 }
 
-static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
+static void	looper(char *cmd, t_elst *lst, int debug_mode)
 {
 	t_sent	*sent;
 	t_deque	*deque;
@@ -93,7 +93,7 @@ int	main(int argc, char *argv[], char *envp[])
 		readcmd(cmd, debug_mode);
 		if (isexit(cmd))
 			break ;
-		looper(cmd, envp, lst, debug_mode);
+		looper(cmd, lst, debug_mode);
 	}
 	env_dellst(lst);
 	return (0);
