@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/04 16:45:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:10:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@
 /* minishell.c */
 
 /* minishell_util.c */
-void	getcmd(char *cmd, size_t len);
+void	getcmd(char *cmd, size_t len, int debug_mode);
 int		isexit(char *cmd);
 
 /* src/util/ */
@@ -226,7 +226,6 @@ typedef struct s_elst
 int		env_addfront(t_elst **lst, t_env **new_node);
 int		env_addrear(t_elst **lst, t_env **new_node);
 int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
-void	env_add_or_update(t_elst *lst, char *key, char *value);
 
 /* src/t_env/env_init */
 void	env_updatesize(t_elst *lst, int add);
@@ -239,27 +238,27 @@ void	env_delone(t_elst *lst, t_env *target);
 void	env_dellst(t_elst *lst);
 
 /* src/t_env/env_util */
-///
-/// @param lst
-/// @param key
-/// @return
+int		ft_setenv(t_elst *lst, const char *key, const char *value, int overwrite);
 char	*env_getvalue(t_elst *lst, char *key);
-///
-/// @param lst
-/// @param key
-/// @return
 void	env_setexit(t_elst *lst, int status);
 
+/// built-in.folder
 /* src/built-in/ft_echo */
 void	ft_echo(t_sent *node, t_elst *lst);
 
 /* src/built-in/ft_env */
+void	ft_pwd(t_sent *node, t_elst *lst);
+void	ft_env(t_sent *node, t_elst *lst);
 t_elst	*env_to_dll(char **envp);
 char	*pathjoin(t_env *node);
 char	**dll_to_envp(t_elst *lst);
 
 /*src/built-in/ft_cd */
-int		ft_cd(t_sent *node, t_elst *lst);
+void	ft_cd(t_sent *node, t_elst *lst);
+
+/*src/built-in/ft_export */
+
+
 
 /* src/parsecmd/parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);

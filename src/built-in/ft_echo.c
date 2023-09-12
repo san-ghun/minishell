@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/06 16:35:30 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:15:06 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 static int echo_flagcheck(const char *str)
 {
-	char	*tmp;
 	while (*str && ft_isspace(*str))
 		str++;
 	if (ft_strnequ(str, "-n", 2))
@@ -55,7 +54,7 @@ char	determine_term(const char *str, int *i)
 }
 
 ///  Tilde expansion for the home directory (~)
-void	*echo_homepath(t_elst *lst)
+void	echo_homepath(t_elst *lst)
 {
 	char	*path;
 

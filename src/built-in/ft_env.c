@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/08 17:48:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:33:42 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ char	**dll_to_envp(t_elst *lst)
 	char	**envp;
 	int		i;
 
-	envp = ft_memalloc(sizeof(char *) * lst->size + 1);
+	envp = ft_memalloc(sizeof(char *) * (lst->size + 1));
 	if (!envp)
 		return (NULL);
 	node = lst->begin;
 	i = 0;
-	while (node != NULL)
+	while (node != NULL && i < lst->size)
 	{
 		envp[i] = pathjoin(node);
 		if (envp[i] == NULL)
@@ -138,13 +138,17 @@ void	ft_env(t_sent *node, t_elst *lst)
 	lst->g_exit = 0;
 }
 
+/**
+ * @note The functions below work just fine, but they don't use the proper `fd`.
+ * 1. File descriptor control (TODO: to be implemented).
+ * 2. redirection (perhaps ?)
+ */
 void	ft_pwd(t_sent *node, t_elst *lst)
 {
-	char	*path;
+	int		fd;
+
+	fd = 1;
 	if (node->tokens_len == 1)
-	{
-		path = env_getvalue(lst, "PWD");
-		ft_putendl_fd(path, 1);
-	}
+		ft_putendl_fd(env_getvalue(lst, "PWD"), fd);
 	lst->g_exit = 0;
 }

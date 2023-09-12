@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/07 17:08:23 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:45:28 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	sighandler(int signal)
 	rl_redisplay();
 }
 
-size_t	readcmd(char *cmd)
+size_t	readcmd(char *cmd, int debug_mode)
 {
 	size_t	len;
 	size_t	total_len;
@@ -36,7 +36,7 @@ size_t	readcmd(char *cmd)
 	total_len = ft_strlen(cmd);
 	while (1)
 	{
-		getcmd(temp_cmd, 0);
+		getcmd(temp_cmd, 0, debug_mode);
 		len = ft_strcspn(temp_cmd, "\n");
 		if (len == 0 || temp_cmd[len - 1] != '\\')
 		{
@@ -50,57 +50,55 @@ size_t	readcmd(char *cmd)
 	return (total_len);
 }
 
-void ft_exec_test(t_deque *deque, t_elst *lst)
-{
-	char **tokens = deque->begin->tokens;
-
-	execvp(tokens[0], tokens);
-	perror("Error");
-	ft_putstr_fd("Failed to execute command\n", 2);
-	exit(EXIT_FAILURE);
-}
-
 /// built-in functions check
-static int dispatchcmd(t_deque *deque, t_elst *lst)
+typedef struct s_cmd
 {
-	t_sent	*target;
+	char	*cmd_name;
+	void	(*cmd_func)(t_sent *node, t_elst *lst);
+}				t_cmd;
 
-	target = deque->begin;
-	if (ft_strequ(target->tokens[0], "cd"))
-	{
-		ft_cd(target, lst);
-		return (1);
-	}
-	else if (ft_strequ(target->tokens[0], "echo"))
-	{
-		ft_echo(target, lst);
-		return (1);
-	}
-	else if (ft_strequ(target->tokens[0], "pwd"))
-	{
-		printf("%s\n", env_getvalue(lst, "PWD"));
-		return (1);
-	}
-	else if (ft_strequ(target->tokens[0], "env"))
-	{
-		ft_env(target, lst);
-		return (1);
-	}
-	else if (ft_strequ(target->tokens[0], "env"))
-	{
-		ft_pwd(target, lst);
-		return (1);
-	}
+static int	dispatchcmd(t_sent *node, t_elst *lst)
+{
+	static t_cmd	cmd_table[] = {
+			{"cd", ft_cd},
+			{"echo", ft_echo},
+			{"pwd", ft_pwd},
+			{"env", ft_env},
+			{NULL, NULL}};
+	int				i;
 
+	i = -1;
+	while (cmd_table[++i].cmd_name)
+	{
+		if (ft_strequ(node->tokens[0], cmd_table[i].cmd_name))
+		{
+			cmd_table[i].cmd_func(node, lst);
+			return (1);
+		}
+	}
 	return (0);
 }
 
-void executecmd(t_deque *deque, t_elst *lst)
+/// TMP FUNCTION.
+void	free_mevnp(char **menvp)
 {
-	pid_t   pid;
+	int i;
 
-	if (dispatchcmd(deque, lst))
-		return;
+	i = -1;
+	while(menvp[++i])
+		free(menvp[i]);
+	free(menvp);
+	menvp = NULL;
+}
+
+/// I've marked the parts I've edited.
+void	executecmd(t_sent *node, t_elst *lst)
+{
+	pid_t	pid;
+	char	**menvp; // edited
+
+	if (dispatchcmd(node, lst)) // edited
+		return ;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -110,9 +108,11 @@ void executecmd(t_deque *deque, t_elst *lst)
 	}
 	else if (pid == 0)
 	{
-		if (deque->begin == NULL)
+		if (node->tokens[0] == NULL)
 			exit(EXIT_SUCCESS);
-		ft_exec_test(deque, lst);
+		menvp = dll_to_envp(lst); // edited
+		ft_exec(node->tokens, menvp); // edited
+		free_mevnp(menvp); /// edited
 		perror("Error");
 		ft_putstr_fd("Failed to execute command\n", 2);
 		exit(EXIT_FAILURE);
@@ -120,56 +120,54 @@ void executecmd(t_deque *deque, t_elst *lst)
 	wait(NULL);
 }
 
+static void	looper(char *cmd, t_elst *lst, int debug_mode)
+{
+	t_sent	*sent;
+	t_deque	*deque;
+
+	deque = deque_init();
+	parsecmd(cmd, deque, lst, debug_mode);
+	sent = deque->end;
+
+	if (debug_mode)
+	{
+		ft_printf("\n");
+		sent_print(&sent);
+		ft_printf("\n");
+		ft_printf("------ result ------\n");
+	}
+
+	while (0 < deque->size)
+		executecmd(deque_pop_back(deque), lst);
+	sent_delall(&sent);
+	deque_del(deque);
+	return ;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
+	int		debug_mode;
 	char	cmd[MAX_COMMAND_LEN];
-	t_deque	*deque;
 	t_elst	*lst;
 
-	(void)envp;
-	if (argc > 1 && argv)
+	debug_mode = FALSE;
+	if (ft_strequ(argv[1], "--debug") || ft_strequ(argv[1], "-d"))
+		debug_mode = TRUE;
+	else if (argc > 1 && argv)
+	{
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
+		return (0);
+	}
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
 	while (1)
 	{
-		// Step 1: Accept user input
-		// Create an infinite loop that continuously prompts the user for input.
-		readcmd(cmd);
-
-		// Step 2: Handle exit condition
-		// Define an exit condition for the shell, such as typing "exit"
-		// or pressing a specific key combination.
-		// Break the loop and exit the shell when the exit condition is met.
+		readcmd(cmd, debug_mode);
 		if (isexit(cmd))
 			break ;
-
-		deque = deque_init();
-
-		// Step 3: Parse the command
-		// Split the user input into individual tokens (commands and arguments)
-		// using whitespace as a delimiter.
-		// The first token represents the command,
-		// and subsequent tokens are arguments.
-		parsecmd(cmd, deque, lst);
-
-//		ft_printf("\n");
-//		sent_print(&deque->end);
-//		ft_printf("\n");
-//		deque_print_all(deque);
-
-		// Step 4: Execute the command
-		// Implement a function or a series of conditional statements
-		// to handle various commands.
-		// Check the command token and execute the corresponding action or
-		// system command using libraries or system calls.
-		executecmd(deque, lst);
-
-		sent_delall(&deque->end);
-		deque_del(deque);
+		looper(cmd, lst, debug_mode);
 	}
 	env_dellst(lst);
 	return (0);
 }
-
