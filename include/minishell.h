@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/10 15:10:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/12 21:55:08 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ typedef struct s_elst
 	t_env	*begin;
 	t_env	*end;
 	int		size;
-	int 	g_exit;
+	int		g_exit;
 }			t_elst;
 
 /* src/t_env/env_add */
@@ -238,7 +238,8 @@ void	env_delone(t_elst *lst, t_env *target);
 void	env_dellst(t_elst *lst);
 
 /* src/t_env/env_util */
-int		ft_setenv(t_elst *lst, const char *key, const char *value, int overwrite);
+int		ft_setenv(t_elst *lst, const char *key, \
+					const char *value, int overwrite);
 char	*env_getvalue(t_elst *lst, char *key);
 void	env_setexit(t_elst *lst, int status);
 
@@ -258,8 +259,6 @@ void	ft_cd(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_export */
 
-
-
 /* src/parsecmd/parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
 
@@ -270,5 +269,8 @@ char	**get_margv(char *cmd, int margc);
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
+
+/* src/executecmd/executecmd.c */
+void	executecmd(t_deque *deque, t_elst *lst);
 
 #endif

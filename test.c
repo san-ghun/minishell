@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 21:03:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 15:45:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/12 22:26:26 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,11 @@ void	free_mevnp(char **menvp)
 	menvp = NULL;
 }
 
-/// I've marked the parts I've edited.
-void	executecmd(t_sent *node, t_elst *lst)
+void	execute_node(t_sent *node, t_elst *lst)
 {
 	pid_t	pid;
 	char	**menvp; // edited
 
-	if (dispatchcmd(node, lst)) // edited
-		return ;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -110,6 +107,8 @@ void	executecmd(t_sent *node, t_elst *lst)
 	{
 		if (node->tokens[0] == NULL)
 			exit(EXIT_SUCCESS);
+		if (dispatchcmd(node, lst)) // edited
+			exit(EXIT_SUCCESS);
 		menvp = dll_to_envp(lst); // edited
 		ft_exec(node->tokens, menvp); // edited
 		free_mevnp(menvp); /// edited
@@ -118,6 +117,19 @@ void	executecmd(t_sent *node, t_elst *lst)
 		exit(EXIT_FAILURE);
 	}
 	wait(NULL);
+}
+
+/// I've marked the parts I've edited.
+void	executecmd(t_deque *deque, t_elst *lst)
+{
+	t_sent	*node;
+
+	while (0 < deque->size)
+	{
+		node = deque_pop_back(deque);
+		execute_node(node, lst);
+	}
+	return ;
 }
 
 static void	looper(char *cmd, t_elst *lst, int debug_mode)
@@ -137,8 +149,7 @@ static void	looper(char *cmd, t_elst *lst, int debug_mode)
 		ft_printf("------ result ------\n");
 	}
 
-	while (0 < deque->size)
-		executecmd(deque_pop_back(deque), lst);
+	executecmd(deque, lst);
 	sent_delall(&sent);
 	deque_del(deque);
 	return ;

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 22:50:43 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/12 22:46:15 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,30 +48,7 @@ size_t	readcmd(char *cmd, int debug_mode)
 	return (total_len);
 }
 
-void	executecmd(char *tokens[], char *envp[])
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("Error");
-		ft_putstr_fd("Failed to fork\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		if (tokens[0] == NULL)
-			exit(EXIT_SUCCESS);
-		ft_exec(tokens, envp);
-		perror("Error");
-		ft_putstr_fd("Failed to execute command\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	wait(NULL);
-}
-
-static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
+static void	looper(char *cmd, t_elst *lst, int debug_mode)
 {
 	t_sent	*sent;
 	t_deque	*deque;
@@ -88,8 +65,7 @@ static void	looper(char *cmd, char *envp[], t_elst *lst, int debug_mode)
 		ft_printf("------ result ------\n");
 	}
 
-	while (0 < deque->size)
-		executecmd(deque_pop_back(deque)->tokens, envp);
+	executecmd(deque, lst);
 	sent_delall(&sent);
 	deque_del(deque);
 	return ;
@@ -117,7 +93,7 @@ int	main(int argc, char *argv[], char *envp[])
 		readcmd(cmd, debug_mode);
 		if (isexit(cmd))
 			break ;
-		looper(cmd, envp, lst, debug_mode);
+		looper(cmd, lst, debug_mode);
 	}
 	env_dellst(lst);
 	return (0);
