@@ -6,7 +6,7 @@
 #    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/09/01 17:21:07 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/09/12 22:28:01 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,6 +98,7 @@ TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
 TMP_LIB_D	= $(shell find ./src/t_env -iname "*.c")
 TMP_LIB_E	= $(shell find ./src/built-in -iname "*.c")
 TMP_LIB_F	= $(shell find ./src/parsecmd -iname "*.c")
+TMP_LIB_G	= $(shell find ./src/executecmd -iname "*.c")
 
 TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(SRC_DIR)/pipex.c \
@@ -107,7 +108,8 @@ TMP 		= $(SRC_DIR)/pipex_util.c \
 				$(TMP_LIB_C) \
 				$(TMP_LIB_D) \
 				$(TMP_LIB_E) \
-				$(TMP_LIB_F)
+				$(TMP_LIB_F) \
+#				$(TMP_LIB_G)
 #				$(SRC_DIR)/minishell.c \
 
 
