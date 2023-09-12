@@ -6,25 +6,22 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/22 13:46:33 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 00:08:46 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @note These functions have been 'briefly' tested.
- */
+/// @note These functions have been 'briefly' tested.
 size_t	ft_strcspn(const char *str, const char *charset);
 
-/**
- * @brief Calculates the length of the initial segment of a string that does
- * NOT match with characters from a specified set.
- * @param str  The string to be examined.
- * @param charset The set of characters to be used as stopper.
- * @return The length of the initial segment of 'str'
- * that NOT match any character in 'charset'.
- */
+
+/// @brief Calculates the length of the initial segment of a string that does
+/// NOT match with characters from a specified set.
+/// @param str  The string to be examined.
+/// @param charset The set of characters to be used as stopper.
+/// @return The length of the initial segment of 'str'
+/// that NOT match any character in 'charset'.
 size_t	ft_strcspn(const char *str, const char *charset)
 {
 	size_t	initial_length;

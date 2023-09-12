@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
 
 /// @brief This DLL stores the start and end nodes separately in t_elst lst,
 /// and lst updates size, which is the total number of nodes.

@@ -6,14 +6,12 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 15:33:42 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 00:05:49 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
-#include <assert.h>
+#include <assert.h> /// 나중에 제거하기 !
 
 
 /**

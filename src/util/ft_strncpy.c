@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// extension function for mini shell project
 char	*ft_strncpy(char *dest, const char *src, size_t size);
 
 char	*ft_strncpy(char *dest, const char *src, size_t size)
