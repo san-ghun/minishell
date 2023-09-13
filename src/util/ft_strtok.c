@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 19:59:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/07/24 22:08:09 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/13 00:10:08 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,15 @@
 
 char	*ft_strtok(char *str, const char *delim);
 
-// This function Depends on ft_strtok.
-// static void	set_token_ptr(char *str, char **start_ptr, char **tok_ptr)
-// {
-// 	if (str != NULL)
-// 	{
-// 		*start_ptr = str;
-// 		*tok_ptr = str;
-// 	}
-// 	else
-// 		*start_ptr = *tok_ptr;
-// }
-
-/**
- * @brief Breaks a string into a sequence of tokens.
- * This function returns a 'char *' and cuts tokens from
- * the string by converting delim to '\0'
- * @param str The string to be tokenized. If NULL,
- * the function continues tokenizing the previous string.
- * @param delim The set of delimiter characters used to separate tokens.
- * @return A pointer to the next token found in 'str',
- * or NULL if no more tokens are found.
- */
-// - Make tokenizing able to span multiple spaces or multiple characters.
+/// @brief Breaks a string into a sequence of tokens.
+/// This function returns a 'char *' and cuts tokens from
+/// the string by converting delim to '\0'
+/// @param str The string to be tokenized. If NULL,
+/// the function continues tokenizing the previous string.
+/// @param delim The set of delimiter characters used to separate tokens.
+/// @return A pointer to the next token found in 'str',
+/// or NULL if no more tokens are found.
+/// - Make tokenizing able to span multiple spaces or multiple characters.
 char	*ft_strtok(char *str, const char *delim)
 {
 	static char	*olds;

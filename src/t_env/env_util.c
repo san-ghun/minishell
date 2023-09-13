@@ -6,15 +6,14 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:14:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 14:24:39 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 00:07:05 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
 
-/// 찾는다면 Value를, 찾지 못한다면 NULL을 반환합니다. 이 함수를 통해 lst를 수정해서는 안됩니다.
+/// @return a Value if found, or NULL if not found.
+/// This function should not be used to modify the @param `lst`.
 char	*env_getvalue(t_elst *lst, char *key)
 {
 	t_env	*node = lst->begin;

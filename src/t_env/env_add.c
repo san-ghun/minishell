@@ -6,13 +6,11 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:25 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/02 18:00:36 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 00:06:06 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
 
 int	env_addfront(t_elst **lst, t_env **new_node)
 {

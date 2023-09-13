@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/12 21:55:08 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/13 00:05:08 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,22 @@ char	**get_margv(char *cmd, int margc);
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
 
+/// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
+void	execute_node(t_sent *node, t_elst *lst);
+
+/// list of execute
+void	execute_heredoc(t_sent *node, t_elst *lst);
+void	execute_redi_read(t_sent *node, t_elst *lst);
+void	execute_pipe_input(t_sent *node, t_elst *lst);
+void	execute_pipe_output(t_sent *node, t_elst *lst);
+void	execute_redi_append(t_sent *node, t_elst *lst);
+void	execute_redi_trunc(t_sent *node, t_elst *lst);
+
+/* src/executecmd/executecmd_util.c */
+void	ft_free_2d(char **targets);
+int		exe_error(int target, char *error_msg);
+char	*setfilename(char **tokens, char *delim);
 
 #endif

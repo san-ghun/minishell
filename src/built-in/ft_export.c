@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
 #include <assert.h> /// 나중에 제거하기 !
 
 t_env	*env_newnode_split(char *str, char *delim)

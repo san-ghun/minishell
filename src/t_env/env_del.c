@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../include/minishell.h"
-#include "../../libft/include/libft.h"
 
 void	env_del(t_env *target)
 {
