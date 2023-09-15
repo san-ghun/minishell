@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/13 00:05:08 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:47:48 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,5 +287,6 @@ void	execute_redi_trunc(t_sent *node, t_elst *lst);
 void	ft_free_2d(char **targets);
 int		exe_error(int target, char *error_msg);
 char	*setfilename(char **tokens, char *delim);
+void	remove_redi_tokens(t_sent *node, char *delim);
 
 #endif

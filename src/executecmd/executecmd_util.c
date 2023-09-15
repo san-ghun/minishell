@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 23:54:28 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 00:01:12 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:47:53 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,31 @@ char	*setfilename(char **tokens, char *delim)
 		i++;
 	}
 	return (NULL);
+}
+
+void	remove_redi_tokens(t_sent *node, char *delim)
+{
+	char **new_tokens;
+	int i;
+	int j;
+	int symbol;
+
+	i = 0;
+	j = 0;
+	symbol = 0;
+	new_tokens = (char **) malloc(sizeof(char *) * (node->tokens_len));
+	while (node->tokens[i]) {
+		if (!ft_strequ(node->tokens[i], delim))
+			new_tokens[j++] = node->tokens[i];
+		else if (!symbol) {
+			symbol = 1;
+			free(node->tokens[i]);
+			i++;
+		}
+		i++;
+	}
+	new_tokens[j] = NULL;
+	free(node->tokens);
+	node->tokens = new_tokens;
+	node->tokens_len -= 1;
 }
