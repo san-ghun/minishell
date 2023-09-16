@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/13 15:47:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/16 14:26:27 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,12 +259,16 @@ void	ft_cd(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_export */
 
+/// parsecmd
 /* src/parsecmd/parsecmd.c */
 int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
 
 /* src/parsecmd/parsecmd_tokenize.c */
 int		get_margc(char *cmd);
 char	**get_margv(char *cmd, int margc);
+
+/* src/parsecmd/parsecmd_tosent.c */
+int		split_cmd(t_sent *node, char *margv[], int select, int i);
 
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
