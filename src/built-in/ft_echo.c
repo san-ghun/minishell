@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/17 20:29:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 21:16:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,6 @@ void	echo_homepath(t_elst *lst)
 		ft_putstr_fd(path, 1);
 	else
 		ft_putstr_fd("~", 1);
-}
-
-static int	determine_toklen(int tok_len, char term)
-{
-	if (term == '\n')
-		return (tok_len);
-	if (term == '\0')
-		return (tok_len);
-	return (0);
 }
 
 void	ft_echo(t_sent *node, t_elst *lst)
