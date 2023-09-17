@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd_util.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 23:54:28 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 15:47:53 by minakim          ###   ########.fr       */
+/*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
+/*   Updated: 2023/09/17 13:10:55 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,31 @@ char	*setfilename(char **tokens, char *delim)
 	return (NULL);
 }
 
-void	remove_redi_tokens(t_sent *node, char *delim)
+char	*ms_find_path(char *cmd, char *envp[])
 {
-	char **new_tokens;
-	int i;
-	int j;
-	int symbol;
+	int		i;
+	char	**paths;
+	char	*ppath;
+	char	*path;
 
 	i = 0;
-	j = 0;
-	symbol = 0;
-	new_tokens = (char **) malloc(sizeof(char *) * (node->tokens_len));
-	while (node->tokens[i]) {
-		if (!ft_strequ(node->tokens[i], delim))
-			new_tokens[j++] = node->tokens[i];
-		else if (!symbol) {
-			symbol = 1;
-			free(node->tokens[i]);
-			i++;
+	while (ft_strnstr(envp[i], "PATH", 4) == 0)
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
+	i = 0;
+	while (paths[i] != NULL)
+	{
+		ppath = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(ppath, cmd);
+		free(ppath);
+		if (access(path, F_OK) == 0)
+		{
+			ft_free_2d(paths);
+			return (path);
 		}
+		free(path);
 		i++;
 	}
-	new_tokens[j] = NULL;
-	free(node->tokens);
-	node->tokens = new_tokens;
-	node->tokens_len -= 1;
+	ft_free_2d(paths);
+	return (0);
 }

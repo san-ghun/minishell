@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/16 14:26:27 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:14:57 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,7 @@ char	**dll_to_envp(t_elst *lst);
 void	ft_cd(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_export */
+void	ft_export(t_sent *node, t_elst *lst);
 
 /// parsecmd
 /* src/parsecmd/parsecmd.c */
@@ -277,13 +278,11 @@ void	expand_cmd(char *cmd, t_elst *elst);
 /// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
-void	execute_node(t_sent *node, t_elst *lst);
+void	execute_node(t_sent *cmd, t_elst *lst, char **menvp);
 
 /// list of execute
 void	execute_heredoc(t_sent *node, t_elst *lst);
 void	execute_redi_read(t_sent *node, t_elst *lst);
-void	execute_pipe_input(t_sent *node, t_elst *lst);
-void	execute_pipe_output(t_sent *node, t_elst *lst);
 void	execute_redi_append(t_sent *node, t_elst *lst);
 void	execute_redi_trunc(t_sent *node, t_elst *lst);
 

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/12 22:46:15 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:54:42 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ size_t	readcmd(char *cmd, int debug_mode)
 {
 	size_t	len;
 	size_t	total_len;
-	char	temp_cmd[MAX_COMMAND_LEN];
+	char	temp_cmd[DATA_SIZE];
 
 	total_len = 0;
-	ft_bzero(cmd, MAX_COMMAND_LEN);
+	ft_bzero(cmd, DATA_SIZE);
 	if (*cmd != '\0')
 		exit(EXIT_FAILURE);
 	total_len = ft_strlen(cmd);
+	if (total_len > DATA_SIZE)
+		exit(EXIT_FAILURE);
 	while (1)
 	{
 		getcmd(temp_cmd, 0, debug_mode);
