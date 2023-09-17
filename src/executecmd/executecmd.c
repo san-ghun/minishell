@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/17 13:12:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 15:32:37 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,15 @@ static int	dispatchcmd(t_sent *node, t_elst *lst)
 	return (0);
 }
 
-void	execute_node(t_sent *cmd, t_elst *lst, char **menvp)
+void	execute_node(t_sent *node, t_elst *lst, char *menvp[])
 {
-	if (cmd->tokens[0] == NULL)
-		return;
+	char	*path;
+
+	path = ms_find_path(node->tokens[0], menvp);
+	if (node->tokens[0] == NULL || path == NULL)
+		exit(EXIT_SUCCESS);
 	(void) lst;
-	ft_exec(cmd->tokens, menvp);
+	execve(path, node->tokens, menvp);
 	perror("Error");
 	ft_putstr_fd("Failed to execute command\n", 2);
 	exit(EXIT_FAILURE);
@@ -66,54 +69,80 @@ typedef struct s_exe {
 	void	(*cmd_func)(t_sent *node, t_elst *lst);
 }			t_exe;
 
-void	execute_flag(t_sent *cmd, t_elst *lst, e_flag flag)
+int	compare_flags(t_sent *cmd, int current_flag, e_flag flag_type)
 {
-	static t_exe exe_f[] = {
-			{HDOC_FLAG,           INPUT,  execute_heredoc},
-			{REDI_RD_FLAG,        INPUT,  execute_redi_read},
-			{REDI_WR_APPEND_FLAG, OUTPUT, execute_redi_append},
-			{REDI_WR_TRUNC_FLAG,  OUTPUT, execute_redi_trunc},
+	if (flag_type == INPUT)
+		return (cmd->input_flag == current_flag);
+	else if (flag_type == OUTPUT)
+		return (cmd->output_flag == current_flag);
+	return (0);
+}
+
+void	run_by_flag(t_sent *cmd, t_elst *lst, e_flag flag)
+{
+	static t_exe	exe_f[] = {
+			{HDOC_FLAG,           INPUT,  flag_heredoc},
+			{REDI_RD_FLAG,        INPUT,  flag_redi_read},
+			{REDI_WR_APPEND_FLAG, OUTPUT, flag_redi_append},
+			{REDI_WR_TRUNC_FLAG,  OUTPUT, flag_redi_trunc},
 			{-1,                  NONE, NULL}
 	};
-	int i;
+	int				i;
 
 	i = 0;
 	while (exe_f[i].cmd_func != NULL)
 	{
-		if (flag == INPUT)
+		if (flag == exe_f[i].type && compare_flags(cmd, exe_f[i].flag, flag))
 		{
-			if (cmd->input_flag == exe_f[i].flag)
-			{
-				exe_f[i].cmd_func(cmd, lst);
-				break;
-			}
-			i++;
+			exe_f[i].cmd_func(cmd, lst);
+			break;
 		}
-		else if (flag == OUTPUT)
-		{
-			if (cmd->input_flag == exe_f[i].flag)
-			{
-				exe_f[i].cmd_func(cmd, lst);
-				break;
-			}
-			i++;
-		}
+		i++;
 	}
 }
 
-void executecmd(t_deque *deque, t_elst *lst)
-{
-	int fd[2] = {-1, -1};
-	int prev_fd;
-	char	**menvp;
-	pid_t pid;
-	t_sent *cmd;
 
+void child_proc(t_sent *cmd, t_elst *lst, int *fd, int prev_fd)
+{
+	char	**menvp;
+
+	run_by_flag(cmd, lst, INPUT);
+	if (prev_fd != -1)
+		dup2(prev_fd, STDIN_FILENO);
+	if (cmd->output_flag == PIPE_FLAG && fd[1] != -1)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+	}
+	run_by_flag(cmd, lst, OUTPUT);
+	menvp = dll_to_envp(lst);
+	execute_node(cmd, lst, menvp);
+	ft_free_2d(menvp);
+	exit(EXIT_SUCCESS);
+}
+
+void parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
+{
+	waitpid(pid, NULL, 0);
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (cmd->output_flag == PIPE_FLAG) {
+		close(fd[1]);
+		*prev_fd = fd[0];
+	}
+}
+
+void	executecmd(t_deque *deque, t_elst *lst)
+{
+	int		fd[2] = {-1, -1};
+	int		prev_fd;
+	pid_t	pid;
+	t_sent	*cmd;
 
 	prev_fd = -1;
 	while (deque->size > 0)
 	{
-		cmd = deque->end;
+		cmd = deque_pop_back(deque);
 		if (cmd->output_flag == PIPE_FLAG)
 			pipe(fd);
 		if (dispatchcmd(cmd, lst))
@@ -125,32 +154,60 @@ void executecmd(t_deque *deque, t_elst *lst)
 			exit(EXIT_FAILURE);
 		}
 		else if (pid == 0)
-		{
-			execute_flag(cmd, lst, INPUT);
-			if (prev_fd != -1)
-				dup2(prev_fd, STDIN_FILENO);
-			if (cmd->output_flag == PIPE_FLAG && fd[1] != -1)
-			{
-				close(fd[0]);
-				dup2(fd[1], STDOUT_FILENO);
-			}
-			execute_flag(cmd, lst, OUTPUT);
-			menvp = dll_to_envp(lst);
-			execute_node(cmd, lst, menvp);
-			ft_free_2d(menvp);
-			exit(0);
-		}
+			child_proc(cmd, lst, fd, prev_fd);
 		else
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			if (cmd->output_flag == PIPE_FLAG)
-			{
-				close(fd[1]);
-				prev_fd = fd[0];
-			}
-			waitpid(pid, NULL, 0);
-		}
-		deque_pop_back(deque);
+			parent_proc(pid, cmd, fd, &prev_fd);
 	}
 }
+
+//void	executecmd(t_deque *deque, t_elst *lst)
+//{
+//	int		fd[2] = {-1, -1};
+//	int		prev_fd;
+//	char	**menvp;
+//	pid_t	pid;
+//	t_sent	*cmd;
+//
+//	prev_fd = -1;
+//	while (deque->size > 0)
+//	{
+//		deque_pop_back(deque);
+//		if (cmd->output_flag == PIPE_FLAG)
+//			pipe(fd);
+//		if (dispatchcmd(cmd, lst))
+//			return;
+//		pid = fork();
+//		if (pid < 0)
+//		{
+//			perror("Error");
+//			exit(EXIT_FAILURE);
+//		}
+//		else if (pid == 0)
+//		{
+//			run_by_flag(cmd, lst, INPUT);
+//			if (prev_fd != -1)
+//				dup2(prev_fd, STDIN_FILENO);
+//			if (cmd->output_flag == PIPE_FLAG && fd[1] != -1)
+//			{
+//				close(fd[0]);
+//				dup2(fd[1], STDOUT_FILENO);
+//			}
+//			run_by_flag(cmd, lst, OUTPUT);
+//			menvp = dll_to_envp(lst);
+//			execute_node(cmd, lst, menvp);
+//			ft_free_2d(menvp);
+//			exit(EXIT_SUCCESS);
+//		}
+//		else
+//		{
+//			waitpid(pid, NULL, 0);
+//			if (prev_fd != -1)
+//				close(prev_fd);
+//			if (cmd->output_flag == PIPE_FLAG)
+//			{
+//				close(fd[1]);
+//				prev_fd = fd[0];
+//			}
+//		}
+//	}
+//}

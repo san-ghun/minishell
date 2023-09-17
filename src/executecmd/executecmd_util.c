@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/17 13:10:55 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 15:10:00 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,6 @@ int	exe_error(int target, char *error_msg)
 		return (1);
 	}
 	return (0);
-}
-
-char	*setfilename(char **tokens, char *delim)
-{
-	int	i = 0;
-
-	while (tokens[i])
-	{
-		if (ft_strnstr(tokens[i], delim, ft_strlen(tokens[i])))
-			return tokens[i + 1];
-		i++;
-	}
-	return (NULL);
 }
 
 char	*ms_find_path(char *cmd, char *envp[])

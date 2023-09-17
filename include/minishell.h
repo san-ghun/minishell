@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/17 13:14:57 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 20:29:51 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@
 // Limit length of command: 
 /// @note MAX_COMMAND_LEN if running the following command in the terminal:
 /// @note $ getconf ARG_MAX  // result is 2097152 (2MB).
-# define MAX_COMMAND_LEN    2097152
+//# define MAX_COMMAND_LEN    2097152
+# define MAX_COMMAND_LEN    3072
 
 // Limit number of tokens: 
 /// @note reference from our good friend push_swap
@@ -240,12 +241,13 @@ void	env_dellst(t_elst *lst);
 /* src/t_env/env_util */
 int		ft_setenv(t_elst *lst, const char *key, \
 					const char *value, int overwrite);
-char	*env_getvalue(t_elst *lst, char *key);
+char	*ft_getenv(t_elst *lst, char *key);
 void	env_setexit(t_elst *lst, int status);
 
 /// built-in.folder
 /* src/built-in/ft_echo */
 void	ft_echo(t_sent *node, t_elst *lst);
+int		redi_out(t_sent *node);
 
 /* src/built-in/ft_env */
 void	ft_pwd(t_sent *node, t_elst *lst);
@@ -274,22 +276,21 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
-
+int		append_env(char *str, char *cmd, t_elst *lst);
 /// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
-void	execute_node(t_sent *cmd, t_elst *lst, char **menvp);
 
 /// list of execute
-void	execute_heredoc(t_sent *node, t_elst *lst);
-void	execute_redi_read(t_sent *node, t_elst *lst);
-void	execute_redi_append(t_sent *node, t_elst *lst);
-void	execute_redi_trunc(t_sent *node, t_elst *lst);
+void	flag_heredoc(t_sent *node, t_elst *lst);
+void	flag_redi_read(t_sent *node, t_elst *lst);
+void	flag_redi_append(t_sent *node, t_elst *lst);
+void	flag_redi_trunc(t_sent *node, t_elst *lst);
 
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
 int		exe_error(int target, char *error_msg);
-char	*setfilename(char **tokens, char *delim);
-void	remove_redi_tokens(t_sent *node, char *delim);
+char	*ms_find_path(char *cmd, char *envp[]);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 00:05:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 20:46:23 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,6 @@ void	pathjoin_print(char *path, t_env *node)
 }
 
 
-/**
- * @note The functions below work just fine, but they don't use the proper `fd`.
- * 1. File descriptor control (TODO: to be implemented).
- */
 void	ft_env(t_sent *node, t_elst *lst)
 {
 
@@ -121,9 +117,8 @@ void	ft_env(t_sent *node, t_elst *lst)
 	char	path[DATA_SIZE];
 	int		fd;
 
-	fd = 1;
+	fd = redi_out(node);
 	env = lst->begin;
-
 	if (node->tokens_len == 1)
 	{
 		while (env != NULL)
@@ -132,21 +127,36 @@ void	ft_env(t_sent *node, t_elst *lst)
 			ft_putendl_fd(path, fd);
 			env = env->next;
 		}
+		lst->g_exit = 0;
 	}
-	lst->g_exit = 0;
+	else
+		lst->g_exit = 1;
+	if (fd != 1)
+		close(fd);
 }
 
-/**
- * @note The functions below work just fine, but they don't use the proper `fd`.
- * 1. File descriptor control (TODO: to be implemented).
- * 2. redirection (perhaps ?)
- */
 void	ft_pwd(t_sent *node, t_elst *lst)
 {
+	static char	pwd[DATA_SIZE];
 	int		fd;
 
-	fd = 1;
-	if (node->tokens_len == 1)
-		ft_putendl_fd(env_getvalue(lst, "PWD"), fd);
-	lst->g_exit = 0;
+	fd = redi_out(node);
+	if (node->tokens_len > 1)
+	{
+		ft_printf("error\n");
+		lst->g_exit = 1; // tmp error status
+		return ;
+	}
+	else if (getcwd(pwd, DATA_SIZE))
+	{
+		ft_putendl_fd(pwd, fd);
+		lst->g_exit = 0;
+	}
+	else
+	{
+		ft_printf("pwd: error retrieving current directory\n");
+		lst->g_exit = 1; // tmp error status
+	}
+	if (fd != 1)
+		close(fd);
 }

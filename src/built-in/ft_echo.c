@@ -6,11 +6,26 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 15:15:06 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 20:29:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int redi_out(t_sent *node)
+{
+	int fd;
+
+	fd = 1;
+	if (node->output_flag == REDI_WR_APPEND_FLAG)
+		fd = open_file(node->output_argv, 0);
+	else if (node->output_flag == REDI_WR_TRUNC_FLAG)
+		fd = open_file(node->output_argv, 1);
+	if (fd == -1)
+		ft_printf("error\n");
+	return (fd);
+}
+
 
 static int echo_flagcheck(const char *str)
 {
@@ -57,14 +72,14 @@ void	echo_homepath(t_elst *lst)
 	char	*path;
 
 	path = NULL;
-	path = env_getvalue(lst, "HOME");
+	path = ft_getenv(lst, "HOME");
 	if (path)
 		ft_putstr_fd(path, 1);
 	else
 		ft_putstr_fd("~", 1);
 }
 
-int	determine_toklen(int tok_len, char term)
+static int	determine_toklen(int tok_len, char term)
 {
 	if (term == '\n')
 		return (tok_len);
@@ -73,14 +88,6 @@ int	determine_toklen(int tok_len, char term)
 	return (0);
 }
 
-/**
- * @brief Executes the 'echo' command with enhanced features.
- * This function processes the 'echo' command, supporting advanced features:
- * 1. Tilde expansion for the home directory (~).
- * 2. Redirection (TODO: to be implemented).
- * 3. File descriptor control (TODO: to be implemented).
- * 4. Exit code testing (TODO: to be implemented).
- */
 void	ft_echo(t_sent *node, t_elst *lst)
 {
 	int		i;
@@ -88,7 +95,7 @@ void	ft_echo(t_sent *node, t_elst *lst)
 	int		fd;
 
 	i = 0;
-	fd = 1;
+	fd = redi_out(node);
 	if (node->tokens[1])
 		term = determine_term(node->tokens[1], &i);
 	while (++i <node->tokens_len && node->tokens[i])
@@ -101,5 +108,7 @@ void	ft_echo(t_sent *node, t_elst *lst)
 			ft_putchar_fd(' ', fd);
 	}
 	ft_putchar_fd(term, fd);
+	if (fd != 1)
+		close(fd);
 	lst->g_exit = 0;
 }

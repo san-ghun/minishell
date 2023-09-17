@@ -14,7 +14,7 @@
 
 /// @return a Value if found, or NULL if not found.
 /// This function should not be used to modify the @param `lst`.
-char	*env_getvalue(t_elst *lst, char *key)
+char	*ft_getenv(t_elst *lst, char *key)
 {
 	t_env	*node = lst->begin;
 
