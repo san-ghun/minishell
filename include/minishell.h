@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/17 20:29:51 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/18 18:48:08 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@
 /// @note reference from our good friend push_swap
 # define MAX_TOKENS         512
 
+// Limit number of env key name:
+# define MAX_KEY_VAR		255
+
 /// Brief true/false notation
 # define TRUE 1
 # define FALSE 0
@@ -87,6 +90,7 @@
 # define DIR_CHANGE_SUCCESS 0
 # define ERR_DIR_NOT_FOUND -1
 
+/// @note FLAGS
 // STDIN_FILENO == 0
 // STDOUT_FILENO == 1
 // STDERR_FILENO == 2
@@ -277,20 +281,30 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
 int		append_env(char *str, char *cmd, t_elst *lst);
+
+typedef enum e_mode{
+	NONE,
+	INPUT,
+	OUTPUT
+}		t_mode;
+
 /// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
-
-/// list of execute
+void	execute_node(t_sent *node, t_elst *lst, char *menvp[]);
+void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
+int		dispatchcmd(t_sent *node, t_elst *lst);
+/// list of executable flags
+/* src/executecmd/runheredoc.c */
 void	flag_heredoc(t_sent *node, t_elst *lst);
+/* src/executecmd/runredi.c */
 void	flag_redi_read(t_sent *node, t_elst *lst);
 void	flag_redi_append(t_sent *node, t_elst *lst);
 void	flag_redi_trunc(t_sent *node, t_elst *lst);
 
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
-int		exe_error(int target, char *error_msg);
 char	*ms_find_path(char *cmd, char *envp[]);
-
+void	init_fd(int *fd);
 
 #endif

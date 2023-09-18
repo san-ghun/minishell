@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/17 15:10:00 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/18 15:45:30 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,6 @@ void	ft_free_2d(char **targets)
 		free(targets[i]);
 	free(targets);
 	targets = NULL;
-}
-
-int	exe_error(int target, char *error_msg)
-{
-	if (target == -1)
-	{
-		ft_putendl_fd(error_msg, 1);
-		return (1);
-	}
-	return (0);
 }
 
 char	*ms_find_path(char *cmd, char *envp[])
@@ -61,3 +51,10 @@ char	*ms_find_path(char *cmd, char *envp[])
 	ft_free_2d(paths);
 	return (0);
 }
+
+void	init_fd(int *fd)
+{
+	fd[0] = -1;
+	fd[1] = -1;
+}
+
