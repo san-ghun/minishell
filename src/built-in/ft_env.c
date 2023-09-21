@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/17 20:46:23 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/21 15:28:34 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <assert.h> /// 나중에 제거하기 !
-
 
 /**
  * @brief This function converts the envp array to a Doubly Linked List (DLL).

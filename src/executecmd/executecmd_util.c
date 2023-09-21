@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd_util.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/18 15:45:30 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/21 15:27:42 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,22 @@ char	*ms_find_path(char *cmd, char *envp[])
 	return (0);
 }
 
-void	init_fd(int *fd)
+void	check_path(char *path)
+{
+	if (path == NULL)
+		ms_error("check_path error\n");
+}
+
+void	check_pid(pid_t pid)
+{
+	if (pid < 0)
+		ms_error("unable to fork\n");
+}
+
+void	init_fd(int *fd, int *prev_fd)
 {
 	fd[0] = -1;
 	fd[1] = -1;
+	*prev_fd = -1;
 }
 
