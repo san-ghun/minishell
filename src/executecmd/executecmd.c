@@ -6,13 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 15:43:08 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:44:01 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 void	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 
@@ -35,7 +35,7 @@ void	executecmd(t_deque *deque, t_elst *lst)
 	}
 }
 
-void	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
+int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 {
 	pid_t	pid;
 	char	**menvp;
@@ -43,17 +43,18 @@ void	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 
 	menvp = dll_to_envp(lst);
 	path = ms_find_path(cmd->tokens[0], menvp);
-	check_path(path);
+	if (check_path(path))
+		return (ft_free_check(path, menvp, 1));
 	pid = fork();
-	check_pid(pid);
+	if (check_pid(pid))
+		return (ft_free_check(path, menvp, 1));
 	if (pid == 0)
 	{
 		child_proc(cmd, lst, fd, prev_fd);
 		execute_node(cmd, menvp, path);
 	}
 	parent_proc(pid, cmd, fd, prev_fd);
-	ft_free_2d(menvp);
-	free(path);
+	return (ft_free_check(path, menvp, 0));
 }
 
 void	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)

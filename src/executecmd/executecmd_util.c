@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 15:27:42 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:42:21 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ void	ft_free_2d(char **targets)
 		free(targets[i]);
 	free(targets);
 	targets = NULL;
+}
+
+int	ft_free_check(char *path, char *menvp[], int ret)
+{
+	ft_free_2d(menvp);
+	free(path);
+	return (ret);
 }
 
 char	*ms_find_path(char *cmd, char *envp[])
@@ -50,18 +57,6 @@ char	*ms_find_path(char *cmd, char *envp[])
 	}
 	ft_free_2d(paths);
 	return (0);
-}
-
-void	check_path(char *path)
-{
-	if (path == NULL)
-		ms_error("check_path error\n");
-}
-
-void	check_pid(pid_t pid)
-{
-	if (pid < 0)
-		ms_error("unable to fork\n");
 }
 
 void	init_fd(int *fd, int *prev_fd)
