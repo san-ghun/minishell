@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/18 18:56:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/21 14:42:37 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	dispatchcmd(t_sent *node, t_elst *lst)
 	{"echo", ft_echo},
 	{"pwd", ft_pwd},
 	{"env", ft_env},
-	{"unset", ft_pwd}, //TODO : ft_unset!
+	{"unset", ft_unset},
 	{"export", ft_export},
 	{NULL, NULL}
 	};
