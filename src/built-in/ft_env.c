@@ -6,11 +6,12 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 15:28:34 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:43:27 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <assert.h>
 
 /**
  * @brief This function converts the envp array to a Doubly Linked List (DLL).

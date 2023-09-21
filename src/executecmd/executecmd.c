@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 15:04:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:43:08 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 void	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
-void	execute_node(t_sent *node, char *menvp[], char *path);
 
 void	executecmd(t_deque *deque, t_elst *lst)
 {
