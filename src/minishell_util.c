@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 16:21:57 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 17:24:40 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:26:29 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,11 @@ int	isexit(char *cmd)
 		ret = 1;
 	}
 	return (ret);
+}
+
+void	ms_error(char *msg)
+{
+	perror("Error");
+	ft_putstr_fd(msg, 2);
+	return ;
 }

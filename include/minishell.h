@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 14:42:53 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/21 15:32:54 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@
 /* minishell_util.c */
 void	getcmd(char *cmd, size_t len, int debug_mode);
 int		isexit(char *cmd);
+void	ms_error(char *msg);
 
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
@@ -294,7 +295,7 @@ typedef enum e_mode{
 /// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
-void	execute_node(t_sent *node, t_elst *lst, char *menvp[]);
+void	execute_node(t_sent *node, char *menvp[], char *path);
 void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
 int		dispatchcmd(t_sent *node, t_elst *lst);
 /// list of executable flags
@@ -308,6 +309,8 @@ void	flag_redi_trunc(t_sent *node, t_elst *lst);
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
 char	*ms_find_path(char *cmd, char *envp[]);
-void	init_fd(int *fd);
+void	check_path(char *path);
+void	check_pid(pid_t pid);
+void	init_fd(int *fd, int *prev_fd);
 
 #endif
