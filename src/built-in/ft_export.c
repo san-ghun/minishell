@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/09 23:22:54 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/17 20:48:41 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,24 @@ void	ft_export(t_sent *node, t_elst *lst)
 	t_env	*new;
 
 	if (node->tokens_len < 1)
+	{
 		assert("error");
+		lst->g_exit = 1;
+	}
 	else if (node->tokens_len == 1)
 		ft_env(node, lst);
 	else
 	{
 		new = env_newnode_split(node->tokens[1], "=");
 		if (new)
+		{
 			env_addrear(&lst, &new);
+			lst->g_exit = 0;
+		}
+		else
+		{
+			assert("error");
+			lst->g_exit = 1;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 12:52:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:44:40 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_quotes(char *cmd, int index, int status)
 	return (0);
 }
 
-static int	append_env(char *str, char *cmd, t_elst *lst)
+int	append_env(char *str, char *cmd, t_elst *lst)
 {
 	int		i;
 	t_env	*node;

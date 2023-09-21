@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/16 14:26:27 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:48:08 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,15 @@
 // Limit length of command: 
 /// @note MAX_COMMAND_LEN if running the following command in the terminal:
 /// @note $ getconf ARG_MAX  // result is 2097152 (2MB).
-# define MAX_COMMAND_LEN    2097152
+//# define MAX_COMMAND_LEN    2097152
+# define MAX_COMMAND_LEN    3072
 
 // Limit number of tokens: 
 /// @note reference from our good friend push_swap
 # define MAX_TOKENS         512
+
+// Limit number of env key name:
+# define MAX_KEY_VAR		255
 
 /// Brief true/false notation
 # define TRUE 1
@@ -86,6 +90,7 @@
 # define DIR_CHANGE_SUCCESS 0
 # define ERR_DIR_NOT_FOUND -1
 
+/// @note FLAGS
 // STDIN_FILENO == 0
 // STDOUT_FILENO == 1
 // STDERR_FILENO == 2
@@ -240,12 +245,13 @@ void	env_dellst(t_elst *lst);
 /* src/t_env/env_util */
 int		ft_setenv(t_elst *lst, const char *key, \
 					const char *value, int overwrite);
-char	*env_getvalue(t_elst *lst, char *key);
+char	*ft_getenv(t_elst *lst, char *key);
 void	env_setexit(t_elst *lst, int status);
 
 /// built-in.folder
 /* src/built-in/ft_echo */
 void	ft_echo(t_sent *node, t_elst *lst);
+int		redi_out(t_sent *node);
 
 /* src/built-in/ft_env */
 void	ft_pwd(t_sent *node, t_elst *lst);
@@ -258,6 +264,7 @@ char	**dll_to_envp(t_elst *lst);
 void	ft_cd(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_export */
+void	ft_export(t_sent *node, t_elst *lst);
 
 /// parsecmd
 /* src/parsecmd/parsecmd.c */
@@ -273,24 +280,31 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd, t_elst *elst);
+int		append_env(char *str, char *cmd, t_elst *lst);
+
+typedef enum e_mode{
+	NONE,
+	INPUT,
+	OUTPUT
+}		t_mode;
 
 /// execute
 /* src/executecmd/executecmd.c */
 void	executecmd(t_deque *deque, t_elst *lst);
-void	execute_node(t_sent *node, t_elst *lst);
-
-/// list of execute
-void	execute_heredoc(t_sent *node, t_elst *lst);
-void	execute_redi_read(t_sent *node, t_elst *lst);
-void	execute_pipe_input(t_sent *node, t_elst *lst);
-void	execute_pipe_output(t_sent *node, t_elst *lst);
-void	execute_redi_append(t_sent *node, t_elst *lst);
-void	execute_redi_trunc(t_sent *node, t_elst *lst);
+void	execute_node(t_sent *node, t_elst *lst, char *menvp[]);
+void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
+int		dispatchcmd(t_sent *node, t_elst *lst);
+/// list of executable flags
+/* src/executecmd/runheredoc.c */
+void	flag_heredoc(t_sent *node, t_elst *lst);
+/* src/executecmd/runredi.c */
+void	flag_redi_read(t_sent *node, t_elst *lst);
+void	flag_redi_append(t_sent *node, t_elst *lst);
+void	flag_redi_trunc(t_sent *node, t_elst *lst);
 
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
-int		exe_error(int target, char *error_msg);
-char	*setfilename(char **tokens, char *delim);
-void	remove_redi_tokens(t_sent *node, char *delim);
+char	*ms_find_path(char *cmd, char *envp[]);
+void	init_fd(int *fd);
 
 #endif

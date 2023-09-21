@@ -43,7 +43,7 @@ void	ft_pathcpy(t_elst *lst, char *key, char path[], int size)
 	char	*value;
 
 	ft_bzero(path, size);
-	value = env_getvalue(lst, key);
+	value = ft_getenv(lst, key);
 	if (value == NULL)
 		return ;
 	ft_strlcpy(path, value, size);
