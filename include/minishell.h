@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 15:32:54 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:43:43 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@
 /* minishell_util.c */
 void	getcmd(char *cmd, size_t len, int debug_mode);
 int		isexit(char *cmd);
-void	ms_error(char *msg);
+int		ms_error(char *msg);
 
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
@@ -308,9 +308,12 @@ void	flag_redi_trunc(t_sent *node, t_elst *lst);
 
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
+int		ft_free_check(char *path, char *menvp[], int ret);
 char	*ms_find_path(char *cmd, char *envp[]);
-void	check_path(char *path);
-void	check_pid(pid_t pid);
 void	init_fd(int *fd, int *prev_fd);
+
+/* src/executecmd/executecmd_check.c */
+int		check_path(char *path);
+int		check_pid(pid_t pid);
 
 #endif
