@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:57:49 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/16 10:38:49 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:17:28 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	handle_input(t_sent *node, char *margv[], int tmp)
 	{
 		node->output_flag = STDERR_FILENO;
 		node->output_argv = \
-			ft_strdup("syntax error: invalid token after redirection");
-		ft_error();
+			ft_strdup("syntax error: invalid token after redirection\n");
+		return (-1);
 	}
 	cnt++;
 	if (ft_strequ(margv[tmp], "<"))
@@ -42,8 +42,8 @@ static int	handle_output(t_sent *node, char *margv[], int tmp)
 	{
 		node->output_flag = STDERR_FILENO;
 		node->output_argv = \
-			ft_strdup("syntax error: invalid token after redirection");
-		ft_error();
+			ft_strdup("syntax error: invalid token after redirection\n");
+		return (-1);
 	}
 	cnt++;
 	if (ft_strequ(margv[tmp], ">"))

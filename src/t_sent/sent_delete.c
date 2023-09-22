@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:07:48 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/12 23:37:52 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:10:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	sent_del(t_sent *sent)
 		(sent->input_flag == HDOC_FLAG))
 		free(sent->input_argv);
 	if ((sent->output_flag == REDI_WR_TRUNC_FLAG) || \
-		(sent->output_flag == REDI_WR_APPEND_FLAG))
+		(sent->output_flag == REDI_WR_APPEND_FLAG) || \
+		(sent->output_flag == STDERR_FILENO))
 		free(sent->output_argv);
 	free(sent->tokens);
 	free(sent->p_unit);

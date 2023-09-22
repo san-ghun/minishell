@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 16:04:46 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:17:30 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 
 	menvp = dll_to_envp(lst);
 	path = ms_find_path(cmd->tokens[0], menvp);
+	if (cmd->output_flag == STDERR_FILENO)
+	{
+		ms_error(cmd->output_argv);
+		return (ft_free_check(path, menvp, 1));
+	}
 	if (check_path(path))
 		return (ft_free_check(path, menvp, 1));
 	pid = fork();
