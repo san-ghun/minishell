@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 16:43:43 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:23:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,17 +294,17 @@ typedef enum e_mode{
 
 /// execute
 /* src/executecmd/executecmd.c */
-void	executecmd(t_deque *deque, t_elst *lst);
-void	execute_node(t_sent *node, char *menvp[], char *path);
-void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
+int		executecmd(t_deque *deque, t_elst *lst);
+int		execute_node(t_sent *node, char *menvp[], char *path);
+int		run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
 int		dispatchcmd(t_sent *node, t_elst *lst);
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
-void	flag_heredoc(t_sent *node, t_elst *lst);
+int		flag_heredoc(t_sent *node, t_elst *lst);
 /* src/executecmd/runredi.c */
-void	flag_redi_read(t_sent *node, t_elst *lst);
-void	flag_redi_append(t_sent *node, t_elst *lst);
-void	flag_redi_trunc(t_sent *node, t_elst *lst);
+int		flag_redi_read(t_sent *node, t_elst *lst);
+int		flag_redi_append(t_sent *node, t_elst *lst);
+int		flag_redi_trunc(t_sent *node, t_elst *lst);
 
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
