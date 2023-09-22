@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/17 14:39:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/22 20:47:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ size_t	readcmd(char *cmd, int debug_mode)
 	return (total_len);
 }
 
-static void	looper(char *cmd, t_elst *lst, int debug_mode)
+static int	looper(char *cmd, t_elst *lst, int debug_mode)
 {
+	int		ret;
 	t_sent	*sent;
 	t_deque	*deque;
 
+	ret = 0;
 	deque = deque_init();
 	parsecmd(cmd, deque, lst, debug_mode);
 	sent = deque->end;
-
 	if (debug_mode)
 	{
 		ft_printf("\n");
@@ -66,11 +67,10 @@ static void	looper(char *cmd, t_elst *lst, int debug_mode)
 		ft_printf("\n");
 		ft_printf("------ result ------\n");
 	}
-
-	executecmd(deque, lst);
+	ret = executecmd(deque, lst);
 	sent_delall(&sent);
 	deque_del(deque);
-	return ;
+	return (ret);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -95,7 +95,8 @@ int	main(int argc, char *argv[], char *envp[])
 		readcmd(cmd, debug_mode);
 		if (isexit(cmd))
 			break ;
-		looper(cmd, lst, debug_mode);
+		if (looper(cmd, lst, debug_mode) < 0)
+			break ;
 	}
 	env_dellst(lst);
 	rl_clear_history();
