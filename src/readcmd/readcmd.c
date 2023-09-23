@@ -6,13 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:48:32 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 22:24:11 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/23 12:03:51 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	getcmd(char *cmd, size_t len, int debug_mode)
+static int	getcmd(char *cmd, int len, int debug_mode)
 {
 	char	*command;
 
@@ -22,7 +22,7 @@ static int	getcmd(char *cmd, size_t len, int debug_mode)
 		command = readline("미쉘> ");
 	if (!command)
 	{
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		ft_putstr_fd("exit\n", STDIN_FILENO);
 		return (-1);
 	}
 	len = ft_strlen(command);
@@ -35,9 +35,9 @@ static int	getcmd(char *cmd, size_t len, int debug_mode)
 	return (0);
 }
 
-static int	looper_readcmd(char *cmd, char *temp_cmd, size_t *total_len)
+static int	looper_readcmd(char *cmd, char *temp_cmd, int *total_len)
 {
-	size_t	len;
+	int	len;
 
 	len = 0;
 	len = ft_strcspn(temp_cmd, "\n");
@@ -54,10 +54,10 @@ static int	looper_readcmd(char *cmd, char *temp_cmd, size_t *total_len)
 	return (1);
 }
 
-size_t	readcmd(char *cmd, int debug_mode)
+int	readcmd(char *cmd, int debug_mode)
 {
 	int		looper;
-	size_t	total_len;
+	int		total_len;
 	char	temp_cmd[MAX_COMMAND_LEN];
 
 	ft_bzero(cmd, MAX_COMMAND_LEN);
