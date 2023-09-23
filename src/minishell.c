@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 20:47:56 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:50:55 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,6 @@ static void	sighandler(int signal)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-}
-
-size_t	readcmd(char *cmd, int debug_mode)
-{
-	size_t	len;
-	size_t	total_len;
-	char	temp_cmd[MAX_COMMAND_LEN];
-
-	ft_bzero(cmd, MAX_COMMAND_LEN);
-	total_len = 0;
-	if (*cmd != '\0')
-		exit(EXIT_FAILURE);
-	while (1)
-	{
-		getcmd(temp_cmd, 0, debug_mode);
-		len = ft_strcspn(temp_cmd, "\n");
-		if (len + total_len > MAX_COMMAND_LEN)
-			exit(EXIT_FAILURE);
-		if (len == 0 || temp_cmd[len - 1] != '\\')
-		{
-			ft_strlcat(cmd, temp_cmd, total_len + len + 1);
-			total_len += len;
-			break ;
-		}
-		ft_strlcat(cmd, temp_cmd, total_len + len);
-		total_len += len;
-	}
-	cmd[total_len] = '\0';
-	return (total_len);
 }
 
 static int	looper(char *cmd, t_elst *lst, int debug_mode)
@@ -73,6 +44,17 @@ static int	looper(char *cmd, t_elst *lst, int debug_mode)
 	return (ret);
 }
 
+static int	looper_wrapper(char *cmd, t_elst *lst, int debug_mode)
+{
+	if (readcmd(cmd, debug_mode) < 0)
+		return (-1);
+	if (isexit(cmd))
+		return (-1);
+	if (looper(cmd, lst, debug_mode) < 0)
+		return (-1);
+	return (0);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	int		debug_mode;
@@ -91,13 +73,8 @@ int	main(int argc, char *argv[], char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
 	while (1)
-	{
-		readcmd(cmd, debug_mode);
-		if (isexit(cmd))
+		if (looper_wrapper(cmd, lst, debug_mode) < 0)
 			break ;
-		if (looper(cmd, lst, debug_mode) < 0)
-			break ;
-	}
 	env_dellst(lst);
 	rl_clear_history();
 	return (0);

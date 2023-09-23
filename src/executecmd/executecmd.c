@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 21:17:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:46:59 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ int	execute_node(t_sent *node, char *menvp[], char *path)
 		return (-1);
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
-	exit(1);
+	return (-1);
 }

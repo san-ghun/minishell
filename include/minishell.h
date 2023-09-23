@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 15:23:56 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:24:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@
 /* minishell.c */
 
 /* minishell_util.c */
-void	getcmd(char *cmd, size_t len, int debug_mode);
 int		isexit(char *cmd);
 int		ms_error(char *msg);
 
@@ -269,6 +268,10 @@ void	ft_export(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_unset */
 void	ft_unset(t_sent *node, t_elst *lst);
+
+/// readcmd
+/* src/readcmd/readcmd.c */
+size_t	readcmd(char *cmd, int debug_mode);
 
 /// parsecmd
 /* src/parsecmd/parsecmd.c */
