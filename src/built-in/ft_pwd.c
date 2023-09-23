@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sent_update.c                                      :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 16:07:41 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/23 16:27:50 by sanghupa         ###   ########.fr       */
+/*   Created: 2023/09/23 16:31:26 by sanghupa          #+#    #+#             */
+/*   Updated: 2023/09/23 16:34:06 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sent_update(t_sent *sent[], char *old, char *new);
-
-/// TODO: tokenize char *new and 
-/// add the new tokenized value into new token for the t_sent
-void	sent_update(t_sent *sent[], char *old, char *new)
+void	ft_pwd(t_sent *node, t_elst *lst)
 {
-	t_sent	*tmp;
+	static char	pwd[DATA_SIZE];
+	int			fd;
 
-	tmp = sent_getone(sent, old);
-	if (!tmp)
+	fd = redi_out(node);
+	if (node->tokens_len > 1)
+	{
+		ft_printf("error\n");
+		lst->g_exit = 1; // tmp error status
 		return ;
-	tmp->tokens[0] = new;
+	}
+	else if (getcwd(pwd, DATA_SIZE))
+	{
+		ft_putendl_fd(pwd, fd);
+		lst->g_exit = 0;
+	}
+	else
+	{
+		ft_printf("pwd: error retrieving current directory\n");
+		lst->g_exit = 1; // tmp error status
+	}
+	if (fd != 1)
+		close(fd);
 }

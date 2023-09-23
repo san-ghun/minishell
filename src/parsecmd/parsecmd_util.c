@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/18 15:44:40 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:28:36 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	check_quotes(char *cmd, int index, int status)
 {

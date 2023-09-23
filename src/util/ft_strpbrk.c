@@ -6,14 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 22:06:52 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/13 00:09:23 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:20:19 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char	*ft_strpbrk(const char *str, const char *delim);
-
 
 /// @brief Searches a string for any character from a specified set.
 /// And returns a pointer to the first occurrence of the character.

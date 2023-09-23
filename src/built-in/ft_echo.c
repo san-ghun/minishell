@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/17 21:16:26 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:23:19 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int redi_out(t_sent *node)
+int	redi_out(t_sent *node)
 {
-	int fd;
+	int	fd;
 
 	fd = 1;
 	if (node->output_flag == REDI_WR_APPEND_FLAG)
@@ -26,8 +26,7 @@ int redi_out(t_sent *node)
 	return (fd);
 }
 
-
-static int echo_flagcheck(const char *str)
+static int	echo_flagcheck(const char *str)
 {
 	while (*str && ft_isspace(*str))
 		str++;
@@ -46,14 +45,18 @@ static int echo_flagcheck(const char *str)
 
 /// @brief Determines the termination character for the 'echo' command.
 ///
-/// This function examines the input string and checks for the presence of the "-n" flag.
-/// If the flag is found, it sets the 'i' parameter to 1, indicating that the 'echo' command
-/// should start from the second token. If the flag is not present, 'i' is set to 0, indicating
-/// that the 'echo' command should start from the first token.
+/// This function examines the input string and checks for 
+/// the presence of the "-n" flag. If the flag is found, 
+/// it sets the 'i' parameter to 1, indicating that the 'echo' command
+/// should start from the second token. If the flag is not present, 
+/// 'i' is set to 0, indicating that the 'echo' command should start 
+/// from the first token.
 ///
 /// @param[in]  str  The input string to analyze for the "-n" flag.
-/// @param[out] i    A pointer to an integer that will hold the index for token processing.
-/// @return The termination character ('%' or '\n') based on the presence of the "-n" flag.
+/// @param[out] i    A pointer to an integer that will hold 
+/// the index for token processing.
+/// @return The termination character ('%' or '\\n') based on 
+/// the presence of the "-n" flag.
 char	determine_term(const char *str, int *i)
 {
 	char	term;
@@ -89,13 +92,14 @@ void	ft_echo(t_sent *node, t_elst *lst)
 	fd = redi_out(node);
 	if (node->tokens[1])
 		term = determine_term(node->tokens[1], &i);
-	while (++i <node->tokens_len && node->tokens[i])
+	while (++i < node->tokens_len && node->tokens[i])
 	{
 		if (ft_strequ(node->tokens[i], "~"))
 			echo_homepath(lst);
 		else
 			ft_putstr_fd(node->tokens[i], fd);
-		if (i + 1  < node->tokens_len && node->tokens[i + 1] != NULL)
+		if (i + 1 < node->tokens_len && \
+			node->tokens[i + 1] != NULL)
 			ft_putchar_fd(' ', fd);
 	}
 	ft_putchar_fd(term, fd);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlst_del.c                                         :+:      :+:    :+:   */
+/*   env_del.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:59 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/04 15:58:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:29:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	env_dellst(t_elst *lst)
 	while (current != NULL)
 	{
 		next_node = current->next;
-		env_delone(lst ,current);
+		env_delone(lst, current);
 		current = next_node;
 	}
 	lst->g_exit = 0;

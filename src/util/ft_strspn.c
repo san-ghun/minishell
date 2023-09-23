@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 22:05:52 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/13 00:09:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:19:56 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 size_t	ft_strspn(const char *str, const char *delim);
 
-
-/// @brief Calculates the length of the initial segment of a string that consists
-/// entirely of characters from a specified set.
+/// @brief Calculates the length of the initial segment of a string 
+/// that consists entirely of characters from a specified set.
 /// @param str  The string to be examined.
 /// @param delim The set of characters to be used as delimiters.
 /// @return The length of the initial segment of 'str'

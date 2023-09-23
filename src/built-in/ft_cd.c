@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/10 15:09:52 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:23:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-# define CD_SUCCESS 0
-# define CD_FAILURE 1
+#define CD_SUCCESS 0
+#define CD_FAILURE 1
 
 /**
  * @brief The functions in this file are partially complete, but

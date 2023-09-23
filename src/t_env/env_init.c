@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/04 15:57:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:30:04 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	env_updatesize(t_elst *lst, int add)
 }
 
 /// @note Parameters key and value must be malloc
-/// This DLL function is built on the premise that the key and value will be allocated.
+/// This DLL function is built on the premise that 
+/// the key and value will be allocated.
 /// will free both key and value from env_del.
 t_env	*env_newnode(char *key, char *value)
 {
