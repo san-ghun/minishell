@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 16:42:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:27:48 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ void	init_fd(int *fd, int *prev_fd)
 	fd[1] = -1;
 	*prev_fd = -1;
 }
-

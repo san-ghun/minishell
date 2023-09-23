@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd_handler.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 14:42:37 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/22 16:19:23 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	dispatchcmd(t_sent *node, t_elst *lst)
 typedef struct s_exe {
 	int		flag;
 	t_mode	type;
-	void	(*cmd_func)(t_sent *node, t_elst *lst);
+	int		(*cmd_func)(t_sent *node, t_elst *lst);
 }			t_exe;
 
 static int	compare_flags(t_sent *cmd, int current_flag, t_mode flag_type)
@@ -58,7 +58,7 @@ static int	compare_flags(t_sent *cmd, int current_flag, t_mode flag_type)
 	return (0);
 }
 
-void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag)
+int	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag)
 {
 	static t_exe	exe_f[] = {
 	{HDOC_FLAG, INPUT, flag_heredoc},
@@ -73,10 +73,8 @@ void	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag)
 	while (exe_f[i].cmd_func != NULL)
 	{
 		if (flag == exe_f[i].type && compare_flags(cmd, exe_f[i].flag, flag))
-		{
-			exe_f[i].cmd_func(cmd, lst);
-			break ;
-		}
+			return (exe_f[i].cmd_func(cmd, lst));
 		i++;
 	}
+	return (0);
 }

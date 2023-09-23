@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:14:32 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 15:26:38 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:27:19 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,16 @@ char	*replace_env_var(char *input, t_elst *lst)
 	return (buffer);
 }
 
-static void	child_heredoc(char *line, char *end_marker, int *fd, t_elst *lst)
+int	flag_heredoc(t_sent *node, t_elst *lst)
 {
+	char	*line;
+	char	*end_marker;
+	int		fd[2];
 	char	*expanded_line;
 
-	close(fd[0]);
+	line = NULL;
+	end_marker = node->input_argv;
+	pipe(fd);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -81,32 +86,7 @@ static void	child_heredoc(char *line, char *end_marker, int *fd, t_elst *lst)
 		free(line);
 	}
 	close(fd[1]);
-	exit(0);
-}
-
-// implement heredoc handling and execution
-void	flag_heredoc(t_sent *node, t_elst *lst)
-{
-	char	*line;
-	char	*end_marker;
-	int		fd[2];
-	pid_t	pid;
-
-	line = NULL;
-	end_marker = node->input_argv;
-	pipe(fd);
-	pid = fork();
-	if (pid < 0)
-		ft_error();
-	if (pid == 0)
-	{
-		child_heredoc(line, end_marker, fd, lst);
-	}
-	else
-	{
-		close(fd[1]);
-		waitpid(pid, NULL, 0);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-	}
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	return (0);
 }

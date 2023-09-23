@@ -6,11 +6,12 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:35:32 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/17 15:19:04 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/22 14:07:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "minishell.h"
 
 int	open_file(char *argv, int option)
 {
@@ -24,7 +25,7 @@ int	open_file(char *argv, int option)
 	else if (option == 2)
 		file = open(argv, O_RDONLY, 0777);
 	if (file == -1)
-		ft_error();
+		ms_error("no such file\n");
 	return (file);
 }
 
