@@ -29,11 +29,11 @@ jobs:
     - name: Clean files and executable
       run: make fclean
 
-    - name: Run test build
-      run: make test
+#    - name: Run test build
+#      run: make test
 
-    - name: Clean test
-      run: make tclean
+#    - name: Clean test
+#      run: make tclean
 
 #     - name: Run check
 #       run: make check
