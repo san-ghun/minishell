@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/22 21:17:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/23 12:07:04 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	executecmd(t_deque *deque, t_elst *lst)
 {
 	int		fd[2];
 	int		prev_fd;
-	pid_t	pid;
 	t_sent	*cmd;
 
 	init_fd(fd, &prev_fd);
@@ -34,6 +33,7 @@ int	executecmd(t_deque *deque, t_elst *lst)
 		if (run_process(cmd, lst, fd, &prev_fd) < 0)
 			return (-1);
 	}
+	return (0);
 }
 
 int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
@@ -78,6 +78,7 @@ int	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 	}
 	if (run_by_flag(cmd, lst, OUTPUT) < 0)
 		return (-1);
+	return (0);
 }
 
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
@@ -98,5 +99,5 @@ int	execute_node(t_sent *node, char *menvp[], char *path)
 		return (-1);
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
-	exit(1);
+	return (-1);
 }

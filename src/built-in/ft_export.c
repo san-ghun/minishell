@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 14:41:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:26:12 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_env	*env_newnode_split(char *str, char *delim)
 {
 	char	*separator;
 	t_env	*node;
+
 	separator = NULL;
 	separator = ft_strpbrk(str, delim);
 	if (separator)
@@ -31,6 +32,7 @@ t_env	*env_newnode_split(char *str, char *delim)
 		return (NULL);
 	return (node);
 }
+
 void	ft_export(t_sent *node, t_elst *lst)
 {
 	t_env	*new;

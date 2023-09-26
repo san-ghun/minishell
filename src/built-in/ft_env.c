@@ -6,12 +6,12 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/21 15:43:27 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:31:31 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <assert.h>
+#include <assert.h> /// 나중에 제거
 
 /**
  * @brief This function converts the envp array to a Doubly Linked List (DLL).
@@ -62,7 +62,7 @@ char	*pathjoin(t_env *node)
 
 	key_len = ft_strlen(node->key);
 	value_len = ft_strlen(node->value);
-	path = ft_memalloc( key_len + 1 + value_len + 1);
+	path = ft_memalloc(key_len + 1 + value_len + 1);
 	if (!path)
 		return (NULL);
 	ft_strlcpy(path, node->key, key_len + 1);
@@ -102,16 +102,13 @@ void	pathjoin_print(char *path, t_env *node)
 
 	key_len = ft_strlen(node->key);
 	value_len = ft_strlen(node->value);
-
 	ft_strlcpy(path, node->key, key_len + 1);
 	path[key_len] = '=';
 	ft_strlcpy(path + key_len + 1, node->value, value_len + 1);
 }
 
-
 void	ft_env(t_sent *node, t_elst *lst)
 {
-
 	t_env	*env;
 	char	path[DATA_SIZE];
 	int		fd;
@@ -130,32 +127,6 @@ void	ft_env(t_sent *node, t_elst *lst)
 	}
 	else
 		lst->g_exit = 1;
-	if (fd != 1)
-		close(fd);
-}
-
-void	ft_pwd(t_sent *node, t_elst *lst)
-{
-	static char	pwd[DATA_SIZE];
-	int		fd;
-
-	fd = redi_out(node);
-	if (node->tokens_len > 1)
-	{
-		ft_printf("error\n");
-		lst->g_exit = 1; // tmp error status
-		return ;
-	}
-	else if (getcwd(pwd, DATA_SIZE))
-	{
-		ft_putendl_fd(pwd, fd);
-		lst->g_exit = 0;
-	}
-	else
-	{
-		ft_printf("pwd: error retrieving current directory\n");
-		lst->g_exit = 1; // tmp error status
-	}
 	if (fd != 1)
 		close(fd);
 }

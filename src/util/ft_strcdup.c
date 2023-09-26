@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcdup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:19:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 00:08:14 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:20:27 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /// @brief Duplicates a substring from `src` up to the first occurrence of `c`.
 /// If a pointer is passed, `src` starts from the position of the pointer.

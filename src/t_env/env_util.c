@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_util.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:14:20 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 00:07:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:29:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 /// This function should not be used to modify the @param `lst`.
 char	*ft_getenv(t_elst *lst, char *key)
 {
-	t_env	*node = lst->begin;
+	t_env	*node;
 
+	node = lst->begin;
 	while (node)
 	{
 		if (ft_strequ(node->key, key))

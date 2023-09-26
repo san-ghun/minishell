@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:13:26 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/13 00:09:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/09/23 16:20:35 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /// @brief Duplicates a substring from `src` up to `len` characters.
 /// If a pointer is passed, `src` starts from the position of the pointer.
