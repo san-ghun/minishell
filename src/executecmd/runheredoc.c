@@ -6,11 +6,39 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:14:32 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/22 16:27:19 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/27 00:24:27 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+typedef struct s_hdoc
+{
+	char	*line;
+}			t_hdoc;
+
+static t_hdoc	*hdoc(void)
+{
+	static t_hdoc	this;
+	static int		is_init;
+
+	if (is_init)
+		return (&this);
+	this = (t_hdoc){
+		.line = NULL,
+	};
+	is_init = TRUE;
+	return (&this);
+}
+
+static void	sighandler_heredoc(int signal)
+{
+	(void)signal;
+	free(hdoc()->line);
+	rl_clear_history();
+	write(1, "\n", 1);
+	exit(EXIT_SUCCESS);
+}
 
 static char	*extract_env_key(char *ptr, char *env_name)
 {
@@ -70,13 +98,14 @@ int	flag_heredoc(t_sent *node, t_elst *lst)
 	int		fd[2];
 	char	*expanded_line;
 
-	line = NULL;
+	line = hdoc()->line;
 	end_marker = node->input_argv;
 	pipe(fd);
+	signal(SIGINT, sighandler_heredoc);
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (!line || ft_strequ(line, end_marker))
+		if (!(line) || ft_strequ(line, end_marker))
 		{
 			free(line);
 			break ;
