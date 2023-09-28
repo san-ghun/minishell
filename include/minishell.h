@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/23 16:32:02 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:11:59 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,9 +301,12 @@ typedef enum e_mode{
 /// execute
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque, t_elst *lst);
+int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+int		child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
 int		run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
-int		dispatchcmd(t_sent *node, t_elst *lst);
+int		dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd);
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);

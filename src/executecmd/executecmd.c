@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/23 12:07:04 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:22:36 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	executecmd(t_deque *deque, t_elst *lst)
 {
 	int		fd[2];
 	int		prev_fd;
+	int		bt;
 	t_sent	*cmd;
 
 	init_fd(fd, &prev_fd);
@@ -28,7 +29,10 @@ int	executecmd(t_deque *deque, t_elst *lst)
 		cmd = deque_pop_back(deque);
 		if (cmd->output_flag == PIPE_FLAG)
 			pipe(fd);
-		if (dispatchcmd(cmd, lst))
+		bt = dispatchcmd(cmd, lst, fd, &prev_fd);
+		if (bt < 0)
+			return (-1);
+		if (bt)
 			continue ;
 		if (run_process(cmd, lst, fd, &prev_fd) < 0)
 			return (-1);
