@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:30:04 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/28 22:57:25 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,21 @@ t_elst	*env_init(void)
 	data->size = 0;
 	data->g_exit = 0;
 	return (data);
+}
+
+t_elst	*ms_env(void)
+{
+	static t_elst	this;
+	static int		is_init;
+
+	if (is_init)
+		return (&this);
+	this = (t_elst){
+		.begin = NULL,
+		.end = NULL,
+		.size = 0,
+		.g_exit = 0,
+	};
+	is_init = TRUE;
+	return (&this);
 }

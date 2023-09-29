@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/28 13:11:59 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:15:20 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,7 @@ int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
 void	env_updatesize(t_elst *lst, int add);
 t_env	*env_newnode(char *key, char *value);
 t_elst	*env_init(void);
+t_elst	*ms_env(void);
 
 /* src/t_env/env_del */
 void	env_del(t_env *target);

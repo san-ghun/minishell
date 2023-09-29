@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/28 15:55:43 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:42:06 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,19 @@ int	dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd)
 		{
 			if (node->output_flag == STDERR_FILENO)
 				return (dispatch_err(node));
+			if (cmd_table[i].cmd_name == "cd" || \
+				cmd_table[i].cmd_name == "unset" || \
+				cmd_table[i].cmd_name == "export")
+			{
+				cmd_table[i].cmd_func(node, ms_env());
+				return (1);
+			}
 			pid = fork();
 			if (pid == 0)
 			{
 				if (child_proc(node, lst, fd, prev_fd) < 0)
 					return (-1);
-				cmd_table[i].cmd_func(node, lst);
+				cmd_table[i].cmd_func(node, ms_env());
 				return (-1);
 			}
 			parent_proc(pid, node, fd, prev_fd);
