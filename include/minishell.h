@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 22:54:29 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 23:22:46 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,11 +306,23 @@ int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
+/* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
-int		dispatchcmd(t_sent *node, int *fd, int *prev_fd);
+/* src/executecmd/executecmd_dispatch_handler.c */
+int		dispatchcmd_wrapper(t_sent *node, int *fd, int *prev_fd);
+
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);
+
+/* src/executecmd/heredoc.c */
+typedef struct s_hdoc
+{
+	char	*line;
+}			t_hdoc;
+
+t_hdoc	*hdoc(void);
+
 /* src/executecmd/runredi.c */
 int		flag_redi_read(t_sent *node, t_elst *lst);
 int		flag_redi_append(t_sent *node, t_elst *lst);

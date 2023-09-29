@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 22:54:25 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 23:10:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	executecmd(t_deque *deque)
 		cmd = deque_pop_back(deque);
 		if (cmd->output_flag == PIPE_FLAG)
 			pipe(fd);
-		bt = dispatchcmd(cmd, fd, &prev_fd);
+		bt = dispatchcmd_wrapper(cmd, fd, &prev_fd);
 		if (bt < 0)
 			return (-1);
 		if (bt)

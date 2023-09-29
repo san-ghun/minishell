@@ -6,30 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:14:32 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/27 00:24:27 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 23:17:48 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_hdoc
-{
-	char	*line;
-}			t_hdoc;
-
-static t_hdoc	*hdoc(void)
-{
-	static t_hdoc	this;
-	static int		is_init;
-
-	if (is_init)
-		return (&this);
-	this = (t_hdoc){
-		.line = NULL,
-	};
-	is_init = TRUE;
-	return (&this);
-}
 
 static void	sighandler_heredoc(int signal)
 {
