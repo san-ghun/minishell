@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 23:10:07 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 23:27:47 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 
 int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
 {
-	t_elst	*lst;
-
-	lst = ms_env();
 	if (run_by_flag(cmd, INPUT) < 0)
 		return (-1);
 	if (*prev_fd != -1)
