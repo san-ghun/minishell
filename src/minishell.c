@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/27 00:12:46 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:53:09 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	sighandler(int signal)
 	rl_redisplay();
 }
 
-static int	looper(char *cmd, t_elst *lst, int debug_mode)
+static int	looper(char *cmd, int debug_mode)
 {
 	int		ret;
 	t_sent	*sent;
@@ -29,7 +29,7 @@ static int	looper(char *cmd, t_elst *lst, int debug_mode)
 
 	ret = 0;
 	deque = deque_init();
-	parsecmd(cmd, deque, lst, debug_mode);
+	parsecmd(cmd, deque, debug_mode);
 	sent = deque->end;
 	if (debug_mode)
 	{
@@ -38,19 +38,19 @@ static int	looper(char *cmd, t_elst *lst, int debug_mode)
 		ft_printf("\n");
 		ft_printf("------ result ------\n");
 	}
-	ret = executecmd(deque, lst);
+	ret = executecmd(deque);
 	sent_delall(&sent);
 	deque_del(deque);
 	return (ret);
 }
 
-static int	looper_wrapper(char *cmd, t_elst *lst, int debug_mode)
+static int	looper_wrapper(char *cmd, int debug_mode)
 {
 	if (readcmd(cmd, debug_mode) < 0)
 		return (-1);
 	if (isexit(cmd))
 		return (-1);
-	if (looper(cmd, lst, debug_mode) < 0)
+	if (looper(cmd, debug_mode) < 0)
 		return (-1);
 	return (0);
 }
@@ -73,7 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
 	while (1)
-		if (looper_wrapper(cmd, lst, debug_mode) < 0)
+		if (looper_wrapper(cmd, debug_mode) < 0)
 			break ;
 	env_dellst(lst);
 	rl_clear_history();

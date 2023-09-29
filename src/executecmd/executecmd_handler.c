@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/29 22:42:06 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:54:14 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	dispatch_err(t_sent *node)
 	return (-1);
 }
 
-int	dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd)
+int	dispatchcmd(t_sent *node, int *fd, int *prev_fd)
 {
 	t_cmd	*cmd_table;
 	int		i;
@@ -67,7 +67,7 @@ int	dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd)
 			pid = fork();
 			if (pid == 0)
 			{
-				if (child_proc(node, lst, fd, prev_fd) < 0)
+				if (child_proc(node, fd, prev_fd) < 0)
 					return (-1);
 				cmd_table[i].cmd_func(node, ms_env());
 				return (-1);
@@ -94,7 +94,7 @@ static int	compare_flags(t_sent *cmd, int current_flag, t_mode flag_type)
 	return (0);
 }
 
-int	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag)
+int	run_by_flag(t_sent *cmd, t_mode flag)
 {
 	static t_exe	exe_f[] = {
 	{HDOC_FLAG, INPUT, flag_heredoc},
@@ -109,7 +109,7 @@ int	run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag)
 	while (exe_f[i].cmd_func != NULL)
 	{
 		if (flag == exe_f[i].type && compare_flags(cmd, exe_f[i].flag, flag))
-			return (exe_f[i].cmd_func(cmd, lst));
+			return (exe_f[i].cmd_func(cmd, ms_env()));
 		i++;
 	}
 	return (0);

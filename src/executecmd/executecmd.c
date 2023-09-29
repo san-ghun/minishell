@@ -6,17 +6,16 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/28 13:22:36 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:54:25 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 
-int	executecmd(t_deque *deque, t_elst *lst)
+int	executecmd(t_deque *deque)
 {
 	int		fd[2];
 	int		prev_fd;
@@ -29,12 +28,12 @@ int	executecmd(t_deque *deque, t_elst *lst)
 		cmd = deque_pop_back(deque);
 		if (cmd->output_flag == PIPE_FLAG)
 			pipe(fd);
-		bt = dispatchcmd(cmd, lst, fd, &prev_fd);
+		bt = dispatchcmd(cmd, fd, &prev_fd);
 		if (bt < 0)
 			return (-1);
 		if (bt)
 			continue ;
-		if (run_process(cmd, lst, fd, &prev_fd) < 0)
+		if (run_process(cmd, ms_env(), fd, &prev_fd) < 0)
 			return (-1);
 	}
 	return (0);
@@ -60,7 +59,7 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 		return (ft_free_check(path, menvp, 1));
 	if (pid == 0)
 	{
-		if (child_proc(cmd, lst, fd, prev_fd) < 0)
+		if (child_proc(cmd, fd, prev_fd) < 0)
 			return (ft_free_check(path, menvp, -1));
 		if (execute_node(cmd, menvp, path) < 0)
 			return (ft_free_check(path, menvp, -1));
@@ -69,9 +68,12 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 	return (ft_free_check(path, menvp, 0));
 }
 
-int	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
+int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
 {
-	if (run_by_flag(cmd, lst, INPUT) < 0)
+	t_elst	*lst;
+
+	lst = ms_env();
+	if (run_by_flag(cmd, INPUT) < 0)
 		return (-1);
 	if (*prev_fd != -1)
 		dup2(*prev_fd, STDIN_FILENO);
@@ -80,7 +82,7 @@ int	child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 	}
-	if (run_by_flag(cmd, lst, OUTPUT) < 0)
+	if (run_by_flag(cmd, OUTPUT) < 0)
 		return (-1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 22:15:20 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:54:29 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,7 @@ int		readcmd(char *cmd, int debug_mode);
 
 /// parsecmd
 /* src/parsecmd/parsecmd.c */
-int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
+int		parsecmd(char *cmd, t_deque *deque, int debug_mode);
 
 /* src/parsecmd/parsecmd_tokenize.c */
 int		get_margc(char *cmd);
@@ -290,8 +290,8 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
-void	expand_cmd(char *cmd, t_elst *elst);
-int		append_env(char *str, char *cmd, t_elst *lst);
+void	expand_cmd(char *cmd);
+int		append_env(char *str, char *cmd);
 
 typedef enum e_mode{
 	NONE,
@@ -301,13 +301,13 @@ typedef enum e_mode{
 
 /// execute
 /* src/executecmd/executecmd.c */
-int		executecmd(t_deque *deque, t_elst *lst);
+int		executecmd(t_deque *deque);
 int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
-int		run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
-int		dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd);
+int		run_by_flag(t_sent *cmd, t_mode flag);
+int		dispatchcmd(t_sent *node, int *fd, int *prev_fd);
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);
