@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/23 16:28:36 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:47:23 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,17 @@ int	check_quotes(char *cmd, int index, int status)
 	return (0);
 }
 
-int	append_env(char *str, char *cmd, t_elst *lst)
+int	append_env(char *str, char *cmd)
 {
 	int		i;
+	t_elst	*lst;
 	t_env	*node;
 
 	i = 1;
 	while (ft_isalnum(cmd[i]))
 		i++;
 	i--;
+	lst = ms_env();
 	node = lst->begin;
 	while (node != NULL)
 	{
@@ -66,7 +68,7 @@ int	append_env(char *str, char *cmd, t_elst *lst)
 	return (i);
 }
 
-void	expand_cmd(char *cmd, t_elst *elst)
+void	expand_cmd(char *cmd)
 {
 	char	str[MAX_COMMAND_LEN];
 	int		i;
@@ -84,9 +86,9 @@ void	expand_cmd(char *cmd, t_elst *elst)
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
 		if (cmd[i] == '$' && quote_s != 1)
-			i += append_env(&str[0], &cmd[i], elst);
+			i += append_env(&str[0], &cmd[i]);
 		else if (cmd[i] == '~' && quote_s != 1)
-			i += append_env(&str[0], "~HOME", elst);
+			i += append_env(&str[0], "~HOME");
 		else
 			ft_strlcat(&str[0], &cmd[i], ft_strlen(str) + 2);
 		i++;

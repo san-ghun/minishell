@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/28 13:11:59 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 23:22:46 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,7 @@ int		env_addnext(t_elst **lst, t_env **current, t_env **new_node);
 void	env_updatesize(t_elst *lst, int add);
 t_env	*env_newnode(char *key, char *value);
 t_elst	*env_init(void);
+t_elst	*ms_env(void);
 
 /* src/t_env/env_del */
 void	env_del(t_env *target);
@@ -278,7 +279,7 @@ int		readcmd(char *cmd, int debug_mode);
 
 /// parsecmd
 /* src/parsecmd/parsecmd.c */
-int		parsecmd(char *cmd, t_deque *deque, t_elst *elst, int debug_mode);
+int		parsecmd(char *cmd, t_deque *deque, int debug_mode);
 
 /* src/parsecmd/parsecmd_tokenize.c */
 int		get_margc(char *cmd);
@@ -289,8 +290,8 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 
 /* src/parsecmd/parsecmd_util.c */
 int		check_quotes(char *cmd, int index, int status);
-void	expand_cmd(char *cmd, t_elst *elst);
-int		append_env(char *str, char *cmd, t_elst *lst);
+void	expand_cmd(char *cmd);
+int		append_env(char *str, char *cmd);
 
 typedef enum e_mode{
 	NONE,
@@ -300,16 +301,28 @@ typedef enum e_mode{
 
 /// execute
 /* src/executecmd/executecmd.c */
-int		executecmd(t_deque *deque, t_elst *lst);
+int		executecmd(t_deque *deque);
 int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
 void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
-int		run_by_flag(t_sent *cmd, t_elst *lst, t_mode flag);
-int		dispatchcmd(t_sent *node, t_elst *lst, int *fd, int *prev_fd);
+/* src/executecmd/executecmd_flag_handler.c */
+int		run_by_flag(t_sent *cmd, t_mode flag);
+/* src/executecmd/executecmd_dispatch_handler.c */
+int		dispatchcmd_wrapper(t_sent *node, int *fd, int *prev_fd);
+
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);
+
+/* src/executecmd/heredoc.c */
+typedef struct s_hdoc
+{
+	char	*line;
+}			t_hdoc;
+
+t_hdoc	*hdoc(void);
+
 /* src/executecmd/runredi.c */
 int		flag_redi_read(t_sent *node, t_elst *lst);
 int		flag_redi_append(t_sent *node, t_elst *lst);

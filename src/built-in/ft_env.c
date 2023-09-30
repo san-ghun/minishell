@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:31:31 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:40:42 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_elst	*env_to_dll(char **envp)
 	t_elst	*lst;
 	t_env	*node;
 
-	lst = env_init();
+	lst = ms_env();
 	i = -1;
 	while (envp[++i])
 	{

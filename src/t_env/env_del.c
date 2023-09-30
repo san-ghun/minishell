@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:22:59 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:29:07 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/29 22:40:49 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,4 @@ void	env_dellst(t_elst *lst)
 		current = next_node;
 	}
 	lst->g_exit = 0;
-	free(lst);
 }
