@@ -6,11 +6,32 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 22:53:09 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:13:06 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void start_minishell(void)
+{
+	ft_putendl_fd("\n", 1);
+	ft_putendl_fd("  ████████████████████████████████████████████████  ", 1);
+	ft_putendl_fd("██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░░░██░░██░░░░████░░░░██████░░░░████░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░██░░██░░██░░░░██░░░░██░░░░██░░░░██░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░██░░██░░██░░░░██░░░░██░░░░██░░░░██░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░██░░██░░██░░░░██░░░░██░░░░██░░░░██░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░██░░██░░██░░░░████░░██░░░░██░░░░████░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██", 1);
+	ft_putendl_fd("██░░░░██████░░████░░░░░░░░░░████░░░░░░░░██░░░░██░░██", 1);
+	ft_putendl_fd("██░░██░░░░░░░░░░██░░░░░░░░██░░░░██░░░░██░░░░██░░░░██", 1);
+	ft_putendl_fd("██░░██████░░░░░░██████░░░░████████░░░░██░░░░██░░░░██", 1);
+	ft_putendl_fd("██░░░░░░░░██░░░░██░░░░██░░██░░░░░░░░░░██░░░░██░░░░██", 1);
+	ft_putendl_fd("██░░████████░░░░██░░░░██░░░░██████░░██░░░░██░░░░░░██", 1);
+	ft_putendl_fd("██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██", 1);
+	ft_putendl_fd("  ████████████████████████████████████████████████  ", 1);
+	ft_putendl_fd("\n  @sanghupa @minakim\n\n", 1);
+}
 
 static void	sighandler(int signal)
 {
@@ -62,7 +83,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_elst	*lst;
 
 	debug_mode = FALSE;
-	if (argc > 1 && (ft_strequ(argv[1], "--debug") || ft_strequ(argv[1], "-d")))
+	if (argc > 1 && (ft_strequ(argv[1], "--debug") \
+		|| ft_strequ(argv[1], "-d")))
 		debug_mode = TRUE;
 	else if (argc > 1 && argv)
 	{
@@ -72,6 +94,7 @@ int	main(int argc, char *argv[], char *envp[])
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
+	start_minishell();
 	while (1)
 		if (looper_wrapper(cmd, debug_mode) < 0)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:23:45 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/30 13:54:31 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,8 @@
 #define CD_SUCCESS 0
 #define CD_FAILURE 1
 
-/**
- * @brief The functions in this file are partially complete, but
- * 1. the error message output (TODO: to be implemented)
- * 2. signal passing arguments (TODO: to be implemented)
- * 3. more condition check test in ft_cd (TODO: to be implemented)
- * 4. Exit code testing (TODO: to be implemented).
- * are incomplete. I'll update them as I go along.
- */
+/// @brief The functions in this file are partially complete, but
+///are incomplete. I'll update them as I go along.
 int	ft_arrayjoin(char dest[DATA_SIZE], \
 const char src1[DATA_SIZE], const char src2[DATA_SIZE])
 {

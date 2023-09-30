@@ -16,7 +16,6 @@
 /// split and test each command path and return the right path.
 /// @param cmd command that will be tested for the path
 /// @param envp pointer to the environment variables
-/// @return 
 char	*find_path(char *cmd, char *envp[])
 {
 	int		i;
