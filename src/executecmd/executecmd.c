@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 23:27:47 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 20:35:30 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 		ms_error(cmd->output_argv);
 		return (ft_free_check(path, menvp, 1));
 	}
-	if (check_path(path))
+	if (check_path(path, cmd->tokens[0]))
 		return (ft_free_check(path, menvp, 1));
 	pid = fork();
 	if (check_pid(pid))
