@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 22:47:23 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:44:32 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ int	append_env(char *str, char *cmd)
 	return (i);
 }
 
+int add_exitstatus_marker(char *str)
+{
+	ft_strlcat(str, "$?", ft_strlen(str) + 3);
+	return (2);
+}
+
 void	expand_cmd(char *cmd)
 {
 	char	str[MAX_COMMAND_LEN];
@@ -85,6 +91,8 @@ void	expand_cmd(char *cmd)
 			quote_s ^= 1;
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
+		if (ft_strnequ("$?", &cmd[i], 2) && quote_s != 1)
+			i += add_exitstatus_marker(&str[0]);
 		if (cmd[i] == '$' && quote_s != 1)
 			i += append_env(&str[0], &cmd[i]);
 		else if (cmd[i] == '~' && quote_s != 1)

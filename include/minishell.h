@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 20:39:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 15:41:41 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ typedef enum e_mode{
 int		executecmd(t_deque *deque);
 int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
 int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
-void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
+int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
