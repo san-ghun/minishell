@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/29 23:22:46 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 20:39:51 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ char	*ms_find_path(char *cmd, char *envp[]);
 void	init_fd(int *fd, int *prev_fd);
 
 /* src/executecmd/executecmd_check.c */
-int		check_path(char *path);
+int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
 
 #endif

@@ -6,16 +6,27 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:38:30 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/21 16:38:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 21:08:50 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_path(char *path)
+int	check_path(char *path, char *cmd)
 {
+	char	command[DATA_SIZE];
+	char	*msg;
+
 	if (path == NULL)
-		return (ms_error("check_path error\n"));
+	{
+		ft_strlcpy(command, cmd, ft_strlen(cmd) + 1);
+		msg = ft_strdup(": command not found\n");
+		ft_strlcat(command, msg, ft_strlen(command) + ft_strlen(msg) + 1);
+		ms_env()->g_exit = 127;
+		ms_error(command);
+		free(msg);
+		return (1);
+	}
 	return (0);
 }
 
