@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:23:19 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 21:22:20 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,21 @@ void	ft_echo(t_sent *node, t_elst *lst)
 	i = 0;
 	fd = redi_out(node);
 	if (node->tokens[1])
-		term = determine_term(node->tokens[1], &i);
-	while (++i < node->tokens_len && node->tokens[i])
 	{
-		if (ft_strequ(node->tokens[i], "~"))
-			echo_homepath(lst);
-		else
-			ft_putstr_fd(node->tokens[i], fd);
-		if (i + 1 < node->tokens_len && \
-			node->tokens[i + 1] != NULL)
-			ft_putchar_fd(' ', fd);
+		term = determine_term(node->tokens[1], &i);
+		while (++i < node->tokens_len && node->tokens[i])
+		{
+			if (ft_strequ(node->tokens[i], "~"))
+				echo_homepath(lst);
+			else
+				ft_putstr_fd(node->tokens[i], fd);
+			if (i + 1 < node->tokens_len && node->tokens[i + 1] != NULL)
+				ft_putchar_fd(' ', fd);
+		}
+		ft_putchar_fd(term, fd);
 	}
-	ft_putchar_fd(term, fd);
+	else
+		ft_putendl_fd("", fd);
 	if (fd != 1)
 		close(fd);
 	lst->g_exit = 0;
