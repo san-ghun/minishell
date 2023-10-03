@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 12:44:32 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:05:42 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,27 @@ int	check_quotes(char *cmd, int index, int status)
 	return (0);
 }
 
+static int	append_izero(char *str, char *cmd, t_elst *lst)
+{
+	char	*str_gexit;
+	int		ret;
+
+	ret = 0;
+	if (cmd[1] == '\0' || cmd[1] == '\"')
+	{
+		ft_strlcat(str, "$", ft_strlen(str) + 2);
+		ret = 0;
+	}
+	else if (cmd[1] == '?')
+	{
+		str_gexit = ft_itoa(lst->g_exit);
+		ft_strlcat(str, str_gexit, ft_strlen(str) + ft_strlen(str_gexit) + 1);
+		ret = 1;
+		free(str_gexit);
+	}
+	return (ret);
+}
+
 int	append_env(char *str, char *cmd)
 {
 	int		i;
@@ -52,6 +73,8 @@ int	append_env(char *str, char *cmd)
 		i++;
 	i--;
 	lst = ms_env();
+	if (i == 0)
+		return (append_izero(str, cmd, lst));
 	node = lst->begin;
 	while (node != NULL)
 	{
@@ -68,12 +91,6 @@ int	append_env(char *str, char *cmd)
 	return (i);
 }
 
-int add_exitstatus_marker(char *str)
-{
-	ft_strlcat(str, "$?", ft_strlen(str) + 3);
-	return (2);
-}
-
 void	expand_cmd(char *cmd)
 {
 	char	str[MAX_COMMAND_LEN];
@@ -82,25 +99,23 @@ void	expand_cmd(char *cmd)
 	uint8_t	quote_d;
 
 	ft_bzero(&str[0], MAX_COMMAND_LEN);
-	i = 0;
+	i = -1;
 	quote_s = 0;
 	quote_d = 0;
-	while (cmd[i] != '\0')
+	while (cmd[++i] != '\0')
 	{
 		if (cmd[i] == '\'' && quote_d != 1)
 			quote_s ^= 1;
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
-		if (ft_strnequ("$?", &cmd[i], 2) && quote_s != 1)
-			i += add_exitstatus_marker(&str[0]);
 		if (cmd[i] == '$' && quote_s != 1)
 			i += append_env(&str[0], &cmd[i]);
 		else if (cmd[i] == '~' && quote_s != 1)
 			i += append_env(&str[0], "~HOME");
 		else
 			ft_strlcat(&str[0], &cmd[i], ft_strlen(str) + 2);
-		i++;
 	}
+	ft_bzero(cmd, MAX_COMMAND_LEN);
 	ft_strlcpy(cmd, str, ft_strlen(str) + 1);
 	return ;
 }

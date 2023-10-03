@@ -6,13 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/30 14:13:06 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:06:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void start_minishell(void)
+static void	start_minishell(void)
 {
 	ft_putendl_fd("\n", 1);
 	ft_putendl_fd("  ████████████████████████████████████████████████  ", 1);

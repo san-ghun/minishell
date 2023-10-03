@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 15:30:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:07:53 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,13 @@ int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
 
 int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 {
-	int status;
-	int result;
+	int	status;
+	int	result;
 
 	result = -1;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		result = WEXITSTATUS(status);
-//	waitpid(pid, NULL, 0);
 	if (*prev_fd != -1)
 		close(*prev_fd);
 	if (cmd->output_flag == PIPE_FLAG)

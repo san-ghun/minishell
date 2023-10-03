@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:23:19 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:13:41 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	redi_out(t_sent *node)
 	else if (node->output_flag == REDI_WR_TRUNC_FLAG)
 		fd = open_file(node->output_argv, 1);
 	if (fd == -1)
-		ms_error("redirection out: unable to read the file.\n");
+		ms_error("redirection out: unable to read the file\n");
 	return (fd);
 }
 
