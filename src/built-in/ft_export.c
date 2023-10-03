@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:26:12 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:00:44 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <assert.h> /// 나중에 제거하기 !
 
 /// @note
 void	ft_export(t_sent *node, t_elst *lst);
@@ -49,13 +48,8 @@ void	ft_export(t_sent *node, t_elst *lst)
 		}
 		else
 		{
-			assert("error");
+			ms_error("export : init failed.");
 			lst->g_exit = 1;
 		}
-	}
-	else
-	{
-		assert("error");
-		lst->g_exit = 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/01 21:22:20 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:23:19 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	redi_out(t_sent *node)
 	else if (node->output_flag == REDI_WR_TRUNC_FLAG)
 		fd = open_file(node->output_argv, 1);
 	if (fd == -1)
-		ft_printf("error\n");
+		ms_error("redirection out: unable to read the file.\n");
 	return (fd);
 }
 
@@ -44,14 +44,12 @@ static int	echo_flagcheck(const char *str)
 }
 
 /// @brief Determines the termination character for the 'echo' command.
-///
 /// This function examines the input string and checks for 
 /// the presence of the "-n" flag. If the flag is found, 
 /// it sets the 'i' parameter to 1, indicating that the 'echo' command
 /// should start from the second token. If the flag is not present, 
 /// 'i' is set to 0, indicating that the 'echo' command should start 
 /// from the first token.
-///
 /// @param[in]  str  The input string to analyze for the "-n" flag.
 /// @param[out] i    A pointer to an integer that will hold 
 /// the index for token processing.

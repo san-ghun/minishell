@@ -6,14 +6,15 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 20:35:30 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/01 15:30:48 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
+int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
+int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 
 int	executecmd(t_deque *deque)
 {
@@ -64,7 +65,7 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 		if (execute_node(cmd, menvp, path) < 0)
 			return (ft_free_check(path, menvp, -1));
 	}
-	parent_proc(pid, cmd, fd, prev_fd);
+	lst->g_exit = parent_proc(pid, cmd, fd, prev_fd);
 	return (ft_free_check(path, menvp, 0));
 }
 
@@ -84,9 +85,16 @@ int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
 	return (0);
 }
 
-void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
+int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 {
-	waitpid(pid, NULL, 0);
+	int status;
+	int result;
+
+	result = -1;
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		result = WEXITSTATUS(status);
+//	waitpid(pid, NULL, 0);
 	if (*prev_fd != -1)
 		close(*prev_fd);
 	if (cmd->output_flag == PIPE_FLAG)
@@ -94,6 +102,7 @@ void	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
+	return (result);
 }
 
 int	execute_node(t_sent *node, char *menvp[], char *path)

@@ -6,24 +6,21 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/29 22:40:42 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/30 13:57:38 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <assert.h> /// 나중에 제거
 
-/**
- * @brief This function converts the envp array to a Doubly Linked List (DLL).
- * The DLL uses t_env as its node, where the head of envp (i.e., before '=')
- * is stored as 'key' and the value (i.e., after '=') is stored as 'value'.
- * Both 'key' and 'value' are dynamically allocated!
- * @return If successfully converted, it returns the lst. Otherwise, it triggers
- * an assert message (temporary). Note that error handling isn't fully
- * implemented, so an update is required after the "else" clause.
- * @note The node initialization is verbose for the sake of fewer lines.
- * Further explanations will be provided in meetings.
- */
+/// @brief This function converts the envp array to a Doubly Linked List (DLL).
+/// The DLL uses t_env as its node, where the head of envp (i.e., before '=')
+///* is stored as 'key' and the value (i.e., after '=') is stored as 'value'.
+/// Both 'key' and 'value' are dynamically allocated!
+/// @return If successfully converted, it returns the lst. Otherwise, it triggers
+/// an assert message (temporary). Note that error handling isn't fully
+/// implemented, so an update is required after the "else" clause.
+/// @note The node initialization is verbose for the sake of fewer lines.
+/// Further explanations will be provided in meetings.
 t_elst	*env_to_dll(char **envp)
 {
 	int		i;
@@ -44,7 +41,7 @@ t_elst	*env_to_dll(char **envp)
 		}
 		else
 		{
-			assert("error handling needed here");
+			ms_error("dll: init failed.");
 			env_dellst(lst);
 			return (NULL);
 		}
@@ -86,7 +83,7 @@ char	**dll_to_envp(t_elst *lst)
 	{
 		envp[i] = pathjoin(node);
 		if (envp[i] == NULL)
-			assert("error\n");
+			ms_error("menvp: init failed.");
 		node = node->next;
 		i++;
 	}

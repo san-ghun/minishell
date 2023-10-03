@@ -6,12 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 14:40:09 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/23 16:34:31 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:02:50 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <assert.h> /// 나중에 제거하기 !
 
 /// @note
 void	ft_unset(t_sent *node, t_elst *lst);
@@ -50,7 +49,7 @@ void	ft_unset(t_sent *node, t_elst *lst)
 	}
 	else
 	{
-		assert("error");
+		ms_error("unset: number of ineligible tokens");
 		lst->g_exit = 1;
 	}
 }
