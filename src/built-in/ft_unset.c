@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 14:40:09 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/30 14:02:50 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:12:53 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_unset(t_sent *node, t_elst *lst)
 	}
 	else
 	{
-		ms_error("unset: number of ineligible tokens");
+		ms_error("unset: number of ineligible tokens\n");
 		lst->g_exit = 1;
 	}
 }

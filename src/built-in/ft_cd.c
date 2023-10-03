@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 22:46:27 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/01 16:12:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:08:20 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,12 @@ void	ft_cd(t_sent *node, t_elst *lst)
 		cd_tilde(new_path, tokens[1], lst);
 	else
 		ft_strlcpy(new_path, tokens[1], DATA_SIZE);
-	if (!getcwd(current_path, DATA_SIZE) || chdir(new_path) == ERR_DIR_NOT_FOUND)
+	if (!getcwd(current_path, DATA_SIZE) || \
+		chdir(new_path) == ERR_DIR_NOT_FOUND)
 	{
 		perror("cd");
 		lst->g_exit = 1;
-		return;
+		return ;
 	}
 	ft_setenv(lst, "OLDPWD", current_path, TRUE);
 	getcwd(current_path, DATA_SIZE);

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 16:31:26 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/30 14:01:19 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:14:09 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_pwd(t_sent *node, t_elst *lst)
 	fd = redi_out(node);
 	if (node->tokens_len > 1)
 	{
-		ms_error("pwd: too many tokens.\n");
+		ms_error("pwd: too many tokens\n");
 		lst->g_exit = 1;
 		return ;
 	}
@@ -32,7 +32,7 @@ void	ft_pwd(t_sent *node, t_elst *lst)
 	else
 	{
 		ms_error("pwd: error retrieving current directory\n");
-		lst->g_exit = 1; // tmp error status
+		lst->g_exit = 1;
 	}
 	if (fd != 1)
 		close(fd);
