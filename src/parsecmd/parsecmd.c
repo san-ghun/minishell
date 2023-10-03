@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:38:54 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/02 15:18:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 13:05:36 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,30 +57,6 @@ static int	cmdtosent(int margc, char *margv[], t_deque *deque)
 	return (i);
 }
 
-void	exitstatus_marker(t_deque *deque)
-{
-	t_elst	*lst;
-	t_sent	*node;
-	int		i;
-
-	lst = ms_env();
-	node = deque->end;
-	while (node != NULL)
-	{
-		i = 0;
-		while (i < node->tokens_len)
-		{
-			if (ft_strequ(node->tokens[i], "$?"))
-			{
-				free(node->tokens[i]);
-				node->tokens[i] = ft_itoa(lst->g_exit);
-			}
-			i++;
-		}
-		node = node->next;
-	}
-}
-
 int	parsecmd(char *cmd, t_deque *deque, int debug_mode)
 {
 	int		i;
@@ -96,7 +72,6 @@ int	parsecmd(char *cmd, t_deque *deque, int debug_mode)
 	margc = get_margc(cmd);
 	margv = get_margv(cmd, margc);
 	cmdtosent(margc, margv, deque);
-	exitstatus_marker(deque);
 	if (debug_mode)
 	{
 		i = 0;
