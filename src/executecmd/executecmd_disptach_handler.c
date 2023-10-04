@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/29 23:30:35 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:10:05 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_cmd	*builtins(void)
 	{"env", ft_env},
 	{"unset", ft_unset},
 	{"export", ft_export},
+	{"exit", ft_exit},
 	{NULL, NULL}
 	};
 	static int		is_init;

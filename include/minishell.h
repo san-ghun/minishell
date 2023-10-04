@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 15:41:41 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/04 19:11:28 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,9 @@ void	ft_unset(t_sent *node, t_elst *lst);
 
 /*src/built-in/ft_pwd */
 void	ft_pwd(t_sent *node, t_elst *lst);
+
+/*src/built-in/ft_exit */
+void	ft_exit(t_sent *node, t_elst *lst);
 
 /// readcmd
 /* src/readcmd/readcmd.c */
