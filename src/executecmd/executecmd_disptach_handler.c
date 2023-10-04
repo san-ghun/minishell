@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/29 23:30:35 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:39:10 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
 		return (1);
 	}
 	pid = fork();
+	g_sigstatus = 1;
 	if (pid == 0)
 	{
 		if (child_proc(node, fd, prev_fd) < 0)
