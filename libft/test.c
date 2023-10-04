@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 22:56:07 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/13 00:32:09 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/03 17:24:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	main(void)
 {
 	int		temp;
-    char	*ret;
+	char	*ret;
 
     temp = 112;
 	ft_printf("Value ft_printf() as deciaml, %d\n", temp);
