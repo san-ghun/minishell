@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/03 17:19:58 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/04 18:47:55 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	is_key(char *key)
 		return (0);
 	while (*key)
 	{
-		if (!ft_isalnum(*key) || *key != '_')
+		if (!ft_isalnum(*key) && *key != '_')
 			return (0);
 		key++;
 	}

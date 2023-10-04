@@ -274,6 +274,9 @@ void	ft_unset(t_sent *node, t_elst *lst);
 /*src/built-in/ft_pwd */
 void	ft_pwd(t_sent *node, t_elst *lst);
 
+/*src/built-in/ft_exit */
+void	ft_exit(t_sent *node, t_elst *lst);
+
 /// readcmd
 /* src/readcmd/readcmd.c */
 int		readcmd(char *cmd, int debug_mode);
