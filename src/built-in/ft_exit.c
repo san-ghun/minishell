@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:50:24 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/04 19:09:29 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/06 15:48:25 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_exit(t_sent *node, t_elst *lst)
 	if (node->tokens_len == 2)
 	{
 		lst->g_exit = ft_atoi_exit(node->tokens[1]);
-		ft_printf("exit\n");
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	}
 	else if (node->tokens_len > 2)
 	{
