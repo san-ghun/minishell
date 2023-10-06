@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/03 13:06:03 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:39:52 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ char	*ms_find_path(char *cmd, char *envp[])
 	char	*ppath;
 	char	*path;
 
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
+	(void)envp;
+	if (!ft_getenv(ms_env(), "PATH"))
+		return (0);
+	paths = ft_split(ft_getenv(ms_env(), "PATH") + 5, ':');
 	i = 0;
 	while (paths[i] != NULL)
 	{

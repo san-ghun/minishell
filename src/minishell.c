@@ -75,8 +75,6 @@ static int	looper_wrapper(char *cmd, int debug_mode)
 	g_sigstatus = 0;
 	if (readcmd(cmd, debug_mode) < 0)
 		return (-1);
-//	if (isexit(cmd))
-//		return (-1);
 	if (looper(cmd, debug_mode) < 0)
 		return (-1);
 	return (0);
