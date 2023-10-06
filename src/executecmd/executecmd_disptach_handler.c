@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/04 19:10:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/06 15:54:53 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
 	cmd_tab = builtins();
 	if (node->output_flag == STDERR_FILENO)
 		return (dispatch_err(node));
+	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "exit"))
+	{
+		cmd_tab[ctab_i].cmd_func(node, ms_env());
+		return (-1);
+	}
 	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "cd") || \
 		ft_strequ(cmd_tab[ctab_i].cmd_name, "unset") || \
 		ft_strequ(cmd_tab[ctab_i].cmd_name, "export"))
