@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/04 19:11:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:39:59 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@
 # define HDOC_FLAG 7
 
 /* minishell.c */
+extern uint8_t	g_sigstatus;
 
 /* minishell_util.c */
 int		isexit(char *cmd);
