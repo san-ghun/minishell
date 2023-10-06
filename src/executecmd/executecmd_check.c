@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:38:30 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 21:08:50 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:41:05 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	check_path(char *path, char *cmd)
 
 int	check_pid(pid_t pid)
 {
+	g_sigstatus = 1;
 	if (pid < 0)
 		return (ms_error("unable to fork\n"));
 	return (0);

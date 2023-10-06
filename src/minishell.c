@@ -6,11 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/03 13:06:52 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:37:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+uint8_t	g_sigstatus;
 
 static void	start_minishell(void)
 {
@@ -37,9 +39,12 @@ static void	sighandler(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	if (!g_sigstatus)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 static int	looper(char *cmd, int debug_mode)
@@ -67,6 +72,7 @@ static int	looper(char *cmd, int debug_mode)
 
 static int	looper_wrapper(char *cmd, int debug_mode)
 {
+	g_sigstatus = 0;
 	if (readcmd(cmd, debug_mode) < 0)
 		return (-1);
 	if (isexit(cmd))
