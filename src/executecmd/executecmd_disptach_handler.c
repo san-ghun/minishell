@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/04 22:39:10 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/06 15:54:53 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_cmd	*builtins(void)
 	{"env", ft_env},
 	{"unset", ft_unset},
 	{"export", ft_export},
+	{"exit", ft_exit},
 	{NULL, NULL}
 	};
 	static int		is_init;
@@ -51,6 +52,11 @@ int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
 	cmd_tab = builtins();
 	if (node->output_flag == STDERR_FILENO)
 		return (dispatch_err(node));
+	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "exit"))
+	{
+		cmd_tab[ctab_i].cmd_func(node, ms_env());
+		return (-1);
+	}
 	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "cd") || \
 		ft_strequ(cmd_tab[ctab_i].cmd_name, "unset") || \
 		ft_strequ(cmd_tab[ctab_i].cmd_name, "export"))

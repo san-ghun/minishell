@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 13:11:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/03 13:13:56 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:54:42 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,10 @@ void	ft_env(t_sent *node, t_elst *lst)
 		lst->g_exit = 0;
 	}
 	else
-		lst->g_exit = 1;
+	{
+		ms_error("env: No such file or directory\n");
+		lst->g_exit = 127;
+	}
 	if (fd != 1)
 		close(fd);
 }

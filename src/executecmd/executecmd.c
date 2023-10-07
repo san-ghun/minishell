@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/03 13:07:53 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:54:23 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,16 @@ int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
 	return (0);
 }
 
-int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
+int parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 {
-	int	status;
-	int	result;
+	int status;
+	int result;
 
 	result = -1;
-	waitpid(pid, &status, 0);
+	if (cmd->input_flag == HDOC_FLAG)
+		waitpid(pid, &status, 0);
+	else
+		waitpid(pid, &status, WNOHANG);
 	if (WIFEXITED(status))
 		result = WEXITSTATUS(status);
 	if (*prev_fd != -1)

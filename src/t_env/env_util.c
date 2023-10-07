@@ -28,11 +28,6 @@ char	*ft_getenv(t_elst *lst, char *key)
 	return (NULL);
 }
 
-void	env_setexit(t_elst *lst, int status)
-{
-	lst->g_exit = status;
-}
-
 /// @param lst env list, it has front node and last node.
 /// @param key key of the envp form.
 /// @param value value of the envp form.
