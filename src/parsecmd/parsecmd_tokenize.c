@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/12 12:49:58 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:03:32 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	**get_margv(char *cmd, int margc)
 	margv = (char **)ft_memalloc(sizeof(char *) * (margc + 1));
 	i = -1;
 	select = 0;
-	ft_printf("margc: %d\n", margc);
 	while (++i < margc)
 	{
 		select += skip_spaces(&cmd[select]);
