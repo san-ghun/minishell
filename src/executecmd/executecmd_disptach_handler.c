@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/06 15:54:53 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/12 12:57:17 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,8 @@ int	dispatch_err(t_sent *node)
 	return (-1);
 }
 
-int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
+int	dispatch_nofork(t_sent *node, int ctab_i, t_cmd *cmd_tab)
 {
-	t_cmd	*cmd_tab;
-	pid_t	pid;
-
-	cmd_tab = builtins();
-	if (node->output_flag == STDERR_FILENO)
-		return (dispatch_err(node));
 	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "exit"))
 	{
 		cmd_tab[ctab_i].cmd_func(node, ms_env());
@@ -64,6 +58,21 @@ int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
 		cmd_tab[ctab_i].cmd_func(node, ms_env());
 		return (1);
 	}
+	return (0);
+}
+
+int	dispatchcmd(t_sent *node, int *fd, int *prev_fd, int ctab_i)
+{
+	int		ret;
+	t_cmd	*cmd_tab;
+	pid_t	pid;
+
+	cmd_tab = builtins();
+	if (node->output_flag == STDERR_FILENO)
+		return (dispatch_err(node));
+	ret = dispatch_nofork(node, ctab_i, cmd_tab);
+	if (ret != 0)
+		return (ret);
 	pid = fork();
 	g_sigstatus = 1;
 	if (pid == 0)

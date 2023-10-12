@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/12 12:42:50 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:49:58 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,12 @@ int	get_margc(char *cmd)
 {
 	int		i;
 	int		cnt;
-	uint8_t	quote_s;
-	uint8_t	quote_d;
 
 	i = -1;
 	cnt = 0;
-	quote_s = 0;
-	quote_d = 0;
 	while (cmd[++i])
-	{
-		// if (cmd[i] == '\'' && quote_d != 1)
-		// 	quote_s ^= 1;
-		// else if (cmd[i] == '\"' && quote_s != 1)
-		// 	quote_d ^= 1;
-		// if (!quote_s && !quote_d && !ft_isspace(cmd[i]) && \
-		// 	(ft_isspace(cmd[i + 1]) || !(cmd[i + 1])))
-		// 	cnt++;
 		if (!ft_isspace(cmd[i]) && (ft_isspace(cmd[i + 1]) || !(cmd[i + 1])))
 			cnt++;
-	}
 	return (cnt);
 }
 
@@ -55,12 +42,8 @@ static int	skip_spaces(char *s)
 static int	get_nexti(char *s)
 {
 	int		i;
-	uint8_t	quote_s;
-	uint8_t	quote_d;
 
 	i = -1;
-	quote_s = 0;
-	quote_d = 0;
 	while (s[++i])
 	{
 		if (ft_isspace(s[i]))
@@ -69,7 +52,7 @@ static int	get_nexti(char *s)
 	return (i);
 }
 
-char	*ms_strndup(const char *src, size_t len)
+char	*ms_strndup(const char *src, int len)
 {
 	int		i;
 	int		j;

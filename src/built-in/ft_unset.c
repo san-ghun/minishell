@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 14:40:09 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/04 15:00:51 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/12 12:51:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void	ft_unset(t_sent *node, t_elst *lst)
 	int		fd;
 
 	fd = redi_out(node);
-		key = node->tokens[1];
-		ft_unsetenv(key, lst);
-		if (fd != 1)
-			close(fd);
-		lst->g_exit = 0;
+	key = node->tokens[1];
+	ft_unsetenv(key, lst);
+	if (fd != 1)
+		close(fd);
+	lst->g_exit = 0;
 }
 
 //void	ft_unset(t_sent *node, t_elst *lst)
