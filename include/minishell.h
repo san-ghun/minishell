@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/04 22:39:59 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:27:38 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,11 +335,16 @@ int		flag_redi_trunc(t_sent *node, t_elst *lst);
 /* src/executecmd/executecmd_util.c */
 void	ft_free_2d(char **targets);
 int		ft_free_check(char *path, char *menvp[], int ret);
-char	*ms_find_path(char *cmd, char *envp[]);
+char	*ms_find_path(char *cmd);
 void	init_fd(int *fd, int *prev_fd);
 
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
+
+/* src/util/ms_split.c */
+size_t	ms_split_size(char const *s, char c);
+char	**ms_split_process(char const *s, char c, char **tmp, size_t i);
+char	**ms_split(char const *s, char c);
 
 #endif

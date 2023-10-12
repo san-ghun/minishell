@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/06 17:39:52 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/12 13:35:54 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@ int	ft_free_check(char *path, char *menvp[], int ret)
 	return (ret);
 }
 
-char	*ms_find_path(char *cmd, char *envp[])
+char	*ms_find_path(char *cmd)
 {
 	int		i;
 	char	**paths;
 	char	*ppath;
 	char	*path;
 
-	(void)envp;
+	if (cmd[0] == '/')
+		return (ft_strdup(cmd));
 	if (!ft_getenv(ms_env(), "PATH"))
 		return (0);
 	paths = ft_split(ft_getenv(ms_env(), "PATH") + 5, ':');
-	i = 0;
-	while (paths[i] != NULL)
+	i = -1;
+	while (paths[++i] != NULL)
 	{
 		ppath = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(ppath, cmd);
@@ -53,7 +54,6 @@ char	*ms_find_path(char *cmd, char *envp[])
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	ft_free_2d(paths);
 	return (0);
