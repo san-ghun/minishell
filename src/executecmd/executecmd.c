@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/12 13:32:39 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:12:10 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
-	size_t	i;
 	size_t	tmp_size;
 	char	**tmp;
 
