@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/13 17:12:10 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/14 17:23:01 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,6 @@ int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 	int	result;
 
 	result = -1;
-	if (cmd->next == NULL)
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			result = WEXITSTATUS(status);
-	}
 	if (*prev_fd != -1)
 		close(*prev_fd);
 	if (cmd->output_flag == PIPE_FLAG)
@@ -104,6 +98,10 @@ int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
+	if (cmd->next == NULL)
+		waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		result = WEXITSTATUS(status);
 	return (result);
 }
 

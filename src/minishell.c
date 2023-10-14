@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/12 12:52:26 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/14 17:21:10 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ uint8_t	g_sigstatus;
 
 static void	start_minishell(void)
 {
+	sigchld();
 	ft_putendl_fd("\n", 1);
 	ft_putendl_fd("  ████████████████████████████████████████████████  ", 1);
 	ft_putendl_fd("██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██", 1);
