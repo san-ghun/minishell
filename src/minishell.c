@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/06 16:04:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/12 12:52:26 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,12 @@ static int	looper_wrapper(char *cmd, int debug_mode)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int		debug_mode;
-	int		exit_status;
-	char	cmd[MAX_COMMAND_LEN];
-	t_elst	*lst;
+	static int	debug_mode;
+	int			exit_status;
+	char		cmd[MAX_COMMAND_LEN];
+	t_elst		*lst;
 
 	exit_status = 0;
-	debug_mode = FALSE;
 	if (argc > 1 && (ft_strequ(argv[1], "--debug") \
 		|| ft_strequ(argv[1], "-d")))
 		debug_mode = TRUE;

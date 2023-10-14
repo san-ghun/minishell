@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_quotes.c                                     :+:      :+:    :+:   */
+/*   parsecmd_tokenize.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/25 23:45:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/14 15:06:18 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	get_margc(char *cmd)
 			quote_s ^= 1;
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
-		if (!quote_s && !quote_d && !ft_isspace(cmd[i]) && \
-			(ft_isspace(cmd[i + 1]) || !(cmd[i + 1])))
-			cnt++;
+		if (!ft_isspace(cmd[i]) && (ft_isspace(cmd[i + 1]) || !(cmd[i + 1])))
+			if (!quote_s && !quote_d)
+				cnt++;
 	}
 	return (cnt);
 }
@@ -71,6 +71,31 @@ static int	get_nexti(char *s)
 	return (i);
 }
 
+char	*ms_strndup(const char *src, int len)
+{
+	int		i;
+	int		j;
+	char	*new;
+
+	new = (char *)ft_memalloc(len + 1);
+	if (!new)
+		return (NULL);
+	i = -1;
+	j = -1;
+	while (src[++i] != '\0' && i < len)
+	{
+		if ((src[i] == '\"') || (src[i] == '\''))
+			continue ;
+		new[++j] = src[i];
+	}
+	while (i < len)
+	{
+		new[i] = '\0';
+		i++;
+	}
+	return (new);
+}
+
 char	**get_margv(char *cmd, int margc)
 {
 	int		i;
@@ -85,12 +110,7 @@ char	**get_margv(char *cmd, int margc)
 	{
 		select += skip_spaces(&cmd[select]);
 		nexti = get_nexti(&cmd[select]);
-		if (cmd[select] == '\"')
-			margv[i] = ft_strcdup(&cmd[select + 1], '\"');
-		else if (cmd[select] == '\'')
-			margv[i] = ft_strcdup(&cmd[select + 1], '\'');
-		else
-			margv[i] = ft_strndup(&cmd[select], nexti);
+		margv[i] = ms_strndup(&cmd[select], nexti);
 		select += nexti;
 	}
 	return (margv);

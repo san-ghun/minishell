@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:50:24 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/06 16:01:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/12 12:51:15 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_atoi_exit(const char *s)
 {
 	int	symbol;
 	int	num;
-	int i;
+	int	i;
 
 	i = 0;
 	num = 0;

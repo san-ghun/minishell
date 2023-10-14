@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/08 15:41:42 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:12:10 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
 	char	*path;
 
 	menvp = dll_to_envp(lst);
-	path = ms_find_path(cmd->tokens[0], menvp);
+	path = ms_find_path(cmd->tokens[0]);
 	if (cmd->output_flag == STDERR_FILENO)
 	{
 		ms_error(cmd->output_argv);
@@ -109,8 +109,19 @@ int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
+	size_t	tmp_size;
+	char	**tmp;
+
 	if (node->tokens[0] == NULL || path == NULL)
 		return (-1);
+	if (node->tokens[0][0] == '/')
+	{
+		tmp_size = ms_split_size(node->tokens[0], '/');
+		tmp = (char **)malloc(sizeof(char *) * (tmp_size + 1));
+		tmp = ms_split_process(node->tokens[0], '/', tmp, 0);
+		node->tokens[0] = ft_strdup(tmp[tmp_size - 1]);
+		ft_free_2d(tmp);
+	}
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
 	return (-1);
