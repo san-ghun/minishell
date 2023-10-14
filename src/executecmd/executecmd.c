@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/14 17:23:01 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:05:09 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,11 @@ int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
 		*prev_fd = fd[0];
 	}
 	if (cmd->next == NULL)
+	{
 		waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		result = WEXITSTATUS(status);
+		if (WIFEXITED(status))
+			result = WEXITSTATUS(status);
+	}
 	return (result);
 }
 
