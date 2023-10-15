@@ -14,7 +14,7 @@
 # Alias
 
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra -g
 
 RL_LINK		= -lreadline
 

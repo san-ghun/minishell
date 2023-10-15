@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/14 16:55:45 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/15 20:56:10 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ typedef struct s_sent
 	char			*output_argv;
 	struct s_sent	*prev;
 	struct s_sent	*next;
+	int				pipes[2];
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
@@ -307,15 +308,15 @@ typedef enum e_mode{
 /// execute
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque);
-int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
-int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
+//int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
+//int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
+//int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
 int		execute_node(t_sent *node, char *menvp[], char *path);
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
 /* src/executecmd/executecmd_dispatch_handler.c */
-int		dispatchcmd_wrapper(t_sent *node, int *fd, int *prev_fd);
-
+//int		dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd);
+int	dispatchcmd_wrapper(t_sent *cmd);
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);

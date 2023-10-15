@@ -3,109 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/08 15:01:20 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/14 18:05:09 by minakim          ###   ########.fr       */
+/*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
+/*   Updated: 2023/10/15 21:36:25 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
-int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
-
-int	executecmd(t_deque *deque)
-{
-	int		fd[2];
-	int		prev_fd;
-	int		bt;
-	t_sent	*cmd;
-
-	init_fd(fd, &prev_fd);
-	while (deque->size > 0)
-	{
-		cmd = deque_pop_back(deque);
-		if (cmd->output_flag == PIPE_FLAG)
-			pipe(fd);
-		bt = dispatchcmd_wrapper(cmd, fd, &prev_fd);
-		if (bt < 0)
-			return (-1);
-		if (bt)
-			continue ;
-		if (run_process(cmd, ms_env(), fd, &prev_fd) < 0)
-			return (-1);
-	}
-	return (0);
-}
-
-int	run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd)
-{
-	pid_t	pid;
-	char	**menvp;
-	char	*path;
-
-	menvp = dll_to_envp(lst);
-	path = ms_find_path(cmd->tokens[0]);
-	if (cmd->output_flag == STDERR_FILENO)
-	{
-		ms_error(cmd->output_argv);
-		return (ft_free_check(path, menvp, 1));
-	}
-	if (check_path(path, cmd->tokens[0]))
-		return (ft_free_check(path, menvp, 1));
-	pid = fork();
-	if (check_pid(pid))
-		return (ft_free_check(path, menvp, 1));
-	if (pid == 0)
-	{
-		if (child_proc(cmd, fd, prev_fd) < 0)
-			return (ft_free_check(path, menvp, -1));
-		if (execute_node(cmd, menvp, path) < 0)
-			return (ft_free_check(path, menvp, -1));
-	}
-	lst->g_exit = parent_proc(pid, cmd, fd, prev_fd);
-	return (ft_free_check(path, menvp, 0));
-}
-
-int	child_proc(t_sent *cmd, int *fd, int *prev_fd)
-{
-	if (run_by_flag(cmd, INPUT) < 0)
-		return (-1);
-	if (*prev_fd != -1)
-		dup2(*prev_fd, STDIN_FILENO);
-	if (cmd->output_flag == PIPE_FLAG && fd[1] != -1)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-	}
-	if (run_by_flag(cmd, OUTPUT) < 0)
-		return (-1);
-	return (0);
-}
-
-int	parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd)
-{
-	int	status;
-	int	result;
-
-	result = -1;
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (cmd->output_flag == PIPE_FLAG)
-	{
-		close(fd[1]);
-		*prev_fd = fd[0];
-	}
-	if (cmd->next == NULL)
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			result = WEXITSTATUS(status);
-	}
-	return (result);
-}
+//static int get_numpipe(t_sent *cmd)
+//{
+//	int	numpipe;
+//
+//	numpipe = 0;
+//	while (cmd)
+//	{
+//		if (cmd->output_flag == PIPE_FLAG)
+//			numpipe++;
+//		cmd = cmd->next;
+//	}
+//	return (numpipe);
+//}
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
@@ -126,3 +45,110 @@ int	execute_node(t_sent *node, char *menvp[], char *path)
 	ms_error("Failed to execute command\n");
 	return (-1);
 }
+
+//void	close_all_pipe(t_deque *deque)
+//{
+//	t_sent	*cmd;
+//
+//	cmd = deque->end;
+//	while (cmd)
+//	{
+//		if (cmd->output_flag == PIPE_FLAG)
+//		{
+//			printf("parent %d close: fd[%d]\n", getpid(), cmd->fd[0]);
+//			close(cmd->fd[0]);
+//
+//			printf("parent %d close: fd[%d]\n", getpid(), cmd->fd[1]);
+//			close(cmd->fd[1]);
+//		}
+//		cmd = cmd->next;
+//	}
+//}
+
+int	ft_execvp(t_sent *cmd)
+{
+	char	**menvp;
+	char	*path;
+	int		bt;
+
+	bt = -1;
+	menvp = dll_to_envp(ms_env());
+	path = ms_find_path(cmd->tokens[0]);
+	if (cmd->output_flag == STDERR_FILENO)
+	{
+		ms_error(cmd->output_argv);
+		return (ft_free_check(path, menvp, 1));
+	}
+	if (check_path(path, cmd->tokens[0]))
+		return (ft_free_check(path, menvp, 1));
+	bt = dispatchcmd_wrapper(cmd);
+	if (bt < 0)
+		return (-1);
+	if (bt == 0)
+		if (execute_node(cmd, menvp, path) < 0)
+			return (ft_free_check(path, menvp, -1));
+	return (ft_free_check(path, menvp, 0));
+}
+
+int	wait_child(int pid)
+{
+	int status;
+	int	res;
+	t_elst	*lst;
+
+	status = 0;
+	res = 0;
+	lst = ms_env();
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && lst->g_exit != 130)
+		res = WTERMSIG(status);
+	else if (WIFEXITED(status) && lst->g_exit != 130)
+		res = WEXITSTATUS(status);
+	else if (WIFSTOPPED(status) && lst->g_exit != 130)
+		res = 1;
+	return (res);
+}
+
+///	If it's not the first command,
+/// the child's standard input is replaced with the read end of the previous pipe.
+/// If it's not the last command,
+/// the child's standard output is replaced with the write end of the current pipe.
+int	executecmd(t_deque *deque)
+{
+	t_sent	*cmd;
+	int		pid;
+	int		pipe_open;
+
+	cmd = deque->end;
+	while (cmd) {
+		cmd = deque_pop_back(deque);
+		pipe_open = 0;
+		if (cmd->output_flag == PIPE_FLAG || (cmd->prev && cmd->prev->output_flag == PIPE_FLAG)) {
+			pipe_open = 1;
+			if (pipe(cmd->pipes))
+				return (-1);
+		}
+
+		pid = fork();
+
+		if (pid < 0) {
+			perror("fork()");
+			return (-1);
+		} else if (pid == 0) /// child process
+		{
+			/// call redirection
+			if (run_by_flag(cmd, INPUT) < 0)
+				return (-1);
+			if (run_by_flag(cmd, OUTPUT) < 0)
+				return (-1);
+
+			ft_execvp(cmd);
+			exit(1);
+		}
+		/// parent process
+
+	}
+	return (0);
+}
+
+
