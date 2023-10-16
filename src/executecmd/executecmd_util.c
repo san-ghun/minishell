@@ -59,9 +59,3 @@ char	*ms_find_path(char *cmd)
 	return (0);
 }
 
-void	init_fd(int *fd, int *prev_fd)
-{
-	fd[0] = -1;
-	fd[1] = -1;
-	*prev_fd = -1;
-}

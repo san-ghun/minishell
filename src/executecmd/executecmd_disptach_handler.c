@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/16 20:17:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/17 00:54:51 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,39 +90,17 @@ int	dispatchcmd_wrapper(t_sent *cmd)
 	return (0);
 }
 
-//int	dispatchcmd_o(t_sent *node, int *fd, int *prev_fd, int ctab_i)
-//{
-//	int		ret;
-//	t_cmd	*cmd_tab;
-//	pid_t	pid;
-//
-//	cmd_tab = builtins();
-//	if (node->output_flag == STDERR_FILENO)
-//		return (dispatch_err(node));
-//	ret = dispatch_nofork(node, ctab_i, cmd_tab);
-//	if (ret != 0)
-//		return (ret);
-//	pid = fork();
-//	g_sigstatus = 1;
-//	if (pid == 0)
-//	{
-//		if (child_proc(node, fd, prev_fd) < 0)
-//			return (-1);
-//		cmd_tab[ctab_i].cmd_func(node, ms_env());
-//		return (-1);
-//	}
-//	parent_proc(pid, node, fd, prev_fd);
-//	return (1);
-//}
-//int	dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd)
-//{
-//	t_cmd	*cmd_table;
-//	int		i;
-//
-//	cmd_table = builtins();
-//	i = -1;
-//	while (cmd_table[++i].cmd_name)
-//		if (ft_strequ(node->tokens[0], cmd_table[i].cmd_name))
-//			return (dispatchcmd_o(node, fd, prev_fd, i));
-//	return (0);
-//}
+int	is_built_in(t_sent *cmd)
+{
+	t_cmd	*cmd_table;
+	int		i;
+
+	cmd_table = builtins();
+	i = -1;
+	while (cmd_table[++i].cmd_name)
+	{
+		if (ft_strequ(cmd->tokens[0], cmd_table[i].cmd_name))
+			return (1);
+	}
+	return (0);
+}

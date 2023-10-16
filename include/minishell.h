@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/15 20:56:10 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/17 00:34:46 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@
 // Limit number of env key name:
 # define MAX_KEY_VAR		255
 
-/// Brief true/false notation
+/// @note Brief true/false notation
 # define TRUE 1
 # define FALSE 0
 
-# define DIR_CHANGE_SUCCESS 0
+/// @note max pipes size
+# define MAX_PIPES 200
+
 # define ERR_DIR_NOT_FOUND -1
 
 /// @note FLAGS
@@ -141,7 +143,6 @@ typedef struct s_sent
 	char			*output_argv;
 	struct s_sent	*prev;
 	struct s_sent	*next;
-	int				pipes[2];
 }				t_sent;
 
 /* src/t_sent/sent_create.c */
@@ -174,6 +175,8 @@ typedef struct s_deque
 	struct s_sent	*begin;
 	struct s_sent	*end;
 	int				size;
+	int				saved_size;
+	int				pids[MAX_PIPES];
 }					t_deque;
 
 /* src/deque/deque_create.c */
@@ -308,15 +311,19 @@ typedef enum e_mode{
 /// execute
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque);
-//int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-//int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
-//int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
+
+/* src/executecmd/executecmd_util.c */
 int		execute_node(t_sent *node, char *menvp[], char *path);
+
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
+
 /* src/executecmd/executecmd_dispatch_handler.c */
 //int		dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd);
+
 int	dispatchcmd_wrapper(t_sent *cmd);
+int	is_built_in(t_sent *cmd);
+
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
 int		flag_heredoc(t_sent *node, t_elst *lst);
@@ -338,7 +345,6 @@ int		flag_redi_trunc(t_sent *node, t_elst *lst);
 void	ft_free_2d(char **targets);
 int		ft_free_check(char *path, char *menvp[], int ret);
 char	*ms_find_path(char *cmd);
-void	init_fd(int *fd, int *prev_fd);
 
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);

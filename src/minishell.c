@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/16 17:41:04 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/17 00:49:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	looper(char *cmd, int debug_mode)
 		ft_printf("\n");
 		ft_printf("------ result ------\n");
 	}
+	deque->saved_size = deque->size - 1;
 	ret = executecmd(deque);
 	sent_delall(&sent);
 	deque_del(deque);

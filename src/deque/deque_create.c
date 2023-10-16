@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/08/03 02:43:13 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/16 23:43:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_deque	*deque_init(void)
 	this->begin = NULL;
 	this->end = NULL;
 	this->size = 0;
+	this->saved_size = 0;
 	return (this);
 }
 
