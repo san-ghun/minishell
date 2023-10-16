@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/16 19:45:09 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/16 20:17:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_cmd	*builtins(void)
 	};
 	static int		is_init;
 
-	printf("call built-in\n");
+//	printf("call built-in\n");
 	if (is_init)
 		return (&(*this));
 	is_init = TRUE;
