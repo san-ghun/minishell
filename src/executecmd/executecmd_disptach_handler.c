@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/15 16:16:59 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/16 19:45:09 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,20 @@ static t_cmd	*builtins(void)
 	};
 	static int		is_init;
 
+	printf("call built-in\n");
 	if (is_init)
 		return (&(*this));
 	is_init = TRUE;
 	return (&(*this));
 }
-
+//
 int	dispatch_err(t_sent *node)
 {
 	ms_error(node->output_argv);
 	return (-1);
 }
 
-int	dispatch_nofork(t_sent *node, int ctab_i, t_cmd *cmd_tab)
+int	dispatch_run_cmd(t_sent *node, int ctab_i, t_cmd *cmd_tab)
 {
 	if (ft_strequ(cmd_tab[ctab_i].cmd_name, "exit"))
 	{
@@ -63,12 +64,15 @@ int	dispatch_nofork(t_sent *node, int ctab_i, t_cmd *cmd_tab)
 
 int	dispatchcmd(t_sent *node, int ctab_i)
 {
+	int		res;
 	t_cmd	*cmd_tab;
 
+	res = 1;
 	cmd_tab = builtins();
+	res = dispatch_run_cmd(node, ctab_i, cmd_tab);
 	g_sigstatus = 1;
 	cmd_tab[ctab_i].cmd_func(node, ms_env());
-	return (1);
+	return (res);
 }
 
 int	dispatchcmd_wrapper(t_sent *cmd)
@@ -79,8 +83,10 @@ int	dispatchcmd_wrapper(t_sent *cmd)
 	cmd_table = builtins();
 	i = -1;
 	while (cmd_table[++i].cmd_name)
+	{
 		if (ft_strequ(cmd->tokens[0], cmd_table[i].cmd_name))
 			return (dispatchcmd(cmd, i));
+	}
 	return (0);
 }
 

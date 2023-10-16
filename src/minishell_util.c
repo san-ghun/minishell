@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 16:21:57 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/14 17:19:54 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/16 17:40:54 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ int	ms_error(char *msg)
 	return (1);
 }
 
-void	handle_sigchld(int sig)
-{
-	int	saved_errno;
-
-	(void)sig;
-	saved_errno = errno;
-	while (waitpid((pid_t)(-1), 0, WNOHANG) > 0)
-	{
-	}
-	errno = saved_errno;
-}
-
-void	sigchld(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = &handle_sigchld;
-	sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-	sigaction(SIGCHLD, &sa, NULL);
-}
+//void	handle_sigchld(int sig)
+//{
+//	int	saved_errno;
+//
+//	(void)sig;
+//	saved_errno = errno;
+//	while (waitpid((pid_t)(-1), 0, WNOHANG) > 0)
+//	{
+//	}
+//	errno = saved_errno;
+//}
+//
+//void	sigchld(void)
+//{
+//	struct sigaction	sa;
+//
+//	sa.sa_handler = &handle_sigchld;
+//	sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+//	sigaction(SIGCHLD, &sa, NULL);
+//}

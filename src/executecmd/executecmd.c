@@ -6,25 +6,11 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/15 21:36:25 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/16 19:43:51 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//static int get_numpipe(t_sent *cmd)
-//{
-//	int	numpipe;
-//
-//	numpipe = 0;
-//	while (cmd)
-//	{
-//		if (cmd->output_flag == PIPE_FLAG)
-//			numpipe++;
-//		cmd = cmd->next;
-//	}
-//	return (numpipe);
-//}
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
@@ -45,25 +31,6 @@ int	execute_node(t_sent *node, char *menvp[], char *path)
 	ms_error("Failed to execute command\n");
 	return (-1);
 }
-
-//void	close_all_pipe(t_deque *deque)
-//{
-//	t_sent	*cmd;
-//
-//	cmd = deque->end;
-//	while (cmd)
-//	{
-//		if (cmd->output_flag == PIPE_FLAG)
-//		{
-//			printf("parent %d close: fd[%d]\n", getpid(), cmd->fd[0]);
-//			close(cmd->fd[0]);
-//
-//			printf("parent %d close: fd[%d]\n", getpid(), cmd->fd[1]);
-//			close(cmd->fd[1]);
-//		}
-//		cmd = cmd->next;
-//	}
-//}
 
 int	ft_execvp(t_sent *cmd)
 {
@@ -117,24 +84,30 @@ int	executecmd(t_deque *deque)
 {
 	t_sent	*cmd;
 	int		pid;
-	int		pipe_open;
+	int		fd[2];
+	int		old_fd[2];
+	int		first_cmd;
 
-	cmd = deque->end;
-	while (cmd) {
+	first_cmd = deque->size - 1;
+	int multiple_cmds = deque->size > 1;
+	while (deque->size > 0)
+	{
 		cmd = deque_pop_back(deque);
-		pipe_open = 0;
-		if (cmd->output_flag == PIPE_FLAG || (cmd->prev && cmd->prev->output_flag == PIPE_FLAG)) {
-			pipe_open = 1;
-			if (pipe(cmd->pipes))
-				return (-1);
+		/// pipe : if there is a next cmd
+		if (cmd->next && cmd->output_flag == PIPE_FLAG)
+		{
+			printf("pipe [%s] cmd\n", cmd->tokens[0]);
+			pipe(fd);
 		}
 
+		/// fork
 		pid = fork();
-
-		if (pid < 0) {
+		if (pid < 0)
+		{
 			perror("fork()");
 			return (-1);
-		} else if (pid == 0) /// child process
+		}
+		else if (pid == 0) /// child process
 		{
 			/// call redirection
 			if (run_by_flag(cmd, INPUT) < 0)
@@ -142,12 +115,62 @@ int	executecmd(t_deque *deque)
 			if (run_by_flag(cmd, OUTPUT) < 0)
 				return (-1);
 
-			ft_execvp(cmd);
-			exit(1);
-		}
-		/// parent process
+			/// if not first cmd
+			if (first_cmd > deque->size)
+			{
+				printf("child [%s] not first cmd\n", cmd->tokens[0]);
 
+				dup2(old_fd[0], STDIN_FILENO);
+				printf("child [%s] not first cmd : : close old fds\n", cmd->tokens[0]);
+				close(old_fd[0]);
+				printf("child [%s] not first cmd : close old fds\n", cmd->tokens[0]);
+				close(old_fd[1]);
+			}
+			/// if not last cmd
+			if (deque->size > 0)
+			{
+				printf("child [%s] not last cmd\n", cmd->tokens[0]);
+
+				close(fd[0]);
+				dup2(fd[1], STDOUT_FILENO);
+				printf("child [%s] not last cmd : dup2\n", cmd->tokens[0]);
+				close(fd[1]);
+				printf("child [%s] not last cmd : close fds\n", cmd->tokens[0]);
+			}
+			int res = ft_execvp(cmd);
+			return (res);
+		}
+		else
+		{
+			/// parent process
+
+			/// if there is a previous cmd
+			if (first_cmd > deque->size)
+			{
+				printf("parent [%s] not first cmd\n", cmd->tokens[0]);
+				close(old_fd[0]);
+				close(old_fd[1]);
+			}
+			/// if there is next cmd
+			if (cmd->next)
+			{
+				printf("parent [%s] there is next cmd\n", cmd->tokens[0]);
+
+				old_fd[1] = fd[1];
+				old_fd[0] = fd[0];
+			}
+			wait_child(pid);
+		}
 	}
+	if (multiple_cmds)
+		/// if there are multiple cmd
+	{
+		printf("[%s] there are multiple : close old_fds\n", cmd->tokens[0]);
+
+		close(old_fd[0]);
+		close(old_fd[1]);
+	}
+
 	return (0);
 }
 
