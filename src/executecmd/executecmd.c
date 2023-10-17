@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/17 00:59:29 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/17 02:19:47 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,40 @@ int	ft_execvp(t_sent *cmd)
 {
 	char	**menvp;
 	char	*path;
+	int		res;
+
+	res = 0;
+	menvp = dll_to_envp(ms_env());
+	path = ms_find_path(cmd->tokens[0]);
+	if (cmd->output_flag == STDERR_FILENO)
+	{
+		ms_error(cmd->output_argv);
+		return (ft_free_check(path, menvp, 1));
+	}
+	printf("execvp %d\n", getpid());
+	/// FIXME :  For builtin, path == NULL. need to think about where "check_path" should be.
+	/// FIXME :  When running builtin, many fatal errors (SIGs) occur.
+	if (is_built_in(cmd))
+	{
+		printf("yes. builtin\n");
+		res = dispatchcmd_wrapper(cmd);
+		return (res);
+	}
+	else
+	{
+		if (check_path(path, cmd->tokens[0]))
+			return (ft_free_check(path, menvp, 1));
+		if (execute_node(cmd, menvp, path) < 0)
+			return (ft_free_check(path, menvp, -1));
+	}
+	return (ft_free_check(path, menvp, 0));
+}
+
+
+int	ft_execvp_backup(t_sent *cmd)
+{
+	char	**menvp;
+	char	*path;
 	int		bt;
 
 	bt = -1;
@@ -57,10 +91,13 @@ int	ft_execvp(t_sent *cmd)
 		ms_error(cmd->output_argv);
 		return (ft_free_check(path, menvp, 1));
 	}
+	printf("execvp %d\n", getpid());
+//	printf("Executing ft_execvp for cmd: %s\n", cmd->tokens[0]);
 	/// FIXME :  For builtin, path == NULL. need to think about where "check_path" should be.
 	/// FIXME :  When running builtin, many fatal errors (SIGs) occur.
 	if (check_path(path, cmd->tokens[0])) 	/* Builtin functions get stuck here. */
 		return (ft_free_check(path, menvp, 1));
+//	printf("Path check passed\n");
 	bt = dispatchcmd_wrapper(cmd);
 	if (bt < 0)
 		return (-1);
@@ -116,12 +153,14 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
+	printf("child %d\n", getpid());
 	res = ft_execvp(cmd);
 	return (res);
 }
 
 void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 {
+	printf("parent %d\n", getpid());
 	if (deque->saved_size > deque->size)
 	{
 		close(old_fd[0]);
