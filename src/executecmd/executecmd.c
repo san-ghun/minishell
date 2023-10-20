@@ -16,6 +16,7 @@ int		child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
 int		ft_execvp(t_sent *cmd);
 void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
 int		wait_child(t_ctx *c, int old_fd[2], int wait_count);
+
 /// TODO : memory leak 체크가 하나도 되어 있지 않으므로 전체적인 구조 수정 이후 디버깅 필요
 
 t_ctx	*ms_ctx(void)
