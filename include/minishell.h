@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 16:18:47 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:30:31 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,6 +360,7 @@ int		flag_redi_trunc(t_sent *node, t_elst *lst);
 void	ft_free_2d(char **targets);
 int		ft_free_check(char *path, char *menvp[], int ret);
 char	*ms_find_path(char *cmd);
+int		ft_free_exit(char *path, char *menvp[], int ret);
 
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);

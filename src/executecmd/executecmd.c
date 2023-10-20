@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 16:20:01 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:58:18 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,43 @@ void	add_wait_count(int pid)
 	context->i += 1;
 }
 
+void ft_ms_exit(t_sent *cmd, t_deque *deque)
+{
+	if (cmd && !(cmd->next))
+	{
+		sent_delall(&cmd);
+		deque_del(deque);
+		env_dellst(ms_env());
+	}
+	exit(EXIT_FAILURE);
+}
+
+int	run_process(t_sent *cmd, t_deque *deque)
+{
+	t_ctx	*c;
+	int		res;
+	int		pid;
+
+	c = ms_ctx();
+	if (extract_last_path_component(cmd) < 0)
+		return (-1);
+	pid = fork();
+	if (check_pid(pid))
+		return (-1);
+	else if (pid == 0) /// child process
+	{
+		res = child(cmd, deque, c->old_fd, c->fd);
+		if (res == -1 || res == 1)
+			ft_ms_exit(cmd, deque);
+	}
+	add_wait_count(pid);
+	parent(cmd, deque, c->old_fd, c->fd);
+	return (0);
+}
+
 int	executecmd(t_deque *deque)
 {
 	t_sent	*cmd;
-	int		pid;
 	int		bt;
 	t_ctx	*c;
 
@@ -83,18 +116,8 @@ int	executecmd(t_deque *deque)
 			continue ;
 		}
 		else
-		{
-			if (extract_last_path_component(cmd) < 0)
+			if (run_process(cmd, deque) < 0)
 				return (-1);
-			pid = fork();
-			if (check_pid(pid))
-				return (-1);
-			else if (pid == 0) /// child process
-				bt = child(cmd, deque, c->old_fd, c->fd);
-			if (bt != -1 && bt != 1)
-				add_wait_count(pid);
-			parent(cmd, deque, c->old_fd, c->fd);
-		}
 	}
 	return (wait_child(c, c->old_fd, c->wait_count));
 }
@@ -161,6 +184,7 @@ void	fd_handler_child(t_deque *deque, int old_fd[2], int fd[2])
 		close(fd[1]);
 	}
 }
+
 int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 {
 	int	res;

@@ -6,11 +6,57 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/16 23:25:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:59:33 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//int	executecmd(t_deque *deque)
+//{
+//	t_sent	*cmd;
+//	int		pid;
+//	int		bt;
+//	t_ctx	*c;
+//
+//	c = ms_ctx();
+//	c->cmd_count = deque->size - 1;
+//	while (deque->size > 0 && c->i < MAX_PIPES)
+//	{
+//		bt = 0;
+//		cmd = deque_pop_back(deque);
+//		if (cmd->next && cmd->output_flag == PIPE_FLAG)
+//			pipe(c->fd);
+//		if (is_built_in(cmd) == PARENT)
+//		{
+//			bt = dispatchcmd_wrapper(cmd, PARENT);
+//			if (bt < 0)
+//				return (bt);
+//			continue ;
+//		}
+//		else
+//		{
+//			if (extract_last_path_component(cmd) < 0)
+//				return (-1);
+//			pid = fork();
+//			if (check_pid(pid))
+//				return (-1);
+//			else if (pid == 0) /// child process
+//			{
+//				bt = child(cmd, deque, c->old_fd, c->fd);
+//				if (bt == -1 || bt == 1)
+//					ft_ms_exit(cmd, deque);
+//			}
+//			add_wait_count(pid);
+//			parent(cmd, deque, c->old_fd, c->fd);
+//		}
+//	}
+//	return (wait_child(c, c->old_fd, c->wait_count));
+//}
+
+
+/// ===
+
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {

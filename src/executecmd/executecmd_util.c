@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 13:36:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:30:02 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int	ft_free_check(char *path, char *menvp[], int ret)
 	ft_free_2d(menvp);
 	free(path);
 	return (ret);
+}
+
+int ft_free_exit(char *path, char *menvp[], int ret)
+{
+	ft_free_check(path, menvp, ret);
+	exit(EXIT_FAILURE);
 }
 
 char	*ms_find_path(char *cmd)

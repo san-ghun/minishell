@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 17:39:17 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/09/07 22:22:06 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:52:01 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,13 @@ t_sent	*deque_pop_back(t_deque *deque)
 {
 	t_sent	*target;
 
+	if (!deque || !deque_size(deque))
+		return (NULL);
 	if (!deque_size(deque))
 		return (NULL);
 	target = deque->end;
+	if (!target)
+		return (NULL);
 	deque->end = target->next;
 	if (deque->end == NULL)
 		deque->begin = NULL;
