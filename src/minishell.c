@@ -97,7 +97,7 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
 		return (0);
 	}
-	signal(SIGCHLD, sigchld);
+	signal(SIGCHLD, sigchldhandler);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);

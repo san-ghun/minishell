@@ -32,7 +32,7 @@ int	ms_error(char *msg)
 	return (1);
 }
 
-void	sigchld(int signo)
+void	sigchldhandler(int signo)
 {
 	(void)signo;
 	while (waitpid(-1, NULL, WNOHANG) > 0);
