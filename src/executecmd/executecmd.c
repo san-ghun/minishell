@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 16:58:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 18:12:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,13 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 	status = 0;
 	res = 0;
 	i = -1;
+	while (++i < wait_count)
+		waitpid(c->pids[i], &status, 0);
 	if (c->cmd_count)
 	{
 		close(old_fd[0]);
 		close(old_fd[1]);
 	}
-	while (++i < wait_count)
-		waitpid(c->pids[i], &status, 0);
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 		res = WTERMSIG(status);
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)

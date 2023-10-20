@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 16:30:31 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 18:18:00 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ extern uint8_t	g_sigstatus;
 /* minishell_util.c */
 int		isexit(char *cmd);
 int		ms_error(char *msg);
-void	sigchld(void);
+void	sigchld(int signo);
 
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);

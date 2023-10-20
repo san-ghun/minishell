@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 16:06:46 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 18:18:20 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("Invalid arguments. Try ./minishell\n", 2);
 		return (0);
 	}
+	signal(SIGCHLD, sigchld);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, SIG_IGN);
 	lst = env_to_dll(envp);
