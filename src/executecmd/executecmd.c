@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/18 15:03:56 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:20:01 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,104 @@
 int		child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
 int		ft_execvp(t_sent *cmd);
 void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
-int		wait_child(t_deque *deque, int old_fd[2]);
-
-/// @note 기본적인 멀티 파이프는 작동하지만 아직 builtin과 재대로 연결되지 않았습니다.
+int		wait_child(t_ctx *c, int old_fd[2], int wait_count);
 /// TODO : memory leak 체크가 하나도 되어 있지 않으므로 전체적인 구조 수정 이후 디버깅 필요
 
-typedef struct s_ctx
-{
-	t_sent	*cmd;
-	int		old_fd[2];
-	int		fd[2];
-	int		pids[MAX_PIPES];
-	int		i;
-}				t_ctx;
-
-static t_ctx	*ctx(void)
+t_ctx	*ms_ctx(void)
 {
 	static t_ctx	this;
-	static int		is_init;
+	static int			is_init;
 
 	if (is_init)
 		return (&this);
 	is_init = TRUE;
-	this.cmd = NULL;
 	this.i = 0;
+	this.wait_count = 0;
+	this.cmd_count = 0;
 	return (&this);
+}
+
+int extract_last_path_component(t_sent *cmd)
+{
+	size_t	tmp_size;
+	char	**tmp;
+
+	if (cmd->tokens[0] == NULL)
+		return (-1);
+	if (cmd->tokens[0][0] == '/')
+	{
+		tmp_size = ms_split_size(cmd->tokens[0], '/');
+		tmp = (char **)malloc(sizeof(char *) * (tmp_size + 1));
+		tmp = ms_split_process(cmd->tokens[0], '/', tmp, 0);
+		cmd->tokens[0] = ft_strdup(tmp[tmp_size - 1]);
+		ft_free_2d(tmp);
+	}
+	return (0);
+}
+
+void	add_wait_count(int pid)
+{
+	t_ctx	*context;
+
+	context = ms_ctx();
+	context->wait_count += 1;
+	context->pids[context->i] = pid;
+	context->i += 1;
 }
 
 int	executecmd(t_deque *deque)
 {
-/// TODO : 현재 var가 많고 앞으로 더 늘어날 미래만 보이므로 struct 만들도록 합시다!
 	t_sent	*cmd;
 	int		pid;
-	int		fd[2];
-	int		old_fd[2];
-	int		i;
+	int		bt;
+	t_ctx	*c;
 
-	i = 0;
-	while (deque->size > 0 && i < MAX_PIPES)
+	c = ms_ctx();
+	c->cmd_count = deque->size - 1;
+	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
+		bt = 0;
 		cmd = deque_pop_back(deque);
-/// TODO : builtin중 parent에서 작동해야하는 exit, export, unset, cd 따로 작동하도록 새로 함수를 만들어야합니다.
-/// @note child에서 builtin이 작동하고 있기 때문에 지금 exit는 완전히 작동하지 않습니다!
-/// 위의 아이디어에서 확실히 생각해야할 부분 : pipe연결, wait 여부
 		if (cmd->next && cmd->output_flag == PIPE_FLAG)
-			pipe(fd);
-		pid = fork();
-		if (check_pid(pid))
-			/// need free ?
-			return (-1);
-		else if (pid == 0) /// child process
-			return (child(cmd, deque, old_fd, fd));
-		deque->pids[i++] = pid;
-		parent(cmd, deque, old_fd, fd);
+			pipe(c->fd);
+		if (is_built_in(cmd) == PARENT)
+		{
+			bt = dispatchcmd_wrapper(cmd, PARENT);
+			if (bt < 0)
+				return (bt);
+			continue ;
+		}
+		else
+		{
+			if (extract_last_path_component(cmd) < 0)
+				return (-1);
+			pid = fork();
+			if (check_pid(pid))
+				return (-1);
+			else if (pid == 0) /// child process
+				bt = child(cmd, deque, c->old_fd, c->fd);
+			if (bt != -1 && bt != 1)
+				add_wait_count(pid);
+			parent(cmd, deque, c->old_fd, c->fd);
+		}
 	}
-	return (wait_child(deque, old_fd));
+	return (wait_child(c, c->old_fd, c->wait_count));
 }
 
 int	ft_execvp(t_sent *cmd)
 {
 	char	**menvp;
 	char	*path;
-	int		res;
 
-	res = 0;
-	menvp = dll_to_envp(ms_env());
-	path = ms_find_path(cmd->tokens[0]);
 	if (cmd->output_flag == STDERR_FILENO)
 	{
 		ms_error(cmd->output_argv);
-		return (ft_free_check(path, menvp, 1));
-	}
-	printf("execvp %d\n", getpid());
-/// FIXME : For builtin, path == NULL. need to think about where "check_path" should be.
-/// FIXME : When running builtin, many fatal errors (SIGs) occur.
-	if (is_built_in(cmd))
-	{
-		printf("yes. builtin\n");
-		res = dispatchcmd_wrapper(cmd);
-		return (res);
+		return (1);
 	}
 	else
 	{
+		menvp = dll_to_envp(ms_env());
+		path = ms_find_path(cmd->tokens[0]);
 		if (check_path(path, cmd->tokens[0]))
 			return (ft_free_check(path, menvp, 1));
 		if (execute_node(cmd, menvp, path) < 0)
@@ -105,7 +121,7 @@ int	ft_execvp(t_sent *cmd)
 	return (ft_free_check(path, menvp, 0));
 }
 
-int	wait_child(t_deque *deque, int old_fd[2])
+int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 {
 	int	status;
 	int	res;
@@ -114,13 +130,13 @@ int	wait_child(t_deque *deque, int old_fd[2])
 	status = 0;
 	res = 0;
 	i = -1;
-	while (++i < deque->saved_size + 1)
-		waitpid(deque->pids[i], &status, 0);
-	if (deque->saved_size)
+	if (c->cmd_count)
 	{
 		close(old_fd[0]);
 		close(old_fd[1]);
 	}
+	while (++i < wait_count)
+		waitpid(c->pids[i], &status, 0);
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 		res = WTERMSIG(status);
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)
@@ -130,16 +146,9 @@ int	wait_child(t_deque *deque, int old_fd[2])
 	return (res);
 }
 
-int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
+void	fd_handler_child(t_deque *deque, int old_fd[2], int fd[2])
 {
-	int	res;
-
-	res = 0;
-	if (run_by_flag(cmd, INPUT) < 0)
-		return (-1);
-	if (run_by_flag(cmd, OUTPUT) < 0)
-		return (-1);
-	if (deque->saved_size > deque->size)
+	if (ms_ctx()->cmd_count > deque->size)
 	{
 		dup2(old_fd[0], STDIN_FILENO);
 		close(old_fd[0]);
@@ -151,15 +160,30 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	printf("child %d\n", getpid());
-	res = ft_execvp(cmd);
+}
+int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
+{
+	int	res;
+
+	res = 0;
+	if (run_by_flag(cmd, INPUT) < 0)
+		return (-1);
+	if (run_by_flag(cmd, OUTPUT) < 0)
+		return (-1);
+	fd_handler_child(deque, old_fd, fd);
+	if (is_built_in(cmd) == CHILD)
+	{
+		res = dispatchcmd_wrapper(cmd, CHILD);
+		exit(0);
+	}
+	else
+		res = ft_execvp(cmd);
 	return (res);
 }
 
 void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 {
-	printf("parent %d\n", getpid());
-	if (deque->saved_size > deque->size)
+	if (ms_ctx()->cmd_count > deque->size)
 	{
 		close(old_fd[0]);
 		close(old_fd[1]);
@@ -173,19 +197,6 @@ void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
-	size_t	tmp_size;
-	char	**tmp;
-
-	if (node->tokens[0] == NULL || path == NULL)
-		return (-1);
-	if (node->tokens[0][0] == '/')
-	{
-		tmp_size = ms_split_size(node->tokens[0], '/');
-		tmp = (char **)malloc(sizeof(char *) * (tmp_size + 1));
-		tmp = ms_split_process(node->tokens[0], '/', tmp, 0);
-		node->tokens[0] = ft_strdup(tmp[tmp_size - 1]);
-		ft_free_2d(tmp);
-	}
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
 	return (-1);

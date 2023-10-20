@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/17 02:10:32 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:18:47 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@
 # define REDI_RD_FLAG 6
 # define HDOC_FLAG 7
 
+#define CHILD 1
+#define PARENT 2
+
 /* minishell.c */
 extern uint8_t	g_sigstatus;
 
@@ -175,8 +178,6 @@ typedef struct s_deque
 	struct s_sent	*begin;
 	struct s_sent	*end;
 	int				size;
-	int				saved_size;
-	int				pids[MAX_PIPES];
 }					t_deque;
 
 /* src/deque/deque_create.c */
@@ -309,6 +310,20 @@ typedef enum e_mode{
 }		t_mode;
 
 /// execute
+
+typedef struct s_ctx
+{
+	int		old_fd[2];
+	int		fd[2];
+	int		pids[MAX_PIPES];
+	int		i;
+	int		wait_count;
+	int		cmd_count;
+}				t_ctx;
+
+
+t_ctx	*ms_ctx(void);
+
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque);
 
@@ -321,7 +336,7 @@ int		run_by_flag(t_sent *cmd, t_mode flag);
 /* src/executecmd/executecmd_dispatch_handler.c */
 //int		dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd);
 
-int	dispatchcmd_wrapper(t_sent *cmd);
+int	dispatchcmd_wrapper(t_sent *cmd, int where);
 int	is_built_in(t_sent *cmd);
 
 /// list of executable flags
