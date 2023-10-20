@@ -6,12 +6,13 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/17 02:30:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/17 17:50:57 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/// TODO : 전부 다시 쓰는게 더 빠를지도 :)
 typedef struct s_cmd
 {
 	char	*cmd_name;
@@ -32,7 +33,6 @@ static t_cmd	*builtins(void)
 	};
 	static int		is_init;
 
-	printf("ft_exit is set to: %p\n", this[6].cmd_func);
 	if (is_init)
 		return (&(*this));
 	is_init = TRUE;
@@ -60,15 +60,9 @@ int	dispatchcmd_wrapper(t_sent *cmd)
 	i = -1;
 	while (cmd_table[++i].cmd_name)
 	{
-		if (ft_strequ(cmd->tokens[0], "exit"))
+		if (ft_strequ(cmd->tokens[0], "exit") && ft_strequ(cmd->tokens[0], cmd_table[i].cmd_name))
 		{
-			printf("cmd_func is set to: %p\n", cmd_table[i].cmd_func);
-			printf("pid %d yes. exit\n", getpid());
-			if (cmd_table[i].cmd_func == ft_exit) {
-				printf("cmd_func is pointing to ft_exit\n");
-			}
 			cmd_table[i].cmd_func(cmd, ms_env());
-			printf("run. exit\n");
 			return (-1);
 		}
 		if (ft_strequ(cmd->tokens[0], cmd_table[i].cmd_name))
