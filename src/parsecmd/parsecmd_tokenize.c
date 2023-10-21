@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/14 15:06:18 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/21 14:24:26 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,14 @@ int	get_margc(char *cmd)
 			quote_s ^= 1;
 		else if (cmd[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
-		if (!ft_isspace(cmd[i]) && (ft_isspace(cmd[i + 1]) || !(cmd[i + 1])))
-			if (!quote_s && !quote_d)
+		if (!quote_s && !quote_d)
+		{
+			if (!ft_isspace(cmd[i]) && \
+				(ft_isspace(cmd[i + 1]) || !(cmd[i + 1]) || cmd[i + 1] == '|'))
 				cnt++;
+			else if (cmd[i] == '|')
+				cnt++;
+		}
 	}
 	return (cnt);
 }
@@ -65,9 +70,11 @@ static int	get_nexti(char *s)
 			quote_s ^= 1;
 		else if (s[i] == '\"' && quote_s != 1)
 			quote_d ^= 1;
-		if (!quote_s && !quote_d && ft_isspace(s[i]))
+		if (!quote_s && !quote_d && (ft_isspace(s[i]) || s[i] == '|'))
 			break ;
 	}
+	if (i == 0)
+		i++;
 	return (i);
 }
 
@@ -77,6 +84,8 @@ char	*ms_strndup(const char *src, int len)
 	int		j;
 	char	*new;
 
+	if (len == 0)
+		len = 1;
 	new = (char *)ft_memalloc(len + 1);
 	if (!new)
 		return (NULL);
