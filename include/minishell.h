@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/12 13:27:38 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:21:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@
 // Limit number of env key name:
 # define MAX_KEY_VAR		255
 
-/// Brief true/false notation
+/// @note Brief true/false notation
 # define TRUE 1
 # define FALSE 0
 
-# define DIR_CHANGE_SUCCESS 0
+/// @note max pipes size
+# define MAX_PIPES 200
+
 # define ERR_DIR_NOT_FOUND -1
 
 /// @note FLAGS
@@ -100,12 +102,16 @@
 # define REDI_RD_FLAG 6
 # define HDOC_FLAG 7
 
+#define CHILD 1
+#define PARENT 2
+
 /* minishell.c */
 extern uint8_t	g_sigstatus;
 
 /* minishell_util.c */
 int		isexit(char *cmd);
 int		ms_error(char *msg);
+void	sigchldhandler(int signo);
 
 /* src/util/ */
 char	*ft_strpbrk(const char *str, const char *delim);
@@ -304,16 +310,34 @@ typedef enum e_mode{
 }		t_mode;
 
 /// execute
+
+typedef struct s_ctx
+{
+	int		old_fd[2];
+	int		fd[2];
+	int		pids[MAX_PIPES];
+	int		i;
+	int		wait_count;
+	int		cmd_count;
+}				t_ctx;
+
+
+t_ctx	*ms_ctx(void);
+
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque);
-int		run_process(t_sent *cmd, t_elst *lst, int *fd, int *prev_fd);
-int		child_proc(t_sent *cmd, int *fd, int *prev_fd);
-int		parent_proc(int pid, t_sent *cmd, int *fd, int *prev_fd);
+
+/* src/executecmd/executecmd_util.c */
 int		execute_node(t_sent *node, char *menvp[], char *path);
+
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
+
 /* src/executecmd/executecmd_dispatch_handler.c */
-int		dispatchcmd_wrapper(t_sent *node, int *fd, int *prev_fd);
+//int		dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd);
+
+int	dispatchcmd_wrapper(t_sent *cmd, int where);
+int	is_built_in(t_sent *cmd);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
@@ -336,7 +360,7 @@ int		flag_redi_trunc(t_sent *node, t_elst *lst);
 void	ft_free_2d(char **targets);
 int		ft_free_check(char *path, char *menvp[], int ret);
 char	*ms_find_path(char *cmd);
-void	init_fd(int *fd, int *prev_fd);
+int		ft_free_exit(char *path, char *menvp[], int ret);
 
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);
