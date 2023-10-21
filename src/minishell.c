@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 18:18:20 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/21 14:05:38 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ uint8_t	g_sigstatus;
 
 static void	start_minishell(void)
 {
-//	sigchld();
 	ft_putendl_fd("\n", 1);
 	ft_putendl_fd("  ████████████████████████████████████████████████  ", 1);
 	ft_putendl_fd("██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██", 1);
@@ -65,7 +64,8 @@ static int	looper(char *cmd, int debug_mode)
 		ft_printf("\n");
 		ft_printf("------ result ------\n");
 	}
-	ret = executecmd(deque);
+	if (deque->size > 0)
+		ret = executecmd(deque);
 	sent_delall(&sent);
 	deque_del(deque);
 	return (ret);
@@ -84,11 +84,10 @@ static int	looper_wrapper(char *cmd, int debug_mode)
 int	main(int argc, char *argv[], char *envp[])
 {
 	static int	debug_mode;
-	int			exit_status;
+	static int	exit_status;
 	char		cmd[MAX_COMMAND_LEN];
 	t_elst		*lst;
 
-	exit_status = 0;
 	if (argc > 1 && (ft_strequ(argv[1], "--debug") \
 		|| ft_strequ(argv[1], "-d")))
 		debug_mode = TRUE;

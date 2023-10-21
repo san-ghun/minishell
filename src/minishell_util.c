@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 16:21:57 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 18:18:07 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/21 12:39:38 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int	ms_error(char *msg)
 void	sigchldhandler(int signo)
 {
 	(void)signo;
-	while (waitpid(-1, NULL, WNOHANG) > 0);
+	while (waitpid(-1, NULL, WNOHANG) > 0)
+	{
+	}
 }
