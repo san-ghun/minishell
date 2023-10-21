@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/21 14:24:26 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/21 19:18:51 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ char	*ms_strndup(const char *src, int len)
 {
 	int		i;
 	int		j;
+	uint8_t	quote_s;
+	uint8_t	quote_d;
 	char	*new;
 
 	if (len == 0)
@@ -91,10 +93,20 @@ char	*ms_strndup(const char *src, int len)
 		return (NULL);
 	i = -1;
 	j = -1;
+	quote_s = 0;
+	quote_d = 0;
 	while (src[++i] != '\0' && i < len)
 	{
-		if ((src[i] == '\"') || (src[i] == '\''))
-			continue ;
+		if (src[i] == '\'' && quote_d != 1)
+			quote_s ^= 1;
+		else if (src[i] == '\"' && quote_s != 1)
+			quote_d ^= 1;
+		if (!quote_d)
+			if (src[i] == '\'')
+				continue ;
+		if (!quote_s)
+			if (src[i] == '\"')
+				continue ;
 		new[++j] = src[i];
 	}
 	while (i < len)
