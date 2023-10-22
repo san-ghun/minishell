@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/20 18:21:35 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:46:49 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@
 # define TRUE 1
 # define FALSE 0
 
+/// @note Brief branching point notation in process
+# define CHILD 1
+# define PARENT 2
+
 /// @note max pipes size
 # define MAX_PIPES 200
 
@@ -101,9 +105,6 @@
 # define REDI_WR_TRUNC_FLAG 5
 # define REDI_RD_FLAG 6
 # define HDOC_FLAG 7
-
-#define CHILD 1
-#define PARENT 2
 
 /* minishell.c */
 extern uint8_t	g_sigstatus;
@@ -254,7 +255,6 @@ void	env_dellst(t_elst *lst);
 int		ft_setenv(t_elst *lst, const char *key, \
 					const char *value, int overwrite);
 char	*ft_getenv(t_elst *lst, char *key);
-void	env_setexit(t_elst *lst, int status);
 
 /// built-in.folder
 /* src/built-in/ft_echo */
@@ -262,7 +262,6 @@ void	ft_echo(t_sent *node, t_elst *lst);
 int		redi_out(t_sent *node);
 
 /* src/built-in/ft_env */
-void	ft_pwd(t_sent *node, t_elst *lst);
 void	ft_env(t_sent *node, t_elst *lst);
 t_elst	*env_to_dll(char **envp);
 char	*pathjoin(t_env *node);
@@ -310,7 +309,6 @@ typedef enum e_mode{
 }		t_mode;
 
 /// execute
-
 typedef struct s_ctx
 {
 	int		old_fd[2];
@@ -321,23 +319,37 @@ typedef struct s_ctx
 	int		cmd_count;
 }				t_ctx;
 
-
 t_ctx	*ms_ctx(void);
 
 /* src/executecmd/executecmd.c */
 int		executecmd(t_deque *deque);
+int		ft_execvp(t_sent *cmd);
+void	add_wait_count(int pid);
+
+/* src/executecmd/executecmd_process.c */
+int		run_process(t_sent *cmd, t_deque *deque);
 
 /* src/executecmd/executecmd_util.c */
-int		execute_node(t_sent *node, char *menvp[], char *path);
+void	ft_ms_exit(t_sent *cmd, t_deque *deque, int exit_code);
+t_ctx	*ms_ctx(void);
 
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
 
-/* src/executecmd/executecmd_dispatch_handler.c */
-//int		dispatchcmd_wrapper_o(t_sent *node, int *fd, int *prev_fd);
+/// dispatch
+typedef struct s_cmd
+{
+	char	*cmd_name;
+	void	(*cmd_func)(t_sent *node, t_elst *lst);
+}				t_cmd;
 
-int	dispatchcmd_wrapper(t_sent *cmd, int where);
-int	is_built_in(t_sent *cmd);
+/* src/executecmd/executecmd_dispatch_handler.c */
+int		dispatchcmd_wrapper(t_sent *cmd, int where);
+int		is_built_in(t_sent *cmd);
+
+/* src/executecmd/executecmd_dispatch_handler_util.c */
+t_cmd	*builtins_child(void);
+t_cmd	*builtins_parent(void);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */

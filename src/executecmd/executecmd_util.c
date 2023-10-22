@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 16:30:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:44:07 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,15 @@ int	ft_free_check(char *path, char *menvp[], int ret)
 	return (ret);
 }
 
-int ft_free_exit(char *path, char *menvp[], int ret)
+void	ft_ms_exit(t_sent *cmd, t_deque *deque, int exit_code)
 {
-	ft_free_check(path, menvp, ret);
-	exit(EXIT_FAILURE);
+	if (cmd && !(cmd->next))
+	{
+		sent_delall(&cmd);
+		deque_del(deque);
+		env_dellst(ms_env());
+	}
+	exit(exit_code);
 }
 
 char	*ms_find_path(char *cmd)
@@ -65,3 +70,16 @@ char	*ms_find_path(char *cmd)
 	return (0);
 }
 
+t_ctx	*ms_ctx(void)
+{
+	static t_ctx	this;
+	static int		is_init;
+
+	if (is_init)
+		return (&this);
+	is_init = TRUE;
+	this.i = 0;
+	this.wait_count = 0;
+	this.cmd_count = 0;
+	return (&this);
+}

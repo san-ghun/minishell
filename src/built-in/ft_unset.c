@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 14:40:09 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 12:20:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:41:40 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_unset(t_sent *node, t_elst *lst)
 {
 	char	*key;
 	int		fd;
-	int 	i;
+	int		i;
 
 	i = 1;
 	fd = redi_out(node);
@@ -69,25 +69,3 @@ void	ft_unset(t_sent *node, t_elst *lst)
 		close(fd);
 	lst->g_exit = 0;
 }
-
-//void	ft_unset(t_sent *node, t_elst *lst)
-//{
-//	char	*key;
-//	int		fd;
-//
-//	fd = redi_out(node);
-//	if (node->tokens_len == 2)
-//	{
-//		key = node->tokens[1];
-//		if (!ft_unsetenv(key, lst))
-//			ft_putstr_fd("\n", fd);
-//		if (fd != 1)
-//			close(fd);
-//		lst->g_exit = 0;
-//	}
-//	else
-//	{
-//		ms_error("unset: number of ineligible tokens\n");
-//		lst->g_exit = 1;
-//	}
-//}

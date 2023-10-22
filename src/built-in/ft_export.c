@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 17:17:20 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:42:46 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_export(t_sent *node, t_elst *lst)
 			separator = NULL;
 			separator = ft_strpbrk(node->tokens[i], "=");
 			if (separator)
-				check_and_set(node,lst, separator, i);
+				check_and_set(node, lst, separator, i);
 			else
 				export_error(node->tokens[i]);
 		}
