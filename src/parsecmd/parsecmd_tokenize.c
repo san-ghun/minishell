@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsecmd_tokenize.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/22 11:49:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 14:30:07 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int	get_nexti(char *s)
 	return (i);
 }
 
-/// FIXME: NORM 25 lines
 char	*ms_strndup(const char *src, int len)
 {
 	int		i;
@@ -98,23 +97,12 @@ char	*ms_strndup(const char *src, int len)
 	quote_d = 0;
 	while (src[++i] != '\0' && i < len)
 	{
-		if (src[i] == '\'' && quote_d != 1)
-			quote_s ^= 1;
-		else if (src[i] == '\"' && quote_s != 1)
-			quote_d ^= 1;
-		if (!quote_d)
-			if (src[i] == '\'')
-				continue ;
-		if (!quote_s)
-			if (src[i] == '\"')
-				continue ;
+		if (ms_strndup_helper(&src[i], i, quote_s, quote_d) == 1)
+			continue ;
 		new[++j] = src[i];
 	}
 	while (i < len)
-	{
-		new[i] = '\0';
-		i++;
-	}
+		new[i++] = '\0';
 	return (new);
 }
 
