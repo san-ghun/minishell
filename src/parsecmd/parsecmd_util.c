@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsecmd_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/03 13:05:42 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:29:21 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,19 @@ void	expand_cmd(char *cmd)
 	ft_bzero(cmd, MAX_COMMAND_LEN);
 	ft_strlcpy(cmd, str, ft_strlen(str) + 1);
 	return ;
+}
+
+int	ms_strndup_helper(const char *src, int i, uint8_t quote_s, uint8_t quote_d)
+{
+	if (src[i] == '\'' && quote_d != 1)
+		quote_s ^= 1;
+	else if (src[i] == '\"' && quote_s != 1)
+		quote_d ^= 1;
+	if (!quote_d)
+		if (src[i] == '\'')
+			return (1);
+	if (!quote_s)
+		if (src[i] == '\"')
+			return (1);
+	return (0);
 }

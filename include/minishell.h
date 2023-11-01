@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/22 11:46:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 14:29:49 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,8 @@ int		split_cmd(t_sent *node, char *margv[], int select, int i);
 int		check_quotes(char *cmd, int index, int status);
 void	expand_cmd(char *cmd);
 int		append_env(char *str, char *cmd);
+int		ms_strndup_helper(const char *src, int i, 
+			uint8_t quote_s, uint8_t quote_d);
 
 typedef enum e_mode{
 	NONE,
