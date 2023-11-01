@@ -6,94 +6,17 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 18:12:26 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:44:31 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+int		executecmd(t_deque *deque);
 int		ft_execvp(t_sent *cmd);
-void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+int		execute_node(t_sent *node, char *menvp[], char *path);
 int		wait_child(t_ctx *c, int old_fd[2], int wait_count);
-
-/// TODO : memory leak 체크가 하나도 되어 있지 않으므로 전체적인 구조 수정 이후 디버깅 필요
-
-t_ctx	*ms_ctx(void)
-{
-	static t_ctx	this;
-	static int			is_init;
-
-	if (is_init)
-		return (&this);
-	is_init = TRUE;
-	this.i = 0;
-	this.wait_count = 0;
-	this.cmd_count = 0;
-	return (&this);
-}
-
-int extract_last_path_component(t_sent *cmd)
-{
-	size_t	tmp_size;
-	char	**tmp;
-
-	if (cmd->tokens[0] == NULL)
-		return (-1);
-	if (cmd->tokens[0][0] == '/')
-	{
-		tmp_size = ms_split_size(cmd->tokens[0], '/');
-		tmp = (char **)malloc(sizeof(char *) * (tmp_size + 1));
-		tmp = ms_split_process(cmd->tokens[0], '/', tmp, 0);
-		cmd->tokens[0] = ft_strdup(tmp[tmp_size - 1]);
-		ft_free_2d(tmp);
-	}
-	return (0);
-}
-
-void	add_wait_count(int pid)
-{
-	t_ctx	*context;
-
-	context = ms_ctx();
-	context->wait_count += 1;
-	context->pids[context->i] = pid;
-	context->i += 1;
-}
-
-void ft_ms_exit(t_sent *cmd, t_deque *deque)
-{
-	if (cmd && !(cmd->next))
-	{
-		sent_delall(&cmd);
-		deque_del(deque);
-		env_dellst(ms_env());
-	}
-	exit(EXIT_FAILURE);
-}
-
-int	run_process(t_sent *cmd, t_deque *deque)
-{
-	t_ctx	*c;
-	int		res;
-	int		pid;
-
-	c = ms_ctx();
-	if (extract_last_path_component(cmd) < 0)
-		return (-1);
-	pid = fork();
-	if (check_pid(pid))
-		return (-1);
-	else if (pid == 0) /// child process
-	{
-		res = child(cmd, deque, c->old_fd, c->fd);
-		if (res == -1 || res == 1)
-			ft_ms_exit(cmd, deque);
-	}
-	add_wait_count(pid);
-	parent(cmd, deque, c->old_fd, c->fd);
-	return (0);
-}
+void	add_wait_count(int pid);
 
 int	executecmd(t_deque *deque)
 {
@@ -145,6 +68,13 @@ int	ft_execvp(t_sent *cmd)
 	return (ft_free_check(path, menvp, 0));
 }
 
+int	execute_node(t_sent *node, char *menvp[], char *path)
+{
+	execve(path, node->tokens, menvp);
+	ms_error("Failed to execute command\n");
+	return (-1);
+}
+
 int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 {
 	int	status;
@@ -170,59 +100,12 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 	return (res);
 }
 
-void	fd_handler_child(t_deque *deque, int old_fd[2], int fd[2])
+void	add_wait_count(int pid)
 {
-	if (ms_ctx()->cmd_count > deque->size)
-	{
-		dup2(old_fd[0], STDIN_FILENO);
-		close(old_fd[0]);
-		close(old_fd[1]);
-	}
-	if (deque->size > 0)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-	}
-}
+	t_ctx	*context;
 
-int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
-{
-	int	res;
-
-	res = 0;
-	if (run_by_flag(cmd, INPUT) < 0)
-		return (-1);
-	if (run_by_flag(cmd, OUTPUT) < 0)
-		return (-1);
-	fd_handler_child(deque, old_fd, fd);
-	if (is_built_in(cmd) == CHILD)
-	{
-		res = dispatchcmd_wrapper(cmd, CHILD);
-		exit(0);
-	}
-	else
-		res = ft_execvp(cmd);
-	return (res);
-}
-
-void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
-{
-	if (ms_ctx()->cmd_count > deque->size)
-	{
-		close(old_fd[0]);
-		close(old_fd[1]);
-	}
-	if (cmd->next)
-	{
-		old_fd[1] = fd[1];
-		old_fd[0] = fd[0];
-	}
-}
-
-int	execute_node(t_sent *node, char *menvp[], char *path)
-{
-	execve(path, node->tokens, menvp);
-	ms_error("Failed to execute command\n");
-	return (-1);
+	context = ms_ctx();
+	context->wait_count += 1;
+	context->pids[context->i] = pid;
+	context->i += 1;
 }

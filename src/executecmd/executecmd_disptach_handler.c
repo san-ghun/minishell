@@ -6,51 +6,11 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 12:57:18 by minakim          ###   ########.fr       */
+/*   Updated: 2023/10/22 11:44:19 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/// TODO : 전부 다시 쓰는게 더 빠를지도 :)
-typedef struct s_cmd
-{
-	char	*cmd_name;
-	void	(*cmd_func)(t_sent *node, t_elst *lst);
-}				t_cmd;
-
-static t_cmd	*builtins_child(void)
-{
-	static t_cmd	this[] = {
-	{"echo", ft_echo},
-	{"pwd", ft_pwd},
-	{"env", ft_env},
-	{NULL, NULL}
-	};
-	static int		is_init;
-
-	if (is_init)
-		return (&(*this));
-	is_init = TRUE;
-	return (&(*this));
-}
-
-static t_cmd	*builtins_parent(void)
-{
-	static t_cmd	this[] = {
-			{"cd", ft_cd},
-			{"unset", ft_unset},
-			{"export", ft_export},
-			{"exit", ft_exit},
-			{NULL, NULL}
-	};
-	static int		is_init;
-
-	if (is_init)
-		return (&(*this));
-	is_init = TRUE;
-	return (&(*this));
-}
 
 t_cmd	*set_cmd_table(int where)
 {
@@ -63,7 +23,6 @@ t_cmd	*set_cmd_table(int where)
 		cmd_table = builtins_parent();
 	return (cmd_table);
 }
-
 
 int	dispatchcmd(t_sent *cmd, int i, int where)
 {
@@ -109,14 +68,14 @@ int	is_built_in(t_sent *cmd)
 	while (child[++i].cmd_name)
 	{
 		if (ft_strequ(cmd->tokens[0], child[i].cmd_name))
-			return (1);
+			return (CHILD);
 	}
 	parent = builtins_parent();
 	i = -1;
 	while (parent[++i].cmd_name)
 	{
 		if (ft_strequ(cmd->tokens[0], parent[i].cmd_name))
-			return (2);
+			return (PARENT);
 	}
 	return (0);
 }

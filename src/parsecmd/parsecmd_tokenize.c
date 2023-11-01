@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/21 19:18:51 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/10/22 11:49:02 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static int	get_nexti(char *s)
 	return (i);
 }
 
+/// FIXME: NORM 25 lines
 char	*ms_strndup(const char *src, int len)
 {
 	int		i;
