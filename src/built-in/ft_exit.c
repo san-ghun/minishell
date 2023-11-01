@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:50:24 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 17:04:24 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 14:46:55 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_exit(t_sent *node, t_elst *lst)
 	}
 	else if (node->tokens_len > 2)
 	{
-		ms_error("error\n");
+		ft_putstr_fd("exit: too many arguments\n", STDOUT_FILENO);
 		lst->g_exit = 1;
 	}
 }
