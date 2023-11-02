@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsecmd_tokenize.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:43:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/01 14:30:07 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:55:52 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ static int	get_nexti(char *s)
 
 char	*ms_strndup(const char *src, int len)
 {
-	int		i;
-	int		j;
-	uint8_t	quote_s;
-	uint8_t	quote_d;
+	int		i;	
 	char	*new;
 
 	if (len == 0)
@@ -91,16 +88,7 @@ char	*ms_strndup(const char *src, int len)
 	new = (char *)ft_memalloc(len + 1);
 	if (!new)
 		return (NULL);
-	i = -1;
-	j = -1;
-	quote_s = 0;
-	quote_d = 0;
-	while (src[++i] != '\0' && i < len)
-	{
-		if (ms_strndup_helper(&src[i], i, quote_s, quote_d) == 1)
-			continue ;
-		new[++j] = src[i];
-	}
+	i = ms_strndup_helper(src, new, len);
 	while (i < len)
 		new[i++] = '\0';
 	return (new);
