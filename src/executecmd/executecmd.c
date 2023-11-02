@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 14:42:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/02 11:30:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	ft_execvp(t_sent *cmd)
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
+	signal(SIGQUIT, SIG_DFL);
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
 	return (-1);
