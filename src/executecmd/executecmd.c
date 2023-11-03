@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 14:42:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 19:53:12 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 		res = WEXITSTATUS(status);
 	else if (WIFSTOPPED(status) && ms_env()->g_exit != 130)
 		res = 1;
+	ms_env()->g_exit = res;
 	return (res);
 }
 

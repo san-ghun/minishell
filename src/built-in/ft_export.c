@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/22 11:42:46 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 19:39:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	export_error(char *cmd)
 
 int	is_key(char *key)
 {
-	if (!(ft_isalpha(*key) || *key == '-'))
+	if (!ft_isalpha(*key) && *key != '_')
 		return (0);
 	while (*key)
 	{

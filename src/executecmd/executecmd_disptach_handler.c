@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 14:49:04 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 19:27:03 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	dispatchcmd_wrapper(t_sent *cmd, int where)
 			&& ft_strequ(cmd->tokens[0], "exit"))
 		{
 			cmd_table[i].cmd_func(cmd, ms_env());
-			if (cmd->tokens_len > 2)
-				return (1);
 			return (-1);
 		}
 		if (ft_strequ(cmd->tokens[0], cmd_table[i].cmd_name))

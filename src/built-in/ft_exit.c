@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:50:24 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 14:46:55 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/01 19:32:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static int	ft_atoi_exit(const char *s)
 void	ft_exit(t_sent *node, t_elst *lst)
 {
 	if (node->tokens_len == 1)
+	{
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		lst->g_exit = 0;
+	}
 	if (node->tokens_len == 2)
 	{
 		lst->g_exit = ft_atoi_exit(node->tokens[1]);
