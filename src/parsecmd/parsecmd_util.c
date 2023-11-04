@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsecmd_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:03:00 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/01 14:29:21 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:55:26 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,17 +120,30 @@ void	expand_cmd(char *cmd)
 	return ;
 }
 
-int	ms_strndup_helper(const char *src, int i, uint8_t quote_s, uint8_t quote_d)
+int	ms_strndup_helper(const char *src, char *new, int len)
 {
-	if (src[i] == '\'' && quote_d != 1)
-		quote_s ^= 1;
-	else if (src[i] == '\"' && quote_s != 1)
-		quote_d ^= 1;
-	if (!quote_d)
-		if (src[i] == '\'')
-			return (1);
-	if (!quote_s)
-		if (src[i] == '\"')
-			return (1);
-	return (0);
+	int		i;
+	int		j;
+	uint8_t	quote_s;
+	uint8_t	quote_d;
+
+	i = -1;
+	j = -1;
+	quote_s = 0;
+	quote_d = 0;
+	while (src[++i] != '\0' && i < len)
+	{
+		if (src[i] == '\'' && quote_d != 1)
+			quote_s ^= 1;
+		else if (src[i] == '\"' && quote_s != 1)
+			quote_d ^= 1;
+		if (!quote_d)
+			if (src[i] == '\'')
+				continue ;
+		if (!quote_s)
+			if (src[i] == '\"')
+				continue ;
+		new[++j] = src[i];
+	}
+	return (i);
 }

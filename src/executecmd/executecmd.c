@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
 /*   Updated: 2023/11/01 19:53:12 by minakim          ###   ########.fr       */
@@ -51,9 +51,15 @@ int	ft_execvp(t_sent *cmd)
 	char	**menvp;
 	char	*path;
 
+	if (cmd->tokens[0][0] == '|')
+	{
+		cmd->output_flag = STDERR_FILENO;
+		cmd->output_argv = \
+			ft_strdup("syntax error: near unexpected token `|`\n");
+	}
 	if (cmd->output_flag == STDERR_FILENO)
 	{
-		ms_error(cmd->output_argv);
+		ft_putstr_fd(cmd->output_argv, 2);
 		return (1);
 	}
 	else
@@ -70,6 +76,7 @@ int	ft_execvp(t_sent *cmd)
 
 int	execute_node(t_sent *node, char *menvp[], char *path)
 {
+	signal(SIGQUIT, SIG_DFL);
 	execve(path, node->tokens, menvp);
 	ms_error("Failed to execute command\n");
 	return (-1);

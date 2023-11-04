@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 19:55:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/02 13:20:15 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	extract_last_path_component(t_sent *cmd)
 	char	**tmp;
 
 	if (cmd->tokens[0] == NULL)
-		return (-1);
+		return (0);
 	if (cmd->tokens[0][0] == '/')
 	{
 		tmp_size = ms_split_size(cmd->tokens[0], '/');
@@ -67,6 +67,8 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 	if (run_by_flag(cmd, INPUT) < 0)
 		return (-1);
 	if (run_by_flag(cmd, OUTPUT) < 0)
+		return (-1);
+	if (cmd->output_flag == PIPE_FLAG && cmd->tokens[0] == NULL)
 		return (-1);
 	fd_handler_child(deque, old_fd, fd);
 	if (is_built_in(cmd) == CHILD)
