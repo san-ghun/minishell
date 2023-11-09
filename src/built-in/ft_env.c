@@ -125,7 +125,7 @@ void	ft_env(t_sent *node, t_elst *lst)
 	}
 	else
 	{
-		ms_error("env: No such file or directory\n");
+		ms_error("미쉘 : env: No such file or directory\n");
 		lst->g_exit = 127;
 	}
 	if (fd != 1)

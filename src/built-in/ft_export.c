@@ -20,7 +20,7 @@ static int	export_error(char *cmd)
 	char	command[DATA_SIZE];
 	char	*msg;
 
-	ft_strlcpy(command, "bash: export: `", DATA_SIZE);
+	ft_strlcpy(command, "미쉘: export: `", DATA_SIZE);
 	ft_strlcat(command, cmd, DATA_SIZE);
 	msg = ft_strdup("': not a valid identifier\n");
 	ft_strlcat(command, msg, DATA_SIZE);
