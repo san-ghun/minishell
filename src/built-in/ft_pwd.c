@@ -26,7 +26,7 @@ void	ft_pwd(t_sent *node, t_elst *lst)
 	else
 	{
 		lst->g_exit = 1;
-		ms_error("pwd: error retrieving current directory\n");
+		ms_error("미쉘: pwd: error retrieving current directory\n");
 	}
 	if (fd != 1)
 		close(fd);
