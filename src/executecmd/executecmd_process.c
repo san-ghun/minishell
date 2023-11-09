@@ -6,17 +6,15 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 17:42:45 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:00:03 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int			run_process(t_sent *cmd, t_deque *deque);
-int			child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
-void		parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+int			child(t_sent *cmd, t_deque *deque);
 static int	extract_last_path_component(t_sent *cmd);
-void		fd_handler_child(t_deque *deque, int old_fd[2], int fd[2]);
 
 int	run_process(t_sent *cmd, t_deque *deque)
 {
@@ -32,12 +30,12 @@ int	run_process(t_sent *cmd, t_deque *deque)
 		return (-1);
 	else if (pid == 0)
 	{
-		res = child(cmd, deque, c->old_fd, c->fd);
+		res = child(cmd, deque);
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
 	}
 	add_wait_count(pid);
-	parent(cmd, deque, c->old_fd, c->fd);
+	close_last_fd(cmd, deque, c);
 	return (0);
 }
 
@@ -60,7 +58,7 @@ static int	extract_last_path_component(t_sent *cmd)
 	return (0);
 }
 
-int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
+int	child(t_sent *cmd, t_deque *deque)
 {
 	int	res;
 
@@ -71,7 +69,7 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 		return (-1);
 	if (cmd->output_flag == PIPE_FLAG && cmd->tokens[0] == NULL)
 		return (-1);
-	fd_handler_child(deque, old_fd, fd);
+	update_fd(deque, ms_ctx());
 	if (is_built_in(cmd) == CHILD)
 	{
 		res = dispatchcmd_wrapper(cmd, CHILD);
@@ -81,33 +79,34 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 		res = ft_execvp(cmd);
 	return (res);
 }
-
-void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
+//void	close_last_fd(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c)
 {
-	if (ms_ctx()->cmd_count > deque->size)
+
+	if (c->cmd_count > deque->size)
 	{
-		close(old_fd[0]);
-		close(old_fd[1]);
+		close(c->old_fd[0]);
+		close(c->old_fd[1]);
 	}
 	if (cmd->next)
 	{
-		old_fd[1] = fd[1];
-		old_fd[0] = fd[0];
+		c->old_fd[1] = c->fd[1];
+		c->old_fd[0] = c->fd[0];
 	}
 }
 
-void	fd_handler_child(t_deque *deque, int old_fd[2], int fd[2])
+void	update_fd(t_deque *deque, t_ctx *c)
 {
-	if (ms_ctx()->cmd_count > deque->size)
+	if (c->cmd_count > deque->size)
 	{
-		dup2(old_fd[0], STDIN_FILENO);
-		close(old_fd[0]);
-		close(old_fd[1]);
+		dup2(c->old_fd[0], STDIN_FILENO);
+		close(c->old_fd[0]);
+		close(c->old_fd[1]);
 	}
 	if (deque->size > 0)
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
+		close(c->fd[0]);
+		dup2(c->fd[1], STDOUT_FILENO);
+		close(c->fd[1]);
 	}
 }

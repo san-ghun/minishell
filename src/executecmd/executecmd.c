@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 17:24:08 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:18:52 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,13 @@ void	add_wait_count(int pid);
 
 int	executecmd(t_deque *deque)
 {
-	t_sent	*cmd;
-	int		bt;
-	t_ctx	*c;
-
+	t_sent		*cmd;
+	static int	bt = 0;
+	t_ctx		*c;
 	c = ms_ctx();
 	c->cmd_count = deque->size - 1;
 	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
-		bt = 0;
 		cmd = deque_pop_back(deque);
 		if (cmd->next && cmd->output_flag == PIPE_FLAG)
 			pipe(c->fd);
