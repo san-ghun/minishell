@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 19:53:12 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/09 17:24:08 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,16 @@ int	ft_execvp(t_sent *cmd)
 	char	**menvp;
 	char	*path;
 
-	if (cmd->tokens[0][0] == '|')
+	if (!cmd->tokens[0])
+		return (1);
+	else if (cmd->tokens[0][0] == '|')
 	{
 		cmd->output_flag = STDERR_FILENO;
 		cmd->output_argv = \
 			ft_strdup("syntax error: near unexpected token `|`\n");
 	}
 	if (cmd->output_flag == STDERR_FILENO)
-	{
-		ft_putstr_fd(cmd->output_argv, 2);
-		return (1);
-	}
+		return (ft_putstr_fd(cmd->output_argv, 2), 1);
 	else
 	{
 		menvp = dll_to_envp(ms_env());

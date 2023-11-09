@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executecmd_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/02 13:20:15 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:42:45 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	extract_last_path_component(t_sent *cmd)
 		tmp_size = ms_split_size(cmd->tokens[0], '/');
 		tmp = (char **)malloc(sizeof(char *) * (tmp_size + 1));
 		tmp = ms_split_process(cmd->tokens[0], '/', tmp, 0);
+		free(cmd->tokens[0]);
 		cmd->tokens[0] = ft_strdup(tmp[tmp_size - 1]);
 		ft_free_2d(tmp);
 	}

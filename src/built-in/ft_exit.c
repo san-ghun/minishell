@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:50:24 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 16:38:25 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/09 17:02:47 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	ft_atoi_exit(const char *s)
 	return (symbol * num);
 }
 
-void    ft_exit(t_sent *node, t_elst *lst)
+void	ft_exit(t_sent *node, t_elst *lst)
 {
 	if (node->tokens_len == 1)
 	{
