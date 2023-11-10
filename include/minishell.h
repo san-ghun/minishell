@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/09 19:06:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 01:10:25 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,7 +318,7 @@ typedef struct s_ctx
 	int		i;
 	int		wait_count;
 	int		cmd_count;
-	int 	last_cmd;
+	int 	first_cmd;
 }				t_ctx;
 
 t_ctx	*ms_ctx(void);
@@ -329,6 +329,7 @@ int		ft_execvp(t_sent *cmd);
 void	add_wait_count(int pid);
 void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c);
 void	update_fd(t_deque *deque, t_ctx *c);
+
 /* src/executecmd/executecmd_process.c */
 int		run_process(t_sent *cmd, t_deque *deque);
 

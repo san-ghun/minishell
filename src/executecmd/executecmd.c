@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 19:18:52 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 01:49:25 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,32 @@ int	executecmd(t_deque *deque)
 	t_ctx		*c;
 	c = ms_ctx();
 	c->cmd_count = deque->size - 1;
+	c->first_cmd = 0;
 	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
 		cmd = deque_pop_back(deque);
 		if (cmd->next && cmd->output_flag == PIPE_FLAG)
-			pipe(c->fd);
-		if (is_built_in(cmd) == PARENT)
 		{
+			if (c->cmd_count == deque->size)
+				c->first_cmd = 1;
+			pipe(c->fd);
+			printf("this 1 msgs happens in main process [%s][%d]\n", cmd->tokens[0], getpid());
+			printf("Pipe created with FDs: read end = %d, write end = %d\n", c->fd[0], c->fd[1]);
+		}
+		if (is_built_in(cmd) == CHILD)
+		{
+			if (run_process(cmd, deque) < 0)
+				return (-1);
+		}
+		else
+		{
+			/// 아이디어 : 여러 커맨드가 있고, 첫번째 커맨드가 "builtin"이라면
+			/// c에 체크하고, "<<< here " 실행하지 않음. 보통의 경우는 parent에서 닫아버리자.
 			bt = dispatchcmd_wrapper(cmd, PARENT);
 			if (bt < 0)
 				return (bt);
 			continue ;
 		}
-		else
-			if (run_process(cmd, deque) < 0)
-				return (-1);
 	}
 	return (wait_child(c, c->old_fd, c->wait_count));
 }
@@ -88,12 +99,17 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 	status = 0;
 	res = 0;
 	i = -1;
+
 	while (++i < wait_count)
 		waitpid(c->pids[i], &status, 0);
-	if (c->cmd_count)
+	if (c->cmd_count && c->first_cmd != 1) /// <<< here
 	{
+
+		printf("this 2 msgs happens in main process [%d]\n", getpid());
 		close(old_fd[0]);
+		printf("Closed FD %d (last cmd)\n", old_fd[0]);
 		close(old_fd[1]);
+		printf("Closed FD %d (last cmd)\n", old_fd[1]);
 	}
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 		res = WTERMSIG(status);

@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 19:00:03 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 01:51:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int			run_process(t_sent *cmd, t_deque *deque);
 int			child(t_sent *cmd, t_deque *deque);
 static int	extract_last_path_component(t_sent *cmd);
+
 
 int	run_process(t_sent *cmd, t_deque *deque)
 {
@@ -30,6 +31,8 @@ int	run_process(t_sent *cmd, t_deque *deque)
 		return (-1);
 	else if (pid == 0)
 	{
+		int status;
+		wait(&status);
 		res = child(cmd, deque);
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
@@ -79,19 +82,32 @@ int	child(t_sent *cmd, t_deque *deque)
 		res = ft_execvp(cmd);
 	return (res);
 }
-//void	close_last_fd(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+
 void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c)
 {
-
 	if (c->cmd_count > deque->size)
 	{
+		printf("this 2 msgs happens in parent [%s][%d]\n if not first cmd\n", cmd->tokens[0], getpid());
 		close(c->old_fd[0]);
+		printf("Closed FD %d\n", c->old_fd[0]);
 		close(c->old_fd[1]);
+		printf("Closed FD %d\n", c->old_fd[1]);
 	}
 	if (cmd->next)
 	{
+		printf("this 2 msgs happens in parent [%s][%d]\nif not last cmd\n", cmd->tokens[0], getpid());
 		c->old_fd[1] = c->fd[1];
-		c->old_fd[0] = c->fd[0];
+		printf("change FD %d = %d\n", c->old_fd[1], c->fd[1]);
+		c->old_fd[0] =  c->fd[0];
+		printf("change FD %d = %d\n", c->old_fd[0], c->fd[0]);
+	}
+	if (deque->size == c->cmd_count && c->cmd_count == 0 && c->first_cmd != 1)
+	{
+		printf("this 2 msgs happens in main process [%d]\n", getpid());
+		close(c->old_fd[0]);
+		printf("Closed FD %d (last cmd)\n", c->old_fd[0]);
+		close(c->old_fd[1]);
+		printf("Closed FD %d (last cmd)\n", c->old_fd[1]);
 	}
 }
 
@@ -99,14 +115,23 @@ void	update_fd(t_deque *deque, t_ctx *c)
 {
 	if (c->cmd_count > deque->size)
 	{
+		printf("this 3 msgs happens in child [%d]\n", getpid());
 		dup2(c->old_fd[0], STDIN_FILENO);
+		printf("dup2 FD %d as %d\n", c->old_fd[0], STDIN_FILENO);
 		close(c->old_fd[0]);
+		printf("Closed FD %d\n", c->old_fd[0]);
 		close(c->old_fd[1]);
+		printf("Closed FD %d\n", c->old_fd[1]);
+
 	}
 	if (deque->size > 0)
 	{
+		printf("this 3 msgs happens in child [%d]\n", getpid());
 		close(c->fd[0]);
+		printf("Closed FD %d\n", c->fd[0]);
 		dup2(c->fd[1], STDOUT_FILENO);
+		printf("dup2 FD %d as %d\n", c->fd[1], STDIN_FILENO);
 		close(c->fd[1]);
+		printf("Closed FD %d\n", c->fd[1]);
 	}
 }
