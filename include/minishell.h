@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/02 10:54:20 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:28:43 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,20 +337,12 @@ t_ctx	*ms_ctx(void);
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
 
-/// dispatch
-typedef struct s_cmd
-{
-	char	*cmd_name;
-	void	(*cmd_func)(t_sent *node, t_elst *lst);
-}				t_cmd;
-
 /* src/executecmd/executecmd_dispatch_handler.c */
-int		dispatchcmd_wrapper(t_sent *cmd, int where);
+int		dispatchcmd_wrapper(t_sent *cmd);
 int		is_built_in(t_sent *cmd);
 
 /* src/executecmd/executecmd_dispatch_handler_util.c */
-t_cmd	*builtins_child(void);
-t_cmd	*builtins_parent(void);
+int		onecmd(t_sent *cmd);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
