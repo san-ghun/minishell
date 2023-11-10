@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 16:24:37 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 19:10:11 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	ms_execute(t_sent *cmd, t_deque *deque, t_ctx *c)
 	if (is_built_in(cmd))
 	{
 		res = dispatchcmd_wrapper(cmd);
-		exit(0);
+		exit(res);
 	}
 	else
 		res = ft_execvp(cmd);

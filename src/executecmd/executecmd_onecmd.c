@@ -6,13 +6,13 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 19:00:56 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 19:22:02 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_execvp_onecmd(t_sent *cmd)
+int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 {
 	int	pid;
 	int	res;
@@ -24,13 +24,14 @@ int	ft_execvp_onecmd(t_sent *cmd)
 	else if (pid == 0)
 	{
 		res = ft_execvp(cmd);
-		return (res);
+		if (res == -1 || res == 1)
+			ft_ms_exit(cmd, deque, 127);
 	}
 	ms_ctx()->wait_count = 1;
 	return (res);
 }
 
-int	executed_onecmd(t_sent *cmd)
+int	executed_onecmd(t_sent *cmd, t_deque *deque)
 {
 	int	res;
 
@@ -48,16 +49,18 @@ int	executed_onecmd(t_sent *cmd)
 			return (res);
 	}
 	else
-		ft_execvp_onecmd(cmd);
+		res = ft_execvp_onecmd(cmd, deque);
 	return (res);
 }
 
-int	onecmd(t_sent *cmd)
+int	onecmd(t_sent *cmd, t_deque *deque)
 {
 	int	status;
 	int	res;
+	int test;
 
-	if (executed_onecmd(cmd) < 0)
+	test = executed_onecmd(cmd, deque);
+	if (test < 0)
 		return (-1);
 	res = 0;
 	status = 0;

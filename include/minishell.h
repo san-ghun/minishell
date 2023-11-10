@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/10 16:28:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 19:13:48 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,7 @@ int		dispatchcmd_wrapper(t_sent *cmd);
 int		is_built_in(t_sent *cmd);
 
 /* src/executecmd/executecmd_dispatch_handler_util.c */
-int		onecmd(t_sent *cmd);
+int		onecmd(t_sent *cmd, t_deque *deque);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
