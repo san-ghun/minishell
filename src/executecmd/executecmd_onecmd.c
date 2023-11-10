@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executecmd_disptach_handler_util.c                 :+:      :+:    :+:   */
+/*   executecmd_onecmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 11:38:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 16:31:19 by minakim          ###   ########.fr       */
+/*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
+/*   Updated: 2023/11/10 17:30:10 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int executed_a_cmd(t_sent *cmd)
+int	executed_a_cmd(t_sent *cmd)
 {
 	int	res;
 

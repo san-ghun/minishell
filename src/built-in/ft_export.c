@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 17:03:39 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 17:29:30 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,28 @@ int	is_key(char *key)
 	return (1);
 }
 
-void	check_and_set(t_sent *node, t_elst *lst, char *separator, int i)
+char	*set_value(char *separator)
 {
-	char	*key;
 	char	*value;
-	int 	check_key;
-	key = NULL;
+
 	value = NULL;
-	key = ft_substr(node->tokens[i], 0, separator - node->tokens[i]);
 	if (separator[1] == '\0')
 		value = ft_strdup(" ");
 	else
 		value = ft_strdup(separator + 1);
+	return (value);
+}
+
+void	check_and_set(t_sent *node, t_elst *lst, char *separator, int i)
+{
+	char	*key;
+	char	*value;
+	int		check_key;
+
+	key = NULL;
+	value = NULL;
+	key = ft_substr(node->tokens[i], 0, separator - node->tokens[i]);
+	value = set_value(separator);
 	check_key = is_key(key);
 	if (check_key > 0)
 	{

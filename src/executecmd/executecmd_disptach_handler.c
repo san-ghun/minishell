@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:39:49 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 16:28:25 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 17:26:45 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ typedef struct s_cmd
 static t_cmd	*builtins(void)
 {
 	static t_cmd	this[] = {
-			{"cd", ft_cd},
-			{"unset", ft_unset},
-			{"export", ft_export},
-			{"exit", ft_exit},
-			{"echo", ft_echo},
-			{"pwd", ft_pwd},
-			{"env", ft_env},
-			{NULL, NULL}
+	{"cd", ft_cd},
+	{"unset", ft_unset},
+	{"export", ft_export},
+	{"exit", ft_exit},
+	{"echo", ft_echo},
+	{"pwd", ft_pwd},
+	{"env", ft_env},
+	{NULL, NULL}
 	};
 	static int		is_init;
 
