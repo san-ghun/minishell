@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 17:06:29 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 19:00:46 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	ft_execvp(t_sent *cmd)
 	{
 		menvp = dll_to_envp(ms_env());
 		path = ms_find_path(cmd->tokens[0]);
-		printf("here is path : %s\n", path);
 		if (check_path(path, cmd->tokens[0]))
 			return (ft_free_check(path, menvp, 1));
 		if (execute_node(cmd, menvp, path) < 0)

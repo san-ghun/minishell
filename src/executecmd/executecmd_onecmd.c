@@ -6,13 +6,31 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 17:30:10 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 19:00:56 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	executed_a_cmd(t_sent *cmd)
+int	ft_execvp_onecmd(t_sent *cmd)
+{
+	int	pid;
+	int	res;
+
+	res = 0;
+	pid = fork();
+	if (check_pid(pid))
+		return (-1);
+	else if (pid == 0)
+	{
+		res = ft_execvp(cmd);
+		return (res);
+	}
+	ms_ctx()->wait_count = 1;
+	return (res);
+}
+
+int	executed_onecmd(t_sent *cmd)
 {
 	int	res;
 
@@ -30,7 +48,7 @@ int	executed_a_cmd(t_sent *cmd)
 			return (res);
 	}
 	else
-		res = ft_execvp(cmd);
+		ft_execvp_onecmd(cmd);
 	return (res);
 }
 
@@ -39,10 +57,12 @@ int	onecmd(t_sent *cmd)
 	int	status;
 	int	res;
 
-	if (executed_a_cmd(cmd) < 0)
+	if (executed_onecmd(cmd) < 0)
 		return (-1);
 	res = 0;
 	status = 0;
+	if (ms_ctx()->wait_count == 1)
+		wait(&status);
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 		res = WTERMSIG(status);
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)
