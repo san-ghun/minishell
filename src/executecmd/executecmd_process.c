@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 01:51:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 01:53:25 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	run_process(t_sent *cmd, t_deque *deque)
 			ft_ms_exit(cmd, deque, 127);
 	}
 	add_wait_count(pid);
-	close_last_fd(cmd, deque, c);
+	close_fds(cmd, deque, c);
 	return (0);
 }
 
@@ -83,7 +83,7 @@ int	child(t_sent *cmd, t_deque *deque)
 	return (res);
 }
 
-void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c)
+void	close_fds(t_sent *cmd, t_deque *deque, t_ctx *c)
 {
 	if (c->cmd_count > deque->size)
 	{
@@ -101,7 +101,7 @@ void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c)
 		c->old_fd[0] =  c->fd[0];
 		printf("change FD %d = %d\n", c->old_fd[0], c->fd[0]);
 	}
-	if (deque->size == c->cmd_count && c->cmd_count == 0 && c->first_cmd != 1)
+	if (!deque->size && !c->cmd_count && c->first_cmd != 1) /// cmd가 하나이고, 시작 cmd가 builtin parent이 아니라면,
 	{
 		printf("this 2 msgs happens in main process [%d]\n", getpid());
 		close(c->old_fd[0]);

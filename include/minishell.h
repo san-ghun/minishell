@@ -327,7 +327,7 @@ t_ctx	*ms_ctx(void);
 int		executecmd(t_deque *deque);
 int		ft_execvp(t_sent *cmd);
 void	add_wait_count(int pid);
-void	close_last_fd(t_sent *cmd, t_deque *deque, t_ctx *c);
+void	close_fds(t_sent *cmd, t_deque *deque, t_ctx *c);
 void	update_fd(t_deque *deque, t_ctx *c);
 
 /* src/executecmd/executecmd_process.c */
