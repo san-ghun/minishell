@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/10 19:13:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/12 13:17:24 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,7 @@ typedef struct s_ctx
 {
 	int		old_fd[2];
 	int		fd[2];
+	int 	backup[2];
 	int		pids[MAX_PIPES];
 	int		i;
 	int		wait_count;

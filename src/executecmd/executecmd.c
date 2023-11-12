@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 19:13:26 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/12 13:08:07 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 	i = -1;
 	while (++i < wait_count)
 		waitpid(c->pids[i], &status, 0);
-	if (c->cmd_count)
+	if (c->cmd_count > 0)
 	{
 		close(old_fd[0]);
 		close(old_fd[1]);

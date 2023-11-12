@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:14:32 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 19:49:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/12 14:19:35 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ int	flag_heredoc(t_sent *node, t_elst *lst)
 		ft_putendl_fd(expanded_line, fd[1]);
 		free(line);
 	}
+	printf("%d\n", fd[0]);
+	printf("%d\n", fd[1]);
+	printf("%d\n", STDIN_FILENO);
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
