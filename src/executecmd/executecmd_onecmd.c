@@ -6,11 +6,13 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 19:22:02 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/16 17:10:15 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	setup_redirections(t_ctx *c);
 
 int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 {
@@ -23,6 +25,12 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 		return (-1);
 	else if (pid == 0)
 	{
+		if (run_by_flag(cmd, INPUT) < 0)
+			return (-1);
+		if (run_by_flag(cmd, OUTPUT) < 0)
+			return (-1);
+		t_ctx *c = ms_ctx();
+		setup_redirections(c);
 		res = ft_execvp(cmd);
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
@@ -31,20 +39,66 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 	return (res);
 }
 
+int	setup_redirections(t_ctx *c)
+{
+
+	if (c->input_fd != STDIN_FILENO)
+	{
+		dup2(c->input_fd, STDIN_FILENO);
+		close(c->input_fd);
+	}
+	if (c->output_fd != STDOUT_FILENO)
+	{
+		dup2(c->output_fd, STDOUT_FILENO);
+		close(c->output_fd);
+	}
+	return (1);
+}
+
+int	save_or_rollback(int mode)
+{
+	static int original_stdin;
+	static int original_stdout;
+	static int is_saved;
+
+	if (mode == SAVE_STREAMS)
+	{
+		original_stdin = dup(STDIN_FILENO);
+		original_stdout = dup(STDOUT_FILENO);
+		is_saved = TRUE;
+		return (1);
+	}
+	else if (is_saved && mode == ROLLBACK_STREAMS)
+	{
+		dup2(original_stdin, STDIN_FILENO);
+		close(original_stdin);
+		dup2(original_stdout, STDOUT_FILENO);
+		close(original_stdout);
+		is_saved = FALSE;
+		return (1);
+	}
+	return (-1);
+}
+
 int	executed_onecmd(t_sent *cmd, t_deque *deque)
 {
 	int	res;
-
+	t_ctx	*c;
 	res = 0;
-	if (run_by_flag(cmd, INPUT) < 0)
-		return (-1);
-	if (run_by_flag(cmd, OUTPUT) < 0)
-		return (-1);
+
+	c = ms_ctx();
 	if (cmd->tokens[0] == NULL)
 		return (-1);
 	if (is_built_in(cmd))
 	{
+		if (run_by_flag(cmd, INPUT) < 0)
+			return (-1);
+		if (run_by_flag(cmd, OUTPUT) < 0)
+			return (-1);
+		save_or_rollback(SAVE_STREAMS);
+		setup_redirections(c);
 		res = dispatchcmd_wrapper(cmd);
+		save_or_rollback(ROLLBACK_STREAMS);
 		if (res < 0)
 			return (res);
 	}

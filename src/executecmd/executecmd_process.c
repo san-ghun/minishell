@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 19:10:11 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/16 17:38:47 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	run_process(t_sent *cmd, t_deque *deque)
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
 	}
+	c->input_fd = STDIN_FILENO;
+	c->output_fd = STDOUT_FILENO;
 	add_wait_count(pid);
 	parent(cmd, deque, c->old_fd, c->fd);
 	return (0);
@@ -69,6 +71,7 @@ int	ms_execute(t_sent *cmd, t_deque *deque, t_ctx *c)
 		return (-1);
 	if (run_by_flag(cmd, OUTPUT) < 0)
 		return (-1);
+	setup_redirections(c);
 	if (cmd->output_flag == PIPE_FLAG && cmd->tokens[0] == NULL)
 		return (-1);
 	update_fd(deque, c->old_fd, c->fd);

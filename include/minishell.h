@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/10 19:13:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/16 17:06:34 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@
 # define FALSE 0
 
 /// @note Brief branching point notation in process
-# define CHILD 1
-# define PARENT 2
+# define SAVE_STREAMS 1
+# define ROLLBACK_STREAMS 2
 
 /// @note max pipes size
 # define MAX_PIPES 200
@@ -312,12 +312,14 @@ typedef enum e_mode{
 /// execute
 typedef struct s_ctx
 {
-	int		old_fd[2];
-	int		fd[2];
-	int		pids[MAX_PIPES];
-	int		i;
-	int		wait_count;
-	int		cmd_count;
+	int	old_fd[2];
+	int	fd[2];
+	int	input_fd;
+	int	output_fd;
+	int	pids[MAX_PIPES];
+	int	i;
+	int	wait_count;
+	int	cmd_count;
 }				t_ctx;
 
 t_ctx	*ms_ctx(void);
@@ -376,4 +378,5 @@ size_t	ms_split_size(char const *s, char c);
 char	**ms_split_process(char const *s, char c, char **tmp, size_t i);
 char	**ms_split(char const *s, char c);
 
+int	setup_redirections(t_ctx *c);
 #endif
