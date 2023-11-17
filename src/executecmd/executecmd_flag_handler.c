@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 23:11:08 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/16 14:25:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 14:12:00 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	run_by_flag(t_sent *cmd, t_mode flag)
 	{-1, NONE, NULL}
 	};
 	int				i;
-
 
 	i = 0;
 	while (exe_f[i].cmd_func != NULL)

@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/16 17:10:15 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 14:42:32 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	setup_redirections(t_ctx *c);
 
 int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 {
-	int	pid;
-	int	res;
+	int		pid;
+	int		res;
+	t_ctx	*c;
 
 	res = 0;
 	pid = fork();
@@ -29,7 +30,7 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 			return (-1);
 		if (run_by_flag(cmd, OUTPUT) < 0)
 			return (-1);
-		t_ctx *c = ms_ctx();
+		c = ms_ctx();
 		setup_redirections(c);
 		res = ft_execvp(cmd);
 		if (res == -1 || res == 1)
@@ -41,7 +42,6 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 
 int	setup_redirections(t_ctx *c)
 {
-
 	if (c->input_fd != STDIN_FILENO)
 	{
 		dup2(c->input_fd, STDIN_FILENO);
@@ -57,11 +57,11 @@ int	setup_redirections(t_ctx *c)
 
 int	save_or_rollback(int mode)
 {
-	static int original_stdin;
-	static int original_stdout;
-	static int is_saved;
+	static int	original_stdin;
+	static int	original_stdout;
+	static int	is_saved = FALSE;
 
-	if (mode == SAVE_STREAMS)
+	if (is_saved == FALSE && mode == SAVE_STREAMS)
 	{
 		original_stdin = dup(STDIN_FILENO);
 		original_stdout = dup(STDOUT_FILENO);
@@ -82,23 +82,26 @@ int	save_or_rollback(int mode)
 
 int	executed_onecmd(t_sent *cmd, t_deque *deque)
 {
-	int	res;
+	int		res;
 	t_ctx	*c;
-	res = 0;
 
+	res = 0;
 	c = ms_ctx();
+
 	if (cmd->tokens[0] == NULL)
 		return (-1);
 	if (is_built_in(cmd))
-	{
+	{	/// @note -1 is error, should return ft_error();
 		if (run_by_flag(cmd, INPUT) < 0)
 			return (-1);
 		if (run_by_flag(cmd, OUTPUT) < 0)
 			return (-1);
-		save_or_rollback(SAVE_STREAMS);
+		if (save_or_rollback(SAVE_STREAMS) < 0)
+			return (-1);
 		setup_redirections(c);
 		res = dispatchcmd_wrapper(cmd);
-		save_or_rollback(ROLLBACK_STREAMS);
+		if (save_or_rollback(ROLLBACK_STREAMS) < 0)
+			return (-1);
 		if (res < 0)
 			return (res);
 	}
@@ -111,10 +114,10 @@ int	onecmd(t_sent *cmd, t_deque *deque)
 {
 	int	status;
 	int	res;
-	int test;
+	int	exit;
 
-	test = executed_onecmd(cmd, deque);
-	if (test < 0)
+	exit = executed_onecmd(cmd, deque);
+	if (exit < 0)
 		return (-1);
 	res = 0;
 	status = 0;

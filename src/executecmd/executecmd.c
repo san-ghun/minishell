@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/16 17:18:43 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:00:21 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	executecmd(t_deque *deque)
 	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
 		cmd = deque_pop_back(deque);
+		if (c->cmd_count == deque->size && (is_only_pipe(cmd, c->cmd_count) < 0))
+			return (2);
 		if (c->cmd_count == 0)
 			return (onecmd(cmd, deque));
 		else

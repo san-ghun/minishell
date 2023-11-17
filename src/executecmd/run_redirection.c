@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:12:54 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/16 17:26:40 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 14:11:37 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	flag_redi_append(t_sent *node, t_elst *lst)
 	if (fd == -1)
 		return (fd);
 	c->output_fd = fd;
-
 	return (0);
 }
 

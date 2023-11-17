@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/16 17:06:34 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:00:52 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@
 # define MAX_PIPES 200
 
 # define ERR_DIR_NOT_FOUND -1
+# define ONLY_PIPE "syntax error: near unexpected token `|`\n"
+# define ONLY_PIPES "syntax error: near unexpected token `||`\n"
 
 /// @note FLAGS
 // STDIN_FILENO == 0
@@ -372,11 +374,12 @@ int		ft_free_exit(char *path, char *menvp[], int ret);
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
+int		is_only_pipe(t_sent *cmd, int total_cmd_count);
 
 /* src/util/ms_split.c */
 size_t	ms_split_size(char const *s, char c);
 char	**ms_split_process(char const *s, char c, char **tmp, size_t i);
 char	**ms_split(char const *s, char c);
 
-int	setup_redirections(t_ctx *c);
+int		setup_redirections(t_ctx *c);
 #endif

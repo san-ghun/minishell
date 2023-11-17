@@ -37,3 +37,25 @@ int	check_pid(pid_t pid)
 		return (ms_error("unable to fork\n"));
 	return (0);
 }
+
+int is_only_pipe(t_sent *cmd, int total_cmd_count)
+{
+	if (cmd->tokens[0] == NULL && cmd->output_flag == PIPE_FLAG)
+	{
+		if (total_cmd_count == 0)
+		{
+			cmd->output_flag = STDERR_FILENO;
+			cmd->output_argv = ft_strdup(ONLY_PIPE);
+			ft_putstr_fd(cmd->output_argv, 2);
+			return (-1);
+		}
+		else if (total_cmd_count > 0 && ft_strequ(cmd->next->tokens[0], "|"))
+		{
+			cmd->output_flag = STDERR_FILENO;
+			cmd->output_argv = ft_strdup(ONLY_PIPES);
+			ft_putstr_fd(cmd->output_argv, 2);
+			return (-1);
+		}
+	}
+	return (0);
+}
