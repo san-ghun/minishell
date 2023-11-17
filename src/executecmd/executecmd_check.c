@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:38:30 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/17 17:02:49 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 17:14:36 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,15 @@ int	check_all_cmd(t_sent *cmd)
 	t_sent	*tmp;
 
 	tmp = cmd;
-	while (cmd->next != NULL)
+	while (tmp != NULL)
 	{
-		if (cmd->output_flag == PIPE_FLAG)
+		if (tmp->output_flag == PIPE_FLAG && tmp->tokens_len > 0)
 		{
-			if (ft_strequ(tmp->tokens[0], "|") \
-			|| (ft_strequ(tmp->next->tokens[0], "|")))
+			if (ft_strequ(tmp->tokens[0], "|") || \
+			(tmp->next && (ft_strequ(tmp->next->tokens[0], "|"))))
 			{
 				cmd->output_flag = STDERR_FILENO;
-				cmd->output_argv = ft_strdup(ONLY_PIPES);
-				ft_putstr_fd(cmd->output_argv, 2);
+				ft_putstr_fd(ONLY_PIPES, 2);
 				return (-1);
 			}
 		}
@@ -68,15 +67,13 @@ int	is_only_pipe(t_sent *cmd, int total_cmd_count)
 		if (total_cmd_count == 0)
 		{
 			cmd->output_flag = STDERR_FILENO;
-			cmd->output_argv = ft_strdup(ONLY_PIPE);
-			ft_putstr_fd(cmd->output_argv, 2);
+			ft_putstr_fd(ONLY_PIPE, 2);
 			return (-1);
 		}
 		else if (total_cmd_count > 0 && ft_strequ(cmd->next->tokens[0], "|"))
 		{
 			cmd->output_flag = STDERR_FILENO;
-			cmd->output_argv = ft_strdup(ONLY_PIPES);
-			ft_putstr_fd(cmd->output_argv, 2);
+			ft_putstr_fd(ONLY_PIPES, 2);
 			return (-1);
 		}
 	}
