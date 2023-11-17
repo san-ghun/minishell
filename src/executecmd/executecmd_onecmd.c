@@ -110,7 +110,7 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 	return (res);
 }
 
-int	onecmd(t_sent *cmd, t_deque *deque)
+int	singlecmd(t_sent *cmd, t_deque *deque)
 {
 	int	status;
 	int	res;

@@ -28,10 +28,11 @@ int	executecmd(t_deque *deque)
 	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
 		cmd = deque_pop_back(deque);
-		if (c->cmd_count == deque->size && (is_only_pipe(cmd, c->cmd_count) < 0))
+		if (c->cmd_count == deque->size \
+		&& (is_only_pipe(cmd, c->cmd_count) < 0))
 			return (2);
 		if (c->cmd_count == 0)
-			return (onecmd(cmd, deque));
+			return (singlecmd(cmd, deque));
 		else
 		{
 			if (cmd->next && cmd->output_flag == PIPE_FLAG)

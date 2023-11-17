@@ -346,7 +346,7 @@ int		dispatchcmd_wrapper(t_sent *cmd);
 int		is_built_in(t_sent *cmd);
 
 /* src/executecmd/executecmd_dispatch_handler_util.c */
-int		onecmd(t_sent *cmd, t_deque *deque);
+int		singlecmd(t_sent *cmd, t_deque *deque);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
