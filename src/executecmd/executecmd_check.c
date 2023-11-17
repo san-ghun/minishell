@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:38:30 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/04 22:41:05 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:29:03 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_pid(pid_t pid)
 	return (0);
 }
 
-int is_only_pipe(t_sent *cmd, int total_cmd_count)
+int	is_only_pipe(t_sent *cmd, int total_cmd_count)
 {
 	if (cmd->tokens[0] == NULL && cmd->output_flag == PIPE_FLAG)
 	{

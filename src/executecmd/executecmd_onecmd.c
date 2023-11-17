@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/17 14:42:32 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:29:26 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	save_or_rollback(int mode)
 	return (-1);
 }
 
+/// @note -1 is error, should return ft_error();
 int	executed_onecmd(t_sent *cmd, t_deque *deque)
 {
 	int		res;
@@ -87,11 +88,10 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 
 	res = 0;
 	c = ms_ctx();
-
 	if (cmd->tokens[0] == NULL)
 		return (-1);
 	if (is_built_in(cmd))
-	{	/// @note -1 is error, should return ft_error();
+	{
 		if (run_by_flag(cmd, INPUT) < 0)
 			return (-1);
 		if (run_by_flag(cmd, OUTPUT) < 0)
