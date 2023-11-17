@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:38:30 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/17 15:29:03 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:49:11 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,25 @@ int	is_only_pipe(t_sent *cmd, int total_cmd_count)
 		}
 	}
 	return (0);
+}
+
+int	check_pwd(char *cmd, char **path)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	if (ft_strncmp(cmd, "./", 2) == 0)
+	{
+		if (access(cmd, F_OK) == 0)
+		{
+			tmp = ft_strdup(cmd);
+			if (tmp)
+			{
+				*path = tmp;
+				return (1);
+			}
+		}
+	}
+	*path = NULL;
+	return (-1);
 }

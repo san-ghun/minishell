@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/17 15:00:21 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:59:44 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ int	ft_execvp(t_sent *cmd)
 
 	if (!cmd->tokens[0])
 		return (1);
-	else if (cmd->tokens[0][0] == '|')
-	{
-		cmd->output_flag = STDERR_FILENO;
-		cmd->output_argv = \
-			ft_strdup("syntax error: near unexpected token `|`\n");
-	}
 	if (cmd->output_flag == STDERR_FILENO)
 		return (ft_putstr_fd(cmd->output_argv, 2), 1);
 	else

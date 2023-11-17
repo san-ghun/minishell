@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/17 15:00:52 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:16:17 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,7 @@ int		ft_free_exit(char *path, char *menvp[], int ret);
 int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
 int		is_only_pipe(t_sent *cmd, int total_cmd_count);
+int		check_pwd(char *cmd, char **path);
 
 /* src/util/ms_split.c */
 size_t	ms_split_size(char const *s, char c);

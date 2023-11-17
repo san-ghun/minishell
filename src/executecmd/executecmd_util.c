@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 13:10:51 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/16 15:47:12 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:19:23 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ char	*ms_find_path(char *cmd)
 
 	if (cmd[0] == '/')
 		return (ft_strdup(cmd));
-	if (!ft_getenv(ms_env(), "PATH"))
-		return (0);
+	if (check_pwd(cmd, &path) > 0 || !ft_getenv(ms_env(), "PATH"))
+		return (path);
 	paths = ft_split(ft_getenv(ms_env(), "PATH"), ':');
 	i = -1;
 	while (paths[++i] != NULL)
