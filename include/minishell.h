@@ -375,7 +375,7 @@ int		ft_free_exit(char *path, char *menvp[], int ret);
 int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
 int		is_only_pipe(t_sent *cmd, int total_cmd_count);
-int		check_pwd(char *cmd, char **path);
+int		check_dir(char *cmd, char **path);
 
 /* src/util/ms_split.c */
 size_t	ms_split_size(char const *s, char c);

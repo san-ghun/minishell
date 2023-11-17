@@ -50,7 +50,7 @@ char	*ms_find_path(char *cmd)
 
 	if (cmd[0] == '/')
 		return (ft_strdup(cmd));
-	if (check_pwd(cmd, &path) > 0 || !ft_getenv(ms_env(), "PATH"))
+	if (check_dir(cmd, &path) > 0 || !ft_getenv(ms_env(), "PATH"))
 		return (path);
 	paths = ft_split(ft_getenv(ms_env(), "PATH"), ':');
 	i = -1;

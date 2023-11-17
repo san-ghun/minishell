@@ -60,7 +60,7 @@ int	is_only_pipe(t_sent *cmd, int total_cmd_count)
 	return (0);
 }
 
-int	check_pwd(char *cmd, char **path)
+int	check_dir(char *cmd, char **path)
 {
 	char	*tmp;
 
