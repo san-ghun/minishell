@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/17 16:16:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:07:05 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,4 +383,6 @@ char	**ms_split_process(char const *s, char c, char **tmp, size_t i);
 char	**ms_split(char const *s, char c);
 
 int		setup_redirections(t_ctx *c);
+int		save_or_rollback(int mode);
+
 #endif

@@ -31,7 +31,7 @@ int	executecmd(t_deque *deque)
 		if (c->cmd_count == deque->size \
 		&& (is_only_pipe(cmd, c->cmd_count) < 0))
 			return (2);
-		if (c->cmd_count == 0)
+		if (c->cmd_count <= 0)
 			return (singlecmd(cmd, deque));
 		else
 		{

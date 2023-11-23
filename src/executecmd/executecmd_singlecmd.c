@@ -6,13 +6,11 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/17 17:03:29 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:15:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	setup_redirections(t_ctx *c);
 
 int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 {
@@ -40,44 +38,46 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 	return (res);
 }
 
-int	setup_redirections(t_ctx *c)
+int	ft_execvp_builtin(t_sent *cmd)
 {
-	if (c->input_fd != STDIN_FILENO)
+	int		pid;
+	int		res;
+	t_ctx	*c;
+
+	res = 0;
+	pid = fork();
+	if (check_pid(pid))
+		return (-1);
+	else if (pid == 0)
 	{
-		dup2(c->input_fd, STDIN_FILENO);
-		close(c->input_fd);
+		if (run_by_flag(cmd, INPUT) < 0)
+			return (-1);
+		if (run_by_flag(cmd, OUTPUT) < 0)
+			return (-1);
+		c = ms_ctx();
+		if (save_or_rollback(SAVE_STREAMS) < 0)
+			return (-1);
+		setup_redirections(c);
+		res = dispatchcmd_wrapper(cmd);
 	}
-	if (c->output_fd != STDOUT_FILENO)
-	{
-		dup2(c->output_fd, STDOUT_FILENO);
-		close(c->output_fd);
-	}
-	return (1);
+	ms_ctx()->wait_count = 1;
+	return (res);
 }
 
-int	save_or_rollback(int mode)
+int	ft_execvp_builtin_no_fork(t_sent *cmd, t_ctx *c)
 {
-	static int	original_stdin;
-	static int	original_stdout;
-	static int	is_saved = FALSE;
+	int		res;
 
-	if (is_saved == FALSE && mode == SAVE_STREAMS)
-	{
-		original_stdin = dup(STDIN_FILENO);
-		original_stdout = dup(STDOUT_FILENO);
-		is_saved = TRUE;
-		return (1);
-	}
-	else if (is_saved && mode == ROLLBACK_STREAMS)
-	{
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdin);
-		dup2(original_stdout, STDOUT_FILENO);
-		close(original_stdout);
-		is_saved = FALSE;
-		return (1);
-	}
-	return (-1);
+	res = 0;
+	if (run_by_flag(cmd, INPUT) < 0)
+		return (-1);
+	if (run_by_flag(cmd, OUTPUT) < 0)
+		return (-1);
+	if (save_or_rollback(SAVE_STREAMS) < 0)
+		return (-1);
+	setup_redirections(c);
+	res = dispatchcmd_wrapper(cmd);
+	return (res);
 }
 
 /// @note -1 is error, should return ft_error();
@@ -90,18 +90,16 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 	c = ms_ctx();
 	if (is_built_in(cmd))
 	{
-		if (run_by_flag(cmd, INPUT) < 0)
-			return (-1);
-		if (run_by_flag(cmd, OUTPUT) < 0)
-			return (-1);
-		if (save_or_rollback(SAVE_STREAMS) < 0)
-			return (-1);
-		setup_redirections(c);
-		res = dispatchcmd_wrapper(cmd);
-		if (save_or_rollback(ROLLBACK_STREAMS) < 0)
-			return (-1);
-		if (res < 0)
-			return (res);
+		if (cmd->input_flag == REDI_RD_FLAG || cmd->input_flag == HDOC_FLAG)
+			res = ft_execvp_builtin(cmd);
+		else
+		{
+			res = ft_execvp_builtin_no_fork(cmd, c);
+			if (save_or_rollback(ROLLBACK_STREAMS) < 0)
+				return (-1);
+			if (res < 0)
+				return (res);
+		}
 	}
 	else
 		res = ft_execvp_onecmd(cmd, deque);
