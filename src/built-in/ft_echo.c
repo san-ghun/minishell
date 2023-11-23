@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/10/20 17:13:37 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 14:06:22 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,6 @@ char	determine_term(const char *str, int *i)
 	return (term);
 }
 
-///  Tilde expansion for the home directory (~)
-void	echo_homepath(t_elst *lst)
-{
-	char	*path;
-
-	path = NULL;
-	path = ft_getenv(lst, "HOME");
-	if (path)
-		ft_putstr_fd(path, 1);
-	else
-		ft_putstr_fd("~", 1);
-}
-
 void	ft_echo(t_sent *node, t_elst *lst)
 {
 	int		i;
@@ -93,10 +80,7 @@ void	ft_echo(t_sent *node, t_elst *lst)
 		term = determine_term(node->tokens[1], &i);
 		while (++i < node->tokens_len && node->tokens[i])
 		{
-			if (ft_strequ(node->tokens[i], "~"))
-				echo_homepath(lst);
-			else
-				ft_putstr_fd(node->tokens[i], fd);
+			ft_putstr_fd(node->tokens[i], fd);
 			if (i + 1 < node->tokens_len && node->tokens[i + 1] != NULL)
 				ft_putchar_fd(' ', fd);
 		}
