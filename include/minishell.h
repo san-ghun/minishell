@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/02 10:54:20 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:16:17 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,15 @@
 # define FALSE 0
 
 /// @note Brief branching point notation in process
-# define CHILD 1
-# define PARENT 2
+# define SAVE_STREAMS 1
+# define ROLLBACK_STREAMS 2
 
 /// @note max pipes size
 # define MAX_PIPES 200
 
 # define ERR_DIR_NOT_FOUND -1
+# define ONLY_PIPE "syntax error: near unexpected token `|`\n"
+# define ONLY_PIPES "syntax error: near unexpected token `||`\n"
 
 /// @note FLAGS
 // STDIN_FILENO == 0
@@ -312,12 +314,14 @@ typedef enum e_mode{
 /// execute
 typedef struct s_ctx
 {
-	int		old_fd[2];
-	int		fd[2];
-	int		pids[MAX_PIPES];
-	int		i;
-	int		wait_count;
-	int		cmd_count;
+	int	old_fd[2];
+	int	fd[2];
+	int	input_fd;
+	int	output_fd;
+	int	pids[MAX_PIPES];
+	int	i;
+	int	wait_count;
+	int	cmd_count;
 }				t_ctx;
 
 t_ctx	*ms_ctx(void);
@@ -337,20 +341,12 @@ t_ctx	*ms_ctx(void);
 /* src/executecmd/executecmd_flag_handler.c */
 int		run_by_flag(t_sent *cmd, t_mode flag);
 
-/// dispatch
-typedef struct s_cmd
-{
-	char	*cmd_name;
-	void	(*cmd_func)(t_sent *node, t_elst *lst);
-}				t_cmd;
-
 /* src/executecmd/executecmd_dispatch_handler.c */
-int		dispatchcmd_wrapper(t_sent *cmd, int where);
+int		dispatchcmd_wrapper(t_sent *cmd);
 int		is_built_in(t_sent *cmd);
 
 /* src/executecmd/executecmd_dispatch_handler_util.c */
-t_cmd	*builtins_child(void);
-t_cmd	*builtins_parent(void);
+int		singlecmd(t_sent *cmd, t_deque *deque);
 
 /// list of executable flags
 /* src/executecmd/runheredoc.c */
@@ -378,10 +374,13 @@ int		ft_free_exit(char *path, char *menvp[], int ret);
 /* src/executecmd/executecmd_check.c */
 int		check_path(char *path, char *cmd);
 int		check_pid(pid_t pid);
+int		is_only_pipe(t_sent *cmd, int total_cmd_count);
+int		check_dir(char *cmd, char **path);
 
 /* src/util/ms_split.c */
 size_t	ms_split_size(char const *s, char c);
 char	**ms_split_process(char const *s, char c, char **tmp, size_t i);
 char	**ms_split(char const *s, char c);
 
+int		setup_redirections(t_ctx *c);
 #endif

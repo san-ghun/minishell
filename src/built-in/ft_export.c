@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 19:39:26 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/10 17:29:30 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,14 @@ static int	export_error(char *cmd)
 
 int	is_key(char *key)
 {
-	if (!ft_isalpha(*key) && *key != '_')
-		return (0);
+	if (key[0] == '_' && key[1] == '\0')
+		return (3);
+	if (ft_isalpha(*key) || *key != '_')
+	{
+		key++;
+		if (!*key)
+			return (0);
+	}
 	while (*key)
 	{
 		if (ft_isalnum(*key) || *key == '_')
@@ -44,17 +50,39 @@ int	is_key(char *key)
 	return (1);
 }
 
+char	*set_value(char *separator)
+{
+	char	*value;
+
+	value = NULL;
+	if (separator[1] == '\0')
+		value = ft_strdup(" ");
+	else
+		value = ft_strdup(separator + 1);
+	return (value);
+}
+
 void	check_and_set(t_sent *node, t_elst *lst, char *separator, int i)
 {
 	char	*key;
 	char	*value;
+	int		check_key;
 
 	key = NULL;
 	value = NULL;
 	key = ft_substr(node->tokens[i], 0, separator - node->tokens[i]);
-	value = ft_strdup(separator + 1);
-	if (is_key(key) && ft_setenv(lst, key, value, TRUE) == 0)
-		lst->g_exit = 0;
+	value = set_value(separator);
+	check_key = is_key(key);
+	if (check_key > 0)
+	{
+		if (check_key == 3)
+			lst->g_exit = 0;
+		if (check_key == 1)
+		{
+			if (ft_setenv(lst, key, value, TRUE) == 0)
+				lst->g_exit = 0;
+		}
+	}
 	else
 		export_error(node->tokens[i]);
 	free(key);
@@ -78,7 +106,8 @@ void	ft_export(t_sent *node, t_elst *lst)
 			if (separator)
 				check_and_set(node, lst, separator, i);
 			else
-				export_error(node->tokens[i]);
+				if (is_key(node->tokens[i]) < 1)
+					export_error(node->tokens[i]);
 		}
 	}
 }

@@ -6,17 +6,17 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 11:15:15 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 17:42:45 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:38:47 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int			run_process(t_sent *cmd, t_deque *deque);
-int			child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
+int			ms_execute(t_sent *cmd, t_deque *deque, t_ctx *c);
 void		parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2]);
 static int	extract_last_path_component(t_sent *cmd);
-void		fd_handler_child(t_deque *deque, int old_fd[2], int fd[2]);
+void		update_fd(t_deque *deque, int old_fd[2], int fd[2]);
 
 int	run_process(t_sent *cmd, t_deque *deque)
 {
@@ -32,10 +32,12 @@ int	run_process(t_sent *cmd, t_deque *deque)
 		return (-1);
 	else if (pid == 0)
 	{
-		res = child(cmd, deque, c->old_fd, c->fd);
+		res = ms_execute(cmd, deque, c);
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
 	}
+	c->input_fd = STDIN_FILENO;
+	c->output_fd = STDOUT_FILENO;
 	add_wait_count(pid);
 	parent(cmd, deque, c->old_fd, c->fd);
 	return (0);
@@ -60,7 +62,7 @@ static int	extract_last_path_component(t_sent *cmd)
 	return (0);
 }
 
-int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
+int	ms_execute(t_sent *cmd, t_deque *deque, t_ctx *c)
 {
 	int	res;
 
@@ -69,13 +71,14 @@ int	child(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 		return (-1);
 	if (run_by_flag(cmd, OUTPUT) < 0)
 		return (-1);
+	setup_redirections(c);
 	if (cmd->output_flag == PIPE_FLAG && cmd->tokens[0] == NULL)
 		return (-1);
-	fd_handler_child(deque, old_fd, fd);
-	if (is_built_in(cmd) == CHILD)
+	update_fd(deque, c->old_fd, c->fd);
+	if (is_built_in(cmd))
 	{
-		res = dispatchcmd_wrapper(cmd, CHILD);
-		exit(0);
+		res = dispatchcmd_wrapper(cmd);
+		exit(res);
 	}
 	else
 		res = ft_execvp(cmd);
@@ -96,7 +99,7 @@ void	parent(t_sent *cmd, t_deque *deque, int old_fd[2], int fd[2])
 	}
 }
 
-void	fd_handler_child(t_deque *deque, int old_fd[2], int fd[2])
+void	update_fd(t_deque *deque, int old_fd[2], int fd[2])
 {
 	if (ms_ctx()->cmd_count > deque->size)
 	{

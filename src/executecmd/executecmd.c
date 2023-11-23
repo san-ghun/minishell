@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/09 17:24:08 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:44:44 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,26 @@ void	add_wait_count(int pid);
 int	executecmd(t_deque *deque)
 {
 	t_sent	*cmd;
-	int		bt;
 	t_ctx	*c;
 
 	c = ms_ctx();
 	c->cmd_count = deque->size - 1;
 	while (deque->size > 0 && c->i < MAX_PIPES)
 	{
-		bt = 0;
 		cmd = deque_pop_back(deque);
-		if (cmd->next && cmd->output_flag == PIPE_FLAG)
-			pipe(c->fd);
-		if (is_built_in(cmd) == PARENT)
-		{
-			bt = dispatchcmd_wrapper(cmd, PARENT);
-			if (bt < 0)
-				return (bt);
-			continue ;
-		}
+		if (c->cmd_count == deque->size \
+		&& (is_only_pipe(cmd, c->cmd_count) < 0))
+			return (2);
+		if (c->cmd_count == 0)
+			return (singlecmd(cmd, deque));
 		else
+		{
+			if (cmd->next && cmd->output_flag == PIPE_FLAG)
+				if (pipe(c->fd) < 0)
+					return (-1);
 			if (run_process(cmd, deque) < 0)
 				return (-1);
+		}
 	}
 	return (wait_child(c, c->old_fd, c->wait_count));
 }
@@ -53,12 +52,6 @@ int	ft_execvp(t_sent *cmd)
 
 	if (!cmd->tokens[0])
 		return (1);
-	else if (cmd->tokens[0][0] == '|')
-	{
-		cmd->output_flag = STDERR_FILENO;
-		cmd->output_argv = \
-			ft_strdup("syntax error: near unexpected token `|`\n");
-	}
 	if (cmd->output_flag == STDERR_FILENO)
 		return (ft_putstr_fd(cmd->output_argv, 2), 1);
 	else

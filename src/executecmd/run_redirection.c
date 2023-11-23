@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:12:54 by minakim           #+#    #+#             */
-/*   Updated: 2023/09/22 14:09:35 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/17 14:11:37 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ int	flag_redi_read(t_sent *node, t_elst *lst)
 {
 	char	*filename;
 	int		fd;
+	t_ctx	*c;
 
 	(void)lst;
+	c = ms_ctx();
 	filename = node->input_argv;
 	fd = open_file(filename, 2);
 	if (fd == -1)
 		return (fd);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	c->input_fd = fd;
 	return (0);
 }
 
@@ -33,14 +34,15 @@ int	flag_redi_append(t_sent *node, t_elst *lst)
 {
 	char	*filename;
 	int		fd;
+	t_ctx	*c;
 
 	(void) lst;
 	filename = node->output_argv;
+	c = ms_ctx();
 	fd = open_file(filename, 0);
 	if (fd == -1)
 		return (fd);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	c->output_fd = fd;
 	return (0);
 }
 
@@ -49,13 +51,14 @@ int	flag_redi_trunc(t_sent *node, t_elst *lst)
 {
 	char	*filename;
 	int		fd;
+	t_ctx	*c;
 
 	(void) lst;
 	filename = node->output_argv;
+	c = ms_ctx();
 	fd = open_file(filename, 1);
 	if (fd == -1)
 		return (fd);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	c->output_fd = fd;
 	return (0);
 }

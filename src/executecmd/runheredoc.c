@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 18:14:32 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/01 19:49:48 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/16 16:16:16 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	flag_heredoc(t_sent *node, t_elst *lst)
 		free(line);
 	}
 	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
+	dup2(fd[0], ms_ctx()->input_fd);
 	close(fd[0]);
 	return (0);
 }
