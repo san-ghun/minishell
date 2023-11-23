@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 15:58:57 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:49:17 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int	ft_execvp_builtin(t_sent *cmd)
 		return (-1);
 	else if (pid == 0)
 	{
+		if (save_or_rollback(SAVE_STREAMS) < 0)
+			return (-1);
 		if (run_by_flag(cmd, INPUT) < 0)
 			return (-1);
 		if (run_by_flag(cmd, OUTPUT) < 0)
 			return (-1);
 		c = ms_ctx();
-		if (save_or_rollback(SAVE_STREAMS) < 0)
-			return (-1);
 		setup_redirections(c);
 		res = dispatchcmd_wrapper(cmd);
 		if (save_or_rollback(ROLLBACK_STREAMS) < 0)
@@ -71,11 +71,11 @@ int	ft_execvp_builtin_no_fork(t_sent *cmd, t_ctx *c)
 	int		res;
 
 	res = 0;
+	if (save_or_rollback(SAVE_STREAMS) < 0)
+		return (-1);
 	if (run_by_flag(cmd, INPUT) < 0)
 		return (-1);
 	if (run_by_flag(cmd, OUTPUT) < 0)
-		return (-1);
-	if (save_or_rollback(SAVE_STREAMS) < 0)
 		return (-1);
 	setup_redirections(c);
 	res = dispatchcmd_wrapper(cmd);
@@ -94,14 +94,15 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 	c = ms_ctx();
 	if (is_built_in(cmd))
 	{
-		if (cmd->input_flag == REDI_RD_FLAG || cmd->input_flag == HDOC_FLAG)
-			res = ft_execvp_builtin(cmd);
-		else
-		{
+		/// @note fork : 만약에 필요하면 다시 살려서 하기 (export, env .. )
+//		if (cmd->input_flag == REDI_RD_FLAG || cmd->input_flag == HDOC_FLAG)
+//			res = ft_execvp_builtin(cmd);
+//		else
+//		{
 			res = ft_execvp_builtin_no_fork(cmd, c);
 			if (res < 0)
 				return (res);
-		}
+//		}
 	}
 	else
 		res = ft_execvp_onecmd(cmd, deque);

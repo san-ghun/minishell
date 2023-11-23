@@ -4,17 +4,25 @@ project(minishell)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra -g")
 
+# Include and compile libft
+file(GLOB_RECURSE LIBFT_SOURCES "libft/*/*.c")
+add_library(libft STATIC ${LIBFT_SOURCES})
+target_include_directories(libft PUBLIC libft/include)
+
+# Include minishell header
 include_directories(include)
-include_directories(include/include)
 
-file(GLOB LIBFT_SOURCES
-        "libft/src/*.c"
-        "libft/src/*/*.c"
-)
+# Manually specify Readline paths
+include_directories(/usr/include/readline) # Update this path
+link_directories(/usr/lib) # Update this path
 
-file(GLOB SOURCES
+
+# Compile minishell
+file(GLOB_RECURSE MINISHELL_SOURCES
         "src/*.c"
         "src/*/*.c"
-        ${LIBFT_SOURCES}
-        )
-add_executable(minishell ${SOURCES})
+)
+add_executable(minishell ${MINISHELL_SOURCES})
+
+# Link libft to minishell
+target_link_libraries(minishell libft readline)
