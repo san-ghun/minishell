@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 15:11:15 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:15:27 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 	return (res);
 }
 
-int	ft_execvp_builtin(t_sent *cmd, t_deque *deque)
+int	ft_execvp_builtin(t_sent *cmd)
 {
 	int		pid;
 	int		res;
@@ -91,7 +91,7 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 	if (is_built_in(cmd))
 	{
 		if (cmd->input_flag == REDI_RD_FLAG || cmd->input_flag == HDOC_FLAG)
-			res = ft_execvp_builtin(cmd, deque);
+			res = ft_execvp_builtin(cmd);
 		else
 		{
 			res = ft_execvp_builtin_no_fork(cmd, c);
