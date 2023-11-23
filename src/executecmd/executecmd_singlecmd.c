@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 15:15:27 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:58:57 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	ft_execvp_builtin(t_sent *cmd)
 			return (-1);
 		setup_redirections(c);
 		res = dispatchcmd_wrapper(cmd);
+		if (save_or_rollback(ROLLBACK_STREAMS) < 0)
+			return (-1);
 	}
 	ms_ctx()->wait_count = 1;
 	return (res);
@@ -77,6 +79,8 @@ int	ft_execvp_builtin_no_fork(t_sent *cmd, t_ctx *c)
 		return (-1);
 	setup_redirections(c);
 	res = dispatchcmd_wrapper(cmd);
+	if (save_or_rollback(ROLLBACK_STREAMS) < 0)
+		return (-1);
 	return (res);
 }
 
@@ -95,8 +99,6 @@ int	executed_onecmd(t_sent *cmd, t_deque *deque)
 		else
 		{
 			res = ft_execvp_builtin_no_fork(cmd, c);
-			if (save_or_rollback(ROLLBACK_STREAMS) < 0)
-				return (-1);
 			if (res < 0)
 				return (res);
 		}
