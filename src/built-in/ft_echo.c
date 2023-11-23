@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 19:43:37 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 14:06:22 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:40:45 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	redi_out(t_sent *node)
 		fd = open_file(node->output_argv, 0);
 	else if (node->output_flag == REDI_WR_TRUNC_FLAG)
 		fd = open_file(node->output_argv, 1);
+	else if (node->input_flag == HDOC_FLAG || node->input_flag == REDI_RD_FLAG)
+		fd = -2;
 	if (fd == -1)
 		ms_error("redirection out: unable to read the file\n");
 	return (fd);
@@ -75,6 +77,8 @@ void	ft_echo(t_sent *node, t_elst *lst)
 
 	i = 0;
 	fd = redi_out(node);
+	if (fd == -2)
+		return ;
 	if (node->tokens[1])
 	{
 		term = determine_term(node->tokens[1], &i);
