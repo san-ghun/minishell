@@ -6,7 +6,7 @@
 /*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 15:08:44 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:11:15 by minakim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	ft_execvp_builtin(t_sent *cmd, t_deque *deque)
 			return (-1);
 		setup_redirections(c);
 		res = dispatchcmd_wrapper(cmd);
-		if (res == -1 || res == 1)
-			ft_ms_exit(cmd, deque, 127);
 	}
 	ms_ctx()->wait_count = 1;
 	return (res);
