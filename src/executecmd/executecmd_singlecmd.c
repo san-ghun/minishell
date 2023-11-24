@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/24 17:23:40 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:33:13 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,11 @@ int	singlecmd(t_sent *cmd, t_deque *deque)
 		wait(&status);
 	// if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 	if (WIFSIGNALED(status))
+	{
 		res = WTERMSIG(status) + 128;
+		if (res == 141)
+			res = 0;
+	}
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)
 		res = WEXITSTATUS(status);
 	else if (WIFSTOPPED(status) && ms_env()->g_exit != 130)
