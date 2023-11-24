@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:35 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/16 14:59:28 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:05:49 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	start_minishell(void)
 
 static void	sighandler(int signal)
 {
+	t_elst		*lst;
+
 	(void)signal;
 	write(1, "\n", 1);
 	if (!g_sigstatus)
@@ -45,6 +47,8 @@ static void	sighandler(int signal)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	lst = ms_env();
+	lst->g_exit = 130;
 }
 
 static int	looper(char *cmd, int debug_mode)
