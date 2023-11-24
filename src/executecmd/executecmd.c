@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 14:06:17 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/17 16:44:44 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/24 16:26:23 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	wait_child(t_ctx *c, int old_fd[2], int wait_count)
 		close(old_fd[1]);
 	}
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
-		res = WTERMSIG(status);
+		res = WTERMSIG(status) + 128;
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)
 		res = WEXITSTATUS(status);
 	else if (WIFSTOPPED(status) && ms_env()->g_exit != 130)

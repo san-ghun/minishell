@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executecmd_onecmd.c                                :+:      :+:    :+:   */
+/*   executecmd_singlecmd.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minakim <minakim@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/23 16:49:17 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/24 16:26:36 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	singlecmd(t_sent *cmd, t_deque *deque)
 	if (ms_ctx()->wait_count == 1)
 		wait(&status);
 	if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
-		res = WTERMSIG(status);
+		res = WTERMSIG(status) + 128;
 	else if (WIFEXITED(status) && ms_env()->g_exit != 130)
 		res = WEXITSTATUS(status);
 	else if (WIFSTOPPED(status) && ms_env()->g_exit != 130)
