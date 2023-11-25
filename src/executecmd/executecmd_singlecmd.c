@@ -6,7 +6,7 @@
 /*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:30:08 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/24 17:33:13 by sanghupa         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:39:37 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 	int		pid;
 	int		res;
 	t_ctx	*c;
+	int		i = -1;
 
 	res = 0;
+	c = ms_ctx();
 	pid = fork();
 	if (check_pid(pid))
 		return (-1);
@@ -28,13 +30,13 @@ int	ft_execvp_onecmd(t_sent *cmd, t_deque *deque)
 			return (-1);
 		if (run_by_flag(cmd, OUTPUT) < 0)
 			return (-1);
-		c = ms_ctx();
 		setup_redirections(c);
 		res = ft_execvp(cmd);
 		if (res == -1 || res == 1)
 			ft_ms_exit(cmd, deque, 127);
 	}
-	ms_ctx()->wait_count = 1;
+	while (++i < 1)
+		wait(&c->status);
 	return (res);
 }
 
@@ -119,9 +121,7 @@ int	singlecmd(t_sent *cmd, t_deque *deque)
 	if (exit < 0)
 		return (-1);
 	res = 0;
-	status = 0;
-	if (ms_ctx()->wait_count == 1)
-		wait(&status);
+	status = ms_ctx()->status;
 	// if (WIFSIGNALED(status) && ms_env()->g_exit != 130)
 	if (WIFSIGNALED(status))
 	{

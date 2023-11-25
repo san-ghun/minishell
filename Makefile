@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+         #
+#    By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:37:09 by sanghupa          #+#    #+#              #
-#    Updated: 2023/09/29 23:32:13 by sanghupa         ###   ########.fr        #
+#    Updated: 2023/11/25 15:40:34 by sanghupa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,39 +88,6 @@ $(NAME):	$(OBJ_NAME) $(LIBFT)
 
 $(NAME_B):	$(OBJ_NAME_B) $(LIBFT)
 			@$(CC) $(CFLAGS) -o $@ $^ -I $(INC_DIR) -I $(LIBFT_I_DIR)
-
-# Test Code 
-
-TEST 		=	test.c
-
-TMP_LIB_A 	= $(shell find ./src/deque -iname "*.c")
-TMP_LIB_B	= $(shell find ./src/t_sent -iname "*.c")
-TMP_LIB_C	= $(shell find ./src/util -iname "*.c")
-TMP_LIB_D	= $(shell find ./src/t_env -iname "*.c")
-TMP_LIB_E	= $(shell find ./src/built-in -iname "*.c")
-TMP_LIB_F	= $(shell find ./src/parsecmd -iname "*.c")
-TMP_LIB_G	= $(shell find ./src/executecmd -iname "*.c")
-
-TMP 		= $(SRC_DIR)/pipex_util.c \
-				$(SRC_DIR)/pipex.c \
-				$(SRC_DIR)/minishell_util.c \
-				$(TMP_LIB_A) \
-				$(TMP_LIB_B) \
-				$(TMP_LIB_C) \
-				$(TMP_LIB_D) \
-				$(TMP_LIB_E) \
-				$(TMP_LIB_F) \
-#				$(TMP_LIB_G)
-#				$(SRC_DIR)/minishell.c \
-
-
-test: $(LIBFT)
-			$(CC) $(TEST) -o $(TEST:.c=.out) $(TMP) $^ -I $(INC_DIR) -I $(LIBFT_I_DIR) $(RL_LINK)
-			# -fsanitize=address -g
-tclean: 
-			make fclean -C $(LIBFT_DIR)
-			$(RM) $(LIBFT)
-			$(RM) -f test.o test.out
 
 party:
 			@printf "\033c"
