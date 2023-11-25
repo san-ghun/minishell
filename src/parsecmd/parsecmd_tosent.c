@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsecmd_tosent.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:57:49 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/10/01 12:59:34 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/24 15:54:40 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static int	handle_input(t_sent *node, char *margv[], int tmp)
 		node->input_flag = REDI_RD_FLAG;
 	else if (ft_strequ(margv[tmp], "<<"))
 		node->input_flag = HDOC_FLAG;
+	if (node->input_argv != NULL)
+		free(node->input_argv);
+	node->input_argv = NULL;
 	node->input_argv = ft_strdup(margv[tmp + 1]);
 	return (cnt);
 }
@@ -50,6 +53,9 @@ static int	handle_output(t_sent *node, char *margv[], int tmp)
 		node->output_flag = REDI_WR_TRUNC_FLAG;
 	else if (ft_strequ(margv[tmp], ">>"))
 		node->output_flag = REDI_WR_APPEND_FLAG;
+	if (node->output_argv != NULL)
+		free(node->output_argv);
+	node->output_argv = NULL;
 	node->output_argv = ft_strdup(margv[tmp + 1]);
 	return (cnt);
 }

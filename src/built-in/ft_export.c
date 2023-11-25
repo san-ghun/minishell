@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:32:14 by minakim           #+#    #+#             */
-/*   Updated: 2023/11/10 17:29:30 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/24 16:20:16 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ int	is_key(char *key)
 {
 	if (key[0] == '_' && key[1] == '\0')
 		return (3);
-	if (ft_isalpha(*key) || *key != '_')
-	{
+	if (ft_isalpha(*key) || *key == '_')
 		key++;
-		if (!*key)
-			return (0);
-	}
+	else
+		return (0);
 	while (*key)
 	{
 		if (ft_isalnum(*key) || *key == '_')
