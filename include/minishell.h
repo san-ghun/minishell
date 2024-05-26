@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sanghupa <sanghupa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: sanghupa <sanghupa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:39:14 by sanghupa          #+#    #+#             */
-/*   Updated: 2023/11/23 15:07:05 by minakim          ###   ########.fr       */
+/*   Updated: 2023/11/25 15:38:57 by sanghupa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,7 @@ typedef struct s_ctx
 	int	i;
 	int	wait_count;
 	int	cmd_count;
+	int	status;
 }				t_ctx;
 
 t_ctx	*ms_ctx(void);
